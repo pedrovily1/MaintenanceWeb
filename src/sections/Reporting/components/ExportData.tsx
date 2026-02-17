@@ -39,13 +39,15 @@ export const ExportData = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewPdf, setPreviewPdf] = useState<{ url: string; doc: any } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [progressText, setProgressText] = useState('');
 
   const getExportOptions = (): ExportOptions => ({
     dateRange,
     includeStatus,
     procedureFormat,
     additionalOptions,
-    selectedColumns
+    selectedColumns,
+    onProgress: (msg: string) => setProgressText(msg)
   });
 
   const getFilename = () => {
@@ -57,6 +59,7 @@ export const ExportData = () => {
     try {
       setIsGenerating(true);
       setError(null);
+      setProgressText('');
       const options = getExportOptions();
       const doc = await generateWorkOrderPDF(workOrders, options);
       const blob = doc.output('bloburl');
@@ -74,6 +77,7 @@ export const ExportData = () => {
       try {
         setIsGenerating(true);
         setError(null);
+        setProgressText('');
         const options = getExportOptions();
         const doc = await generateWorkOrderPDF(workOrders, options);
         downloadPDF(doc, `${getFilename()}.pdf`);
@@ -335,6 +339,11 @@ export const ExportData = () => {
           >
             Schedule
           </button>
+          {isGenerating && progressText && (
+            <div className="text-xs text-gray-500 mr-2 truncate max-w-[40%]" title={progressText}>
+              {progressText}
+            </div>
+          )}
           <div className="flex-1" />
           <button
             onClick={handlePreview}
