@@ -1,4 +1,4 @@
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/hooks/useQuery";
 
 type RequestDetailProps = {
   requestId: string | null;

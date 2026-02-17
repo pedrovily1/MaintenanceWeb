@@ -112,7 +112,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                       <div className="box-border caret-transparent shrink-0 leading-[21px] break-words">
                         {message.text}
                       </div>
-                      {message.reactions && message.reactions.length > 0 && (
+                      {Array.isArray(message.reactions) && message.reactions.length > 0 && (
                         <div className="items-center box-border caret-transparent flex shrink-0 gap-2 mt-2">
                           {message.reactions.map((reaction, idx) => (
                             <button

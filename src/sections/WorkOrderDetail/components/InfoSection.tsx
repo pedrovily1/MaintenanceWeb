@@ -184,7 +184,8 @@ export const InfoSection = (props: InfoSectionProps) => {
               className="font-semibold items-center box-border caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] w-10 border border-zinc-200 overflow-hidden rounded-lg border-solid"
             >
               <figure
-                className={`bg-[url('${props.assetImageUrl}')] bg-cover box-border caret-transparent shrink-0 h-10 w-10 bg-center`}
+                className="bg-cover box-border caret-transparent shrink-0 h-10 w-10 bg-center"
+                style={{ backgroundImage: props.assetImageUrl ? `url('${props.assetImageUrl}')` : undefined }}
               ></figure>
             </div>
           </div>

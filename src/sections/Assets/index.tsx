@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/hooks/useQuery";
 import { AssetList } from "./components/AssetList";
 import { AssetDetail } from "./components/AssetDetail";
 

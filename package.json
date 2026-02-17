@@ -16,8 +16,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
-    "@radix-ui/react-toggle": "^1.1.0",
-    "@animaapp/playground-react-sdk": "0.10.0"
+    "@radix-ui/react-toggle": "^1.1.0"
   },
   "devDependencies": {
     "@types/react": "18.2.0",

@@ -9,7 +9,10 @@ export const CommentList = () => {
                 href="https://app.getmaintainx.com/users/profile/849627"
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
+                ></div>
               </a>
             </div>
             <div className="box-border caret-transparent grow shrink-0 break-words w-0">
@@ -39,7 +42,10 @@ export const CommentList = () => {
                 href="https://app.getmaintainx.com/users/profile/849627"
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
+                ></div>
               </a>
             </div>
             <div className="box-border caret-transparent grow shrink-0 break-words w-0">
@@ -69,7 +75,10 @@ export const CommentList = () => {
                 href="https://app.getmaintainx.com/users/profile/870649"
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')" }}
+                ></div>
               </a>
             </div>
             <div className="box-border caret-transparent grow shrink-0 break-words w-0">

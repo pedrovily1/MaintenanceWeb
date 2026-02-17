@@ -145,7 +145,7 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
               <h2 className="text-base font-semibold mb-3">
                 Assets ({location.assetsCount})
               </h2>
-              {location.assets.length === 0 ? (
+              {(!location.assets || location.assets.length === 0) ? (
                 <div className="text-gray-500 text-sm">No assets at this location</div>
               ) : (
                 <div className="space-y-0">

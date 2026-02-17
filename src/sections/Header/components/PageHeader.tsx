@@ -17,7 +17,7 @@ export const PageHeader = () => {
             <input
               type="search"
               placeholder="Search Work Orders"
-              value=""
+              defaultValue=""
               className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-gray-50 bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
             />
           </form>
@@ -26,6 +26,7 @@ export const PageHeader = () => {
           <button
             type="button"
             className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 lg:px-4 rounded-bl rounded-tl border-solid hover:bg-blue-400 hover:border-blue-400"
+            onClick={() => window.dispatchEvent(new CustomEvent('trigger-new-work-order'))}
           >
             <img
               src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-22.svg"

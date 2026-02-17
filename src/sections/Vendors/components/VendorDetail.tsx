@@ -232,7 +232,10 @@ export const VendorDetail = ({ vendorId }: VendorDetailProps) => {
             <div className="text-sm text-gray-600 space-y-2 mb-6">
               <div className="flex items-center gap-2">
                 Created By 
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')" }}
+                ></div>
                 <a href="#" className="text-blue-500 hover:underline">Jason Degg</a>
                 <span>on 11/11/2025, 11:03</span>
               </div>
@@ -317,7 +320,10 @@ export const VendorDetail = ({ vendorId }: VendorDetailProps) => {
                               </div>
                             </div>
                             <div className="box-border caret-transparent shrink-0 h-4 -ml-0.5">
-                              <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                              <div 
+                                className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                                style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
+                              ></div>
                             </div>
                           </span>
                         </div>

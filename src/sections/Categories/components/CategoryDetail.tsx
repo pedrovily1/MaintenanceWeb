@@ -114,13 +114,19 @@ export const CategoryDetail = ({ categoryId }: CategoryDetailProps) => {
             <div className="text-sm text-gray-600 space-y-2 mb-6 pb-6 border-b border-zinc-200">
               <div className="flex items-center gap-2">
                 Created By 
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')" }}
+                ></div>
                 <span className="text-blue-500 hover:underline cursor-pointer">Jason Degg</span>
                 <span>on 29/05/2025, 14:42</span>
               </div>
               <div className="flex items-center gap-2">
                 Last updated By
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div 
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
+                ></div>
                 <span className="text-blue-500 hover:underline cursor-pointer">Pedro Modesto</span>
                 <span>on 09/12/2025, 11:51</span>
               </div>
@@ -207,7 +213,10 @@ export const CategoryDetail = ({ categoryId }: CategoryDetailProps) => {
                             </div>
                             {workOrder.completedBy && (
                               <div className="box-border caret-transparent shrink-0 h-4 -ml-0.5">
-                                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                                <div 
+                                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                                  style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')" }}
+                                ></div>
                               </div>
                             )}
                           </span>

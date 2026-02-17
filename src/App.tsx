@@ -54,7 +54,7 @@ export const App = () => {
   }, []);
 
   return (
-    <body className="text-neutral-800 text-sm not-italic normal-nums font-normal accent-auto box-border caret-transparent block shrink-0 h-full tracking-[normal] leading-[16.8px] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible w-full border-separate font-system_ui">
+    <div className="text-neutral-800 text-sm not-italic normal-nums font-normal accent-auto box-border caret-transparent block shrink-0 h-full tracking-[normal] leading-[16.8px] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible w-full border-separate font-system_ui">
       <div className="box-border caret-transparent shrink-0 h-full">
         <div className="box-border caret-transparent shrink-0"></div>
         <div className="bg-white box-border caret-transparent flex flex-col shrink-0 h-full">
@@ -91,43 +91,6 @@ export const App = () => {
         </div>
         <div className="box-border caret-transparent shrink-0"></div>
       </div>
-      <div className="box-border caret-transparent shrink-0"></div>
-      <div className="box-border caret-transparent shrink-0">
-        <div className="box-border caret-transparent shrink-0">
-          <div className="fixed items-center box-border caret-transparent gap-x-3 flex flex-col shrink-0 gap-y-3 z-[9999] left-2/4 top-0"></div>
-        </div>
-      </div>
-      <iframe
-        title="No content"
-        role="presentation"
-        src="cid://frame-DB9F8AD841EB32118541EAF47ABFA3F1@mhtml.blink"
-        className="absolute box-border caret-transparent shrink-0 h-0 top-[-9999px] w-0"
-      ></iframe>
-      <div className="box-border caret-transparent shrink-0">
-        <iframe className="box-border caret-transparent hidden shrink-0 border-zinc-100"></iframe>
-      </div>
-      <div className="box-border caret-transparent shrink-0">
-        <div className="box-border caret-transparent shrink-0"></div>
-        <div className="box-border caret-transparent shrink-0"></div>
-      </div>
-      <div className="fixed box-border caret-transparent shrink-0 h-0 w-0 z-[2147483001] font-system_ui"></div>
-      <div className="box-border caret-transparent shrink-0">
-        <div className="fixed caret-transparent z-[2147483647] left-0 top-0">
-          <div className="fixed bg-indigo-600/90 caret-transparent hidden pointer-events-none w-80 z-[999999] left-[599.398px] top-64">
-            <div className="text-white text-base caret-transparent leading-10 pointer-events-auto text-center">
-              [cssPicker] click me and inspect iframe
-            </div>
-          </div>
-          <div className="fixed bg-indigo-600/90 caret-transparent hidden pointer-events-none w-80 z-[999999] left-0 top-0">
-            <div className="text-white text-base caret-transparent leading-10 pointer-events-auto text-center">
-              [cssPicker] click and exit iframe
-            </div>
-          </div>
-          <div className="fixed caret-transparent h-[861px] pointer-events-none w-[1512px] z-[99999]">
-            <div className="absolute caret-transparent h-[604px] w-[516.602px] border border-red-600 rounded-bl rounded-br rounded-tl rounded-tr border-solid left-[599.398px] top-64"></div>
-          </div>
-        </div>
-      </div>
-    </body>
+    </div>
   );
 };

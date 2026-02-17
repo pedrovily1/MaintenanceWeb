@@ -9,9 +9,10 @@ export type WorkOrderCardProps = {
   dueDate: string;
   isOverdue?: boolean;
   isRecurring?: boolean;
-  assignedUsers?: Array<{ name: string; imageUrl: string }>;
+  assignedUsers?: Array<{ name: string; imageUrl?: string }>;
   assignedTeams?: Array<{ name: string; initials: string; color: string }>;
   onClick?: () => void;
+  isActive?: boolean;
 };
 
 export const WorkOrderCard = ({
@@ -27,12 +28,15 @@ export const WorkOrderCard = ({
   isRecurring,
   assignedUsers,
   assignedTeams,
-  onClick
+  onClick,
+  isActive
 }: WorkOrderCardProps) => {
   return (
     <div 
       onClick={onClick}
-      className="relative items-center bg-white border-b border-zinc-200 border-l-4 border-l-blue-500 box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-gray-50 cursor-pointer pl-3 py-3"
+      className={`relative items-center bg-white border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-gray-50 cursor-pointer pl-3 py-3 ${
+        isActive ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+      }`}
     >
       {/* Image */}
       <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg z-0">
@@ -114,10 +118,14 @@ export const WorkOrderCard = ({
             <div className={`text-xs font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
               status === 'Open' ? 'bg-sky-100 text-blue-600' : 
               status === 'Done' ? 'bg-teal-100 text-teal-600' : 
+              status === 'In Progress' ? 'bg-blue-100 text-blue-600' :
+              status === 'On Hold' ? 'bg-yellow-100 text-yellow-600' :
               'bg-gray-100 text-gray-600'
             }`}>
-              <div className="mr-1.5">
+              <div className="mr-1.5 flex items-center">
                 {status === 'Open' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" alt="Open" className="h-3 w-3" />}
+                {status === 'On Hold' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" alt="On Hold" className="h-3 w-3" />}
+                {status === 'In Progress' && <img src="/src/public/inprogress.svg" alt="In Progress" className="h-3 w-3" />}
                 {status === 'Done' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg" alt="Done" className="h-3 w-3" />}
               </div>
               {status}
