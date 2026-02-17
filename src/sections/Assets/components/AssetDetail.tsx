@@ -1,0 +1,360 @@
+import { useQuery } from "@animaapp/playground-react-sdk";
+
+type AssetDetailProps = {
+  assetId: string | null;
+};
+
+export const AssetDetail = ({ assetId }: AssetDetailProps) => {
+  const { data: asset, isPending, error } = useQuery("Asset", assetId || "");
+
+  if (!assetId) {
+    return (
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500">
+            Select an asset to view details
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isPending) {
+    return (
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500">
+            Loading asset details...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !asset) {
+    return (
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-red-500">
+            Error loading asset
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+        <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
+          {/* Header */}
+          <header className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
+            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
+              <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
+                <div className="box-border caret-transparent">
+                  <div className="box-border caret-transparent gap-x-1 flex gap-y-1">
+                    <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
+                      {asset.name}
+                    </h3>
+                    <button
+                      title="Copy Link"
+                      type="button"
+                      className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                    >
+                      <span className="box-border caret-transparent flex text-nowrap">
+                        <img
+                          src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-35.svg"
+                          alt="Icon"
+                          className="box-border caret-transparent h-5 text-nowrap w-5"
+                        />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
+                <button
+                  type="button"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                >
+                  <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
+                    Edit
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                >
+                  <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-40.svg"
+                      alt="Icon"
+                      className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
+                    />
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
+              <button
+                type="button"
+                className="text-blue-500 font-semibold bg-transparent border-b-blue-500 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b"
+              >
+                Details
+              </button>
+              <button
+                type="button"
+                className="text-gray-600 bg-transparent border-b-zinc-200 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50"
+              >
+                History
+              </button>
+            </div>
+          </header>
+
+          {/* Content */}
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 p-6">
+            {/* Status Section */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold">Status</h2>
+                <button
+                  type="button"
+                  className="text-blue-500 text-sm font-medium hover:text-blue-400"
+                >
+                  See More
+                </button>
+              </div>
+              <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 flex-wrap h-10 justify-between min-h-[22px] w-full border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative items-center box-border caret-transparent flex basis-[0%] grow flex-wrap overflow-hidden px-2 py-0.5">
+                  <div className="text-sm content-start items-center box-border caret-transparent flex shrink-0 justify-start leading-[15.12px] text-nowrap">
+                    <div className="box-border caret-transparent shrink-0 text-nowrap mr-2">
+                      <div className="bg-teal-500 box-border caret-transparent shrink-0 h-1.5 text-nowrap w-1.5 rounded-[50%]"></div>
+                    </div>
+                    <div
+                      title={asset.status}
+                      className="box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap overflow-hidden"
+                    >
+                      {asset.status}
+                    </div>
+                  </div>
+                </div>
+                <div className="items-center self-stretch box-border caret-transparent flex shrink-0 overflow-hidden">
+                  <div className="text-blue-500 box-border caret-transparent flex shrink-0 pr-1 pb-1">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
+                      alt="Icon"
+                      className="box-border caret-transparent shrink-0 h-5 leading-[14px] w-5"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-gray-600 text-xs mt-2">
+                Last updated: MaintainX, 31/12/2024, 21:36
+              </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Pictures Section */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Pictures</h2>
+              {asset.imageUrl ? (
+                <div className="box-border caret-transparent shrink-0">
+                  <img
+                    src={asset.imageUrl}
+                    alt={asset.name}
+                    className="box-border caret-transparent shrink-0 max-w-[244px] w-full rounded-lg border border-zinc-200"
+                  />
+                </div>
+              ) : (
+                <div className="text-gray-500 text-sm">No pictures available</div>
+              )}
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Asset Types & QR Code */}
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div>
+                <h2 className="text-base font-semibold mb-3">Asset Types</h2>
+                <div className="text-sm">Equipment</div>
+              </div>
+              <div>
+                <h2 className="text-base font-semibold mb-3">QR Code/Barcode</h2>
+                <div className="text-sm mb-2">1D0UCME97QHDX</div>
+                <div className="bg-gray-100 h-32 w-32 rounded flex items-center justify-center">
+                  <div className="text-gray-400 text-xs">QR Code</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Location */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Location</h2>
+              <div className="items-center box-border caret-transparent flex shrink-0">
+                <div className="bg-sky-100 border border-blue-300 h-8 w-8 flex items-center justify-center rounded-lg mr-2">
+                  <img
+                    src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-49.svg"
+                    alt="Icon"
+                    className="h-[18px] w-[18px]"
+                  />
+                </div>
+                <div className="text-sm">Slovakia</div>
+              </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Criticality */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Criticality</h2>
+              <div className="text-sm">None</div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Manufacturer */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Manufacturer</h2>
+              <div className="text-sm">{asset.manufacturer}</div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Model */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Model</h2>
+              <div className="text-sm">none</div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Sub-Assets */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Sub-Assets (0)</h2>
+              <p className="text-sm text-gray-600 mb-2">
+                Add sub elements inside this Asset
+              </p>
+              <button className="text-blue-500 text-sm font-medium hover:text-blue-400">
+                Create Sub-Asset
+              </button>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Parts */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Parts (1)</h2>
+              <div className="items-center box-border caret-transparent flex shrink-0 p-3 border border-zinc-200 rounded hover:bg-gray-50">
+                <div className="bg-sky-100 border border-blue-300 h-8 w-8 flex items-center justify-center rounded-lg mr-3">
+                  <img
+                    src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                    alt="Icon"
+                    className="h-[18px] w-[18px]"
+                  />
+                </div>
+                <div className="text-sm">PSN50W036T2</div>
+              </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Procedures */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Procedures (4)</h2>
+              <div className="space-y-2">
+                <div className="items-center box-border caret-transparent flex shrink-0 p-3 border border-zinc-200 rounded hover:bg-gray-50">
+                  <div className="bg-sky-100 border border-blue-300 h-8 w-8 flex items-center justify-center rounded-lg mr-3">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
+                      alt="Icon"
+                      className="h-[18px] w-[18px]"
+                    />
+                  </div>
+                  <div className="text-sm">Door Delay Troubleshooting</div>
+                </div>
+                <div className="items-center box-border caret-transparent flex shrink-0 p-3 border border-zinc-200 rounded hover:bg-gray-50">
+                  <div className="bg-sky-100 border border-blue-300 h-8 w-8 flex items-center justify-center rounded-lg mr-3">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
+                      alt="Icon"
+                      className="h-[18px] w-[18px]"
+                    />
+                  </div>
+                  <div className="text-sm">Quarterly Door inspections</div>
+                </div>
+              </div>
+              <button className="text-blue-500 text-sm font-medium mt-3 hover:text-blue-400">
+                See all →
+              </button>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Automations */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Automations (0)</h2>
+              <div className="bg-sky-50 border border-blue-200 rounded p-4 mb-3">
+                <p className="text-sm font-semibold text-blue-600">
+                  Add a Meter to this Asset to enable Automations.
+                </p>
+              </div>
+              <button className="text-blue-500 text-sm font-medium hover:text-blue-400">
+                Create Meter
+              </button>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Metadata */}
+            <div className="text-sm text-gray-600 space-y-2 mb-6">
+              <div>Created By Lara Makdah on 31/12/2024, 21:36</div>
+              <div>Last updated By Pedro Modesto on 17/12/2025, 09:27</div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* MTBF */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">
+                Mean time between failures (MTBF)
+              </h2>
+              <div className="flex items-center justify-center h-32 bg-gray-50 rounded">
+                <div className="text-gray-400 text-sm">No data available</div>
+              </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Work Order History */}
+            <div className="box-border caret-transparent shrink-0">
+              <h2 className="text-base font-medium mb-3">Work Order History</h2>
+              <div className="text-gray-500 text-sm">No work order history</div>
+            </div>
+          </div>
+
+          {/* Floating Button */}
+          <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
+            <button
+              type="button"
+              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
+            >
+              <img
+                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"
+                alt="Icon"
+                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
+              />
+              <span className="box-border caret-transparent flex shrink-0 text-nowrap">
+                Use in New Work Order
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
