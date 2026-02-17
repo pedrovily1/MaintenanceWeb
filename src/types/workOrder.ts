@@ -92,6 +92,7 @@ export interface WorkOrder {
   assignedTo: string; // user or role string
   assignedUsers?: AssignedUser[];
   assignedTeams?: AssignedTeam[];
+  assetId?: string;
   asset: string;
   assetImageUrl?: string;
   location: string;

@@ -1,10 +1,4 @@
-type Asset = {
-  id: string;
-  name: string;
-  status: string;
-  manufacturer: string;
-  imageUrl?: string;
-};
+import type { Asset } from '@/types/asset';
 
 type AssetListProps = {
   assets: Asset[];
@@ -67,20 +61,13 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
                     title={asset.name}
                     className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid"
                   >
-                    {asset.imageUrl ? (
-                      <figure
-                        className="bg-cover box-border caret-transparent shrink-0 h-12 w-12 bg-center"
-                        style={{ backgroundImage: `url('${asset.imageUrl}')` }}
-                      ></figure>
-                    ) : (
-                      <span className="text-blue-500 box-border caret-transparent flex shrink-0">
-                        <img
-                          src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
-                          alt="Icon"
-                          className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-                        />
-                      </span>
-                    )}
+                    <span className="text-blue-500 box-border caret-transparent flex shrink-0">
+                      <img
+                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                        alt="Icon"
+                        className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                      />
+                    </span>
                   </div>
                 </div>
 

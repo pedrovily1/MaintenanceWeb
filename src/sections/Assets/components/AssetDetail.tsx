@@ -1,11 +1,27 @@
-import { useQuery } from "@/hooks/useQuery";
+import React, { useMemo, useState } from 'react';
+import { useAssetStore } from '@/store/useAssetStore';
+import { AssetAttachments } from './AssetAttachments';
+import { AssetEditorPanel } from './AssetEditorPanel';
+import { useWorkOrderStore } from '@/store/useWorkOrderStore';
+import type { Asset } from '@/types/asset';
 
 type AssetDetailProps = {
   assetId: string | null;
 };
 
 export const AssetDetail = ({ assetId }: AssetDetailProps) => {
-  const { data: asset, isPending, error } = useQuery("Asset", assetId || "");
+  const { assets, getAssetById, updateAsset, deleteAsset } = useAssetStore();
+  const { workOrders } = useWorkOrderStore();
+  const [showEditor, setShowEditor] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const asset = assetId ? getAssetById(assetId) : undefined;
+
+  const relatedWOs = useMemo(() => {
+    if (!asset) return [] as any[];
+    const list = workOrders.filter((wo: any) => (wo.assetId && wo.assetId === asset.id) || (!wo.assetId && wo.asset === asset.name));
+    return list.sort((a: any,b: any) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime()).slice(0,10);
+  }, [workOrders, asset]);
 
   if (!assetId) {
     return (
@@ -19,19 +35,8 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
     );
   }
 
-  if (isPending) {
-    return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
-            Loading asset details...
-          </div>
-        </div>
-      </div>
-    );
-  }
 
-  if (error || !asset) {
+  if (!asset) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
         <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
@@ -75,6 +80,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
               <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
                 <button
                   type="button"
+                  onClick={() => setShowEditor(true)}
                   className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
@@ -83,6 +89,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 </button>
                 <button
                   type="button"
+                  onClick={() => setConfirmDelete(true)}
                   className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
@@ -157,20 +164,10 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
 
             <div className="border-b border-zinc-200 my-4"></div>
 
-            {/* Pictures Section */}
+            {/* Attachments Section */}
             <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">Pictures</h2>
-              {asset.imageUrl ? (
-                <div className="box-border caret-transparent shrink-0">
-                  <img
-                    src={asset.imageUrl}
-                    alt={asset.name}
-                    className="box-border caret-transparent shrink-0 max-w-[244px] w-full rounded-lg border border-zinc-200"
-                  />
-                </div>
-              ) : (
-                <div className="text-gray-500 text-sm">No pictures available</div>
-              )}
+              <h2 className="text-base font-semibold mb-3">Attachments</h2>
+              <AssetAttachments attachments={asset.attachments || []} onChange={(next) => updateAsset(asset.id, { attachments: next })} />
             </div>
 
             <div className="border-b border-zinc-200 my-4"></div>
@@ -203,7 +200,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                     className="h-[18px] w-[18px]"
                   />
                 </div>
-                <div className="text-sm">Slovakia</div>
+                <div className="text-sm">{asset.locationName || '-'}</div>
               </div>
             </div>
 
@@ -212,7 +209,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
             {/* Criticality */}
             <div className="box-border caret-transparent shrink-0 mb-6">
               <h2 className="text-base font-semibold mb-3">Criticality</h2>
-              <div className="text-sm">None</div>
+              <div className="text-sm">{asset.criticality || 'None'}</div>
             </div>
 
             <div className="border-b border-zinc-200 my-4"></div>
@@ -228,7 +225,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
             {/* Model */}
             <div className="box-border caret-transparent shrink-0 mb-6">
               <h2 className="text-base font-semibold mb-3">Model</h2>
-              <div className="text-sm">none</div>
+              <div className="text-sm">{asset.model || 'None'}</div>
             </div>
 
             <div className="border-b border-zinc-200 my-4"></div>
@@ -330,10 +327,21 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
 
             <div className="border-b border-zinc-200 my-4"></div>
 
-            {/* Work Order History */}
+            {/* Related Work Orders */}
             <div className="box-border caret-transparent shrink-0">
-              <h2 className="text-base font-medium mb-3">Work Order History</h2>
-              <div className="text-gray-500 text-sm">No work order history</div>
+              <h2 className="text-base font-medium mb-3">Related Work Orders</h2>
+              {relatedWOs.length === 0 ? (
+                <div className="text-gray-500 text-sm">No related work orders</div>
+              ) : (
+                <div className="space-y-2">
+                  {relatedWOs.map((wo: any) => (
+                    <button key={wo.id} onClick={() => { window.location.hash = '#workorders'; setTimeout(() => window.dispatchEvent(new CustomEvent('select-work-order', { detail: { id: wo.id } })), 0); }} className="w-full text-left p-3 border border-zinc-200 rounded hover:bg-gray-50">
+                      <div className="text-sm font-medium">#{wo.workOrderNumber || wo.id} — {wo.title}</div>
+                      <div className="text-xs text-gray-500">{wo.status} • {new Date(wo.updatedAt || wo.createdAt).toLocaleString()}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -353,6 +361,22 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
               </span>
             </button>
           </div>
+          {/* Editor Panel */}
+          <AssetEditorPanel open={showEditor} initial={asset} onClose={() => setShowEditor(false)} onSubmit={(val) => { updateAsset(asset.id, val); setShowEditor(false); }} />
+
+          {/* Delete Confirmation */}
+          {confirmDelete && (
+            <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center" onClick={() => setConfirmDelete(false)}>
+              <div className="bg-white w-full max-w-sm rounded-lg shadow-lg border border-zinc-200 p-4" onClick={(e) => e.stopPropagation()}>
+                <div className="text-lg font-semibold mb-2">Delete Asset</div>
+                <div className="text-sm text-gray-600 mb-4">Are you sure you want to delete \"{asset.name}\"? This cannot be undone.</div>
+                <div className="flex justify-end gap-2">
+                  <button className="px-3 py-1 rounded border border-zinc-200 text-sm" onClick={() => setConfirmDelete(false)}>Cancel</button>
+                  <button className="px-3 py-1 rounded bg-red-600 text-white text-sm" onClick={() => { deleteAsset(asset.id); setConfirmDelete(false); window.dispatchEvent(new CustomEvent('asset-deleted', { detail: { id: asset.id } })); }}>Delete</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
