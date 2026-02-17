@@ -1,10 +1,30 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ProcedureList } from "./components/ProcedureList";
 import { ProcedureDetail } from "./components/ProcedureDetail";
+import { ProcedureEditor } from "./components/ProcedureEditor";
+import { useProcedureStore } from "@/store/useProcedureStore";
 
 export const Procedures = () => {
-  const [selectedProcedureId, setSelectedProcedureId] = useState<string | null>("2819790");
+  const { addProcedure, search } = useProcedureStore();
+  const [selectedProcedureId, setSelectedProcedureId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
+  const filtered = useMemo(() => search(query), [search, query]);
+
+  const handleNew = () => {
+    const p = addProcedure("Untitled Procedure");
+    setSelectedProcedureId(p.id);
+  };
+
+  const computedList = filtered.map(p => ({
+    id: p.id,
+    name: p.name,
+    fieldCount: `${p.meta.fieldCount} fields`,
+    category: "",
+    isMyTemplate: true
+  }));
+
+  // BEGIN legacy static list (removed)
   const procedures = [
     {
       id: "2819790",
@@ -449,12 +469,15 @@ export const Procedures = () => {
                 <input
                   type="search"
                   placeholder="Search Procedure Templates"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-gray-50 bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                 />
               </form>
             </div>
             <button
               type="button"
+              onClick={handleNew}
               className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
             >
               <img
@@ -556,11 +579,11 @@ export const Procedures = () => {
       {/* Main Content */}
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">
         <ProcedureList
-          procedures={procedures}
+          procedures={computedList}
           selectedProcedureId={selectedProcedureId}
           onSelectProcedure={setSelectedProcedureId}
         />
-        <ProcedureDetail procedureId={selectedProcedureId} />
+        <ProcedureEditor procedureId={selectedProcedureId} />
       </div>
     </div>
   );

@@ -80,6 +80,29 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
           </div>
         );
 
+      case 'select':
+        return (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <div className="flex flex-col gap-1">
+              {(field.options || []).map((opt) => (
+                <label key={opt} className="inline-flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="radio"
+                    name={field.id}
+                    checked={field.value === opt}
+                    onChange={() => onUpdate({ value: opt })}
+                    disabled={disabled}
+                  />
+                  <span>{opt}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        );
+
       case 'photo':
         return (
           <div className="space-y-2">
@@ -157,6 +180,98 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 >
                   Record Now
                 </button>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'date':
+        return (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <input
+              type="date"
+              disabled={disabled}
+              value={field.value ? String(field.value).substring(0,10) : ''}
+              onChange={(e) => onUpdate({ value: e.target.value })}
+              className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            />
+          </div>
+        );
+
+      case 'yesno_na': {
+        const options = ['Yes','No','N/A'];
+        return (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {options.map(opt => (
+                <button
+                  key={opt}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onUpdate({ value: opt })}
+                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-zinc-200 text-gray-700'}`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      case 'inspection': {
+        const options = ['Pass','Flag','Fail'];
+        return (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {options.map(opt => (
+                <button
+                  key={opt}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onUpdate({ value: opt })}
+                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-zinc-200 text-gray-700'}`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      case 'file':
+        return (
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <div className="flex flex-col gap-2">
+              {(field.attachments || []).map((att) => (
+                <div key={att.id} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded px-3 py-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <Paperclip size={14} />
+                    <span className="truncate max-w-[260px]">{att.name}</span>
+                  </div>
+                  {!disabled && (
+                    <button onClick={() => removeAttachment(att.id)} className="text-red-500 hover:text-red-400"><Trash2 size={14} /></button>
+                  )}
+                </div>
+              ))}
+              {!disabled && (
+                <label className="w-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded py-3 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 cursor-pointer transition-colors">
+                  <Paperclip size={16} className="mr-1" /> Add File
+                  <input type="file" multiple onChange={handleFileChange} className="hidden" />
+                </label>
               )}
             </div>
           </div>

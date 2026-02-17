@@ -1,18 +1,30 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { WorkOrderCreatePanel, buildDefaultDraft, DraftWorkOrder } from "@/components/WorkOrder/WorkOrderCreatePanel";
 import { TabButtons } from "@/sections/WorkOrderList/components/TabButtons";
 import { SortControls } from "@/sections/WorkOrderList/components/SortControls";
 import { WorkOrderCard } from "@/sections/WorkOrderList/components/WorkOrderCard";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
+import { useProcedureStore } from "@/store/useProcedureStore";
+import { procedureToWorkOrderSections } from "@/utils/procedureMapping";
 
 import { attachmentService } from "@/services/attachmentService";
-import { DEFAULT_SECTIONS } from "@/utils/defaultSections";
 import { SectionRenderer } from "@/components/WorkOrder/SectionRenderer";
-import { WorkOrderSection } from "@/types/workOrder";
+import { WorkOrderSection, ProcedureInstance } from "@/types/workOrder";
+import { ProcedureSelector } from "@/components/WorkOrder/ProcedureSelector";
+import { Plus, Trash2, ClipboardList, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
 
 export const WorkOrderList = () => {
   const [activeTab, setActiveTab] = useState<'todo' | 'done'>('todo');
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string | null>(null);
   const { workOrders, addWorkOrder, updateWorkOrder, deleteWorkOrder } = useWorkOrderStore();
+  const [panelMode, setPanelMode] = useState<'view' | 'create'>('view');
+  const [draft, setDraft] = useState<DraftWorkOrder | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [pendingAttachProcedureId, setPendingAttachProcedureId] = useState<string | null>(null);
+  const [showProcedureSelector, setShowProcedureSelector] = useState(false);
+  const [procToRemove, setProcToRemove] = useState<string | null>(null);
+  const { getProcedureById } = useProcedureStore();
 
   const filteredWorkOrders = useMemo(() => {
     if (!Array.isArray(workOrders)) return [];
@@ -37,17 +49,45 @@ export const WorkOrderList = () => {
   }, [selectedWorkOrderId, workOrders, filteredWorkOrders]);
 
   const handleUpdateSection = (sectionId: string, updates: Partial<WorkOrderSection>) => {
-    if (!selectedWorkOrder || !Array.isArray(selectedWorkOrder.sections)) return;
-    const updatedSections = selectedWorkOrder.sections.map(s => 
-      s && s.id === sectionId ? { ...s, ...updates } : s
-    );
-    updateWorkOrder(selectedWorkOrder.id, { sections: updatedSections });
+    if (!selectedWorkOrder) return;
+    // Try legacy sections first
+    if (Array.isArray(selectedWorkOrder.sections)) {
+      const found = selectedWorkOrder.sections.find(s => s && s.id === sectionId);
+      if (found) {
+        const updatedSections = selectedWorkOrder.sections.map(s => s && s.id === sectionId ? { ...s, ...updates } : s);
+        updateWorkOrder(selectedWorkOrder.id, { sections: updatedSections });
+        return;
+      }
+    }
+    // Then try within attached procedure instances
+    const instances = selectedWorkOrder.procedureInstances || [];
+    for (let i = 0; i < instances.length; i++) {
+      const pi = instances[i];
+      const idx = pi.procedureSchemaSnapshot.findIndex(s => s.id === sectionId);
+      if (idx >= 0) {
+        const newInstances = instances.map((inst, j) => {
+          if (j !== i) return inst;
+          const newSections = inst.procedureSchemaSnapshot.map((s, k) => k === idx ? { ...s, ...updates } : s);
+          // Also sync responses record
+          const newResponses = { ...inst.responses };
+          if (updates.fields) {
+            updates.fields.forEach(f => {
+              newResponses[f.id] = f.value;
+            });
+          }
+          return { ...inst, procedureSchemaSnapshot: newSections, responses: newResponses, updatedAt: new Date().toISOString() } as ProcedureInstance;
+        });
+        updateWorkOrder(selectedWorkOrder.id, { procedureInstances: newInstances });
+        return;
+      }
+    }
   };
 
   const isWorkOrderValidForDone = useMemo(() => {
     if (!selectedWorkOrder) return false;
-    const sections = selectedWorkOrder.sections;
-    if (!Array.isArray(sections)) return true; // If no sections, it's valid?
+    const base = Array.isArray(selectedWorkOrder.sections) ? selectedWorkOrder.sections : [];
+    const proc = (selectedWorkOrder.procedureInstances || []).flatMap(pi => pi.procedureSchemaSnapshot || []);
+    const sections = [...base, ...proc];
 
     try {
       return sections.every(section => {
@@ -56,8 +96,8 @@ export const WorkOrderList = () => {
         if (!Array.isArray(fields)) return true;
         return fields.every(field => {
           if (!field || !field.required) return true;
-          if (field.type === 'photo') return Array.isArray(field.attachments) && field.attachments.length > 0;
-          return !!field.value;
+          if (field.type === 'photo' || field.type === 'file') return Array.isArray(field.attachments) && field.attachments.length > 0;
+          return field.value !== undefined && field.value !== null && field.value !== '';
         });
       });
     } catch (e) {
@@ -69,43 +109,84 @@ export const WorkOrderList = () => {
   const handleStatusUpdate = (status: 'Open' | 'On Hold' | 'In Progress' | 'Done') => {
     if (!selectedWorkOrder) return;
     if (status === 'Done' && !isWorkOrderValidForDone) {
-      alert("Please complete all required fields before marking as Done.");
+      setStatusError("Please complete all required fields before marking as Done.");
       return;
+    } else {
+      setStatusError(null);
     }
-    updateWorkOrder(selectedWorkOrder.id, { status });
+    const updates: Partial<any> = { status };
+    if (status === 'Done' && selectedWorkOrder.status !== 'Done') {
+      updates.completedAt = new Date().toISOString();
+    } else if (status !== 'Done' && selectedWorkOrder.status === 'Done') {
+      updates.completedAt = undefined;
+    }
+    updateWorkOrder(selectedWorkOrder.id, updates);
   };
 
   const handleNewWorkOrder = () => {
-    const title = window.prompt("Enter Work Order Title:", "New Maintenance Task");
-    if (!title) return;
+    setPanelMode('create');
+    setDraft((prev) => prev ?? buildDefaultDraft());
+  };
 
-    const newWo = addWorkOrder({
-      title,
-      description: "Description of the task...",
-      status: 'Open',
-      priority: 'Medium',
-      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      assignedTo: 'Pedro Modesto',
-      assignedUsers: [
-        { name: "Pedro Modesto", imageUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png" }
-      ],
-      asset: 'GENERAL PURPOSE',
-      location: 'Site',
-      categories: ['Maintenance'],
-      workType: 'Corrective',
-      sections: DEFAULT_SECTIONS,
-      attachments: []
-    });
-    setSelectedWorkOrderId(newWo.id);
-    setActiveTab('todo');
+  const attachProcedureToWorkOrder = (woId: string, procedureId: string) => {
+    const proc = getProcedureById(procedureId);
+    if (!proc) return;
+    const sections = procedureToWorkOrderSections(proc);
+    const instance: ProcedureInstance = {
+      id: crypto.randomUUID(),
+      procedureId: proc.id,
+      procedureNameSnapshot: proc.name,
+      procedureVersionSnapshot: proc.meta.version,
+      procedureSchemaSnapshot: sections,
+      responses: {},
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    const target = workOrders.find(w => w.id === woId);
+    const existing = target?.procedureInstances || [];
+    updateWorkOrder(woId, { procedureInstances: [...existing, instance] });
+  };
+
+  const reorderProcedureInstance = (woId: string, index: number, direction: 'up' | 'down') => {
+    const target = workOrders.find(w => w.id === woId);
+    if (!target || !target.procedureInstances) return;
+    const instances = [...target.procedureInstances];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= instances.length) return;
+    const [moved] = instances.splice(index, 1);
+    instances.splice(newIndex, 0, moved);
+    updateWorkOrder(woId, { procedureInstances: instances });
+  };
+
+  const removeProcedureInstance = (woId: string, instanceId: string) => {
+    const target = workOrders.find(w => w.id === woId);
+    if (!target) return;
+    const existing = target.procedureInstances || [];
+    updateWorkOrder(woId, { procedureInstances: existing.filter(i => i.id !== instanceId) });
+    setProcToRemove(null);
   };
 
   // Add listener for a custom event from PageHeader
-  useState(() => {
+  useEffect(() => {
     const handler = () => handleNewWorkOrder();
     window.addEventListener('trigger-new-work-order', handler);
     return () => window.removeEventListener('trigger-new-work-order', handler);
-  });
+  }, []);
+
+  // Listen to Procedure -> Use in New Work Order
+  useEffect(() => {
+    const handler = (e: any) => {
+      const pid = e.detail?.procedureId;
+      if (pid) {
+        setPendingAttachProcedureId(pid);
+        handleNewWorkOrder();
+      }
+    };
+    window.addEventListener('use-procedure-in-new-work-order', handler as EventListener);
+    return () => window.removeEventListener('use-procedure-in-new-work-order', handler as EventListener);
+  }, []);
+
+  useEffect(() => { setConfirmDelete(false); }, [selectedWorkOrderId, panelMode]);
 
   const todoCount = useMemo(() => {
     if (!Array.isArray(workOrders)) return 0;
@@ -158,6 +239,26 @@ export const WorkOrderList = () => {
         </div>
         <div className="box-border caret-transparent flex flex-col grow shrink-0 w-full lg:basis-[375px] lg:min-w-[200px] lg:pt-2 lg:px-2">
           <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+            {panelMode === 'create' && draft && (
+              <WorkOrderCreatePanel
+                value={draft}
+                onChange={(patch) => setDraft(prev => ({ ...(prev as DraftWorkOrder), ...patch }))}
+                onCancel={() => setPanelMode('view')}
+                onCreate={(data) => {
+                  const newWo = addWorkOrder(data);
+                  setSelectedWorkOrderId(newWo.id);
+                  // Attach pending procedure if any
+                  if (pendingAttachProcedureId) {
+                    attachProcedureToWorkOrder(newWo.id, pendingAttachProcedureId);
+                    setPendingAttachProcedureId(null);
+                  }
+                  setPanelMode('view');
+                  setDraft(null);
+                  setActiveTab('todo');
+                }}
+              />
+            )}
+            <div className={panelMode === 'create' ? 'hidden w-full h-full' : 'block w-full h-full'}>
             {!selectedWorkOrder ? (
                <div className="flex items-center justify-center w-full h-full text-gray-500">
                  Select a work order to view details
@@ -261,12 +362,7 @@ export const WorkOrderList = () => {
                             <button
                               type="button"
                               className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-bl rounded-br rounded-tl rounded-tr hover:text-blue-400 hover:border-blue-400"
-                              onClick={() => {
-                                if (window.confirm("Are you sure you want to delete this work order?")) {
-                                  deleteWorkOrder(selectedWorkOrder.id);
-                                  setSelectedWorkOrderId(null);
-                                }
-                              }}
+                              onClick={() => setConfirmDelete((v) => !v)}
                             >
                               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
                                 <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-red-600 hover:border-red-600">
@@ -274,6 +370,25 @@ export const WorkOrderList = () => {
                                 </span>
                               </span>
                             </button>
+                            {confirmDelete && (
+                              <div className="flex items-center gap-2 ml-2 text-sm">
+                                <span className="text-red-600">Delete this work order?</span>
+                                <button
+                                  type="button"
+                                  className="text-white bg-red-500 border border-red-500 px-2 py-0.5 rounded hover:bg-red-400"
+                                  onClick={() => { deleteWorkOrder(selectedWorkOrder.id); setSelectedWorkOrderId(null); setConfirmDelete(false); }}
+                                >
+                                  Confirm
+                                </button>
+                                <button
+                                  type="button"
+                                  className="text-gray-600 border border-zinc-200 px-2 py-0.5 rounded hover:border-neutral-300"
+                                  onClick={() => setConfirmDelete(false)}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -320,6 +435,11 @@ export const WorkOrderList = () => {
                               </div>
                             </div>
                           </div>
+                          {statusError && (
+                            <div className="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+                              {statusError}
+                            </div>
+                          )}
                           
                           <div className="box-border caret-transparent shrink-0 mt-6 pb-2">
                             <strong className="font-semibold box-border caret-transparent shrink-0">
@@ -334,20 +454,126 @@ export const WorkOrderList = () => {
                             />
                           </div>
 
-                          <div className="box-border caret-transparent shrink-0 mt-6 pb-2">
+                          <div className="box-border caret-transparent shrink-0 mt-6 pb-2 flex items-center justify-between">
                             <strong className="font-semibold box-border caret-transparent shrink-0">
-                              Form Sections
+                              Procedures
                             </strong>
+                            <button
+                              type="button"
+                              onClick={() => setShowProcedureSelector(true)}
+                              className="text-blue-500 text-sm font-medium flex items-center gap-1 hover:text-blue-400"
+                            >
+                              <Plus size={16} /> Add Procedure
+                            </button>
                           </div>
-                          <div className="box-border caret-transparent shrink-0 space-y-4">
-                            {Array.isArray(selectedWorkOrder.sections) && selectedWorkOrder.sections.map((section) => (
-                              <SectionRenderer
-                                key={section.id}
-                                section={section}
-                                onUpdate={(updates) => handleUpdateSection(section.id, updates)}
-                                disabled={selectedWorkOrder.status === 'Done'}
+
+                          {showProcedureSelector && (
+                            <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+                              <ProcedureSelector
+                                onSelect={(id) => {
+                                  attachProcedureToWorkOrder(selectedWorkOrder.id, id);
+                                  setShowProcedureSelector(false);
+                                }}
+                                onCancel={() => setShowProcedureSelector(false)}
                               />
+                            </div>
+                          )}
+
+                          <div className="box-border caret-transparent shrink-0 space-y-6">
+                            {(selectedWorkOrder.procedureInstances || []).length === 0 && (selectedWorkOrder.sections || []).length === 0 && (
+                              <div className="text-gray-400 text-sm italic py-4 border-2 border-dashed border-gray-100 rounded-lg text-center">
+                                No procedures attached.
+                              </div>
+                            )}
+
+                            {(selectedWorkOrder.procedureInstances || []).map((pi, index) => (
+                              <div key={pi.id} className="border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                                <div className="bg-blue-500 px-4 py-3 flex items-center justify-between">
+                                  <div className="flex items-center gap-3 text-white">
+                                    <div className="flex flex-col gap-0.5 mr-1">
+                                       <button
+                                         disabled={index === 0}
+                                         onClick={() => reorderProcedureInstance(selectedWorkOrder.id, index, 'up')}
+                                         className={`p-0.5 rounded hover:bg-white/20 transition-colors ${index === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
+                                       >
+                                         <ChevronUp size={14} />
+                                       </button>
+                                       <button
+                                         disabled={index === (selectedWorkOrder.procedureInstances?.length || 0) - 1}
+                                         onClick={() => reorderProcedureInstance(selectedWorkOrder.id, index, 'down')}
+                                         className={`p-0.5 rounded hover:bg-white/20 transition-colors ${index === (selectedWorkOrder.procedureInstances?.length || 0) - 1 ? 'opacity-30 cursor-not-allowed' : ''}`}
+                                       >
+                                         <ChevronDown size={14} />
+                                       </button>
+                                    </div>
+                                    <ClipboardList size={18} />
+                                    <div>
+                                      <h4 className="font-semibold text-sm leading-none">{pi.procedureNameSnapshot}</h4>
+                                      <p className="text-[10px] opacity-80 mt-1">Version {pi.procedureVersionSnapshot} • Attached {new Date(pi.createdAt).toLocaleDateString()}</p>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                     {procToRemove === pi.id ? (
+                                       <div className="flex items-center gap-2 bg-white rounded p-1 shadow-sm border border-red-100">
+                                          <span className="text-[10px] text-red-600 px-1 font-medium">
+                                            {Object.keys(pi.responses).length > 0 ? 'Has responses! Delete?' : 'Remove procedure?'}
+                                          </span>
+                                          <button
+                                            onClick={() => removeProcedureInstance(selectedWorkOrder.id, pi.id)}
+                                            className="bg-red-500 text-white text-[10px] px-2 py-1 rounded hover:bg-red-600"
+                                          >
+                                            Confirm
+                                          </button>
+                                          <button
+                                            onClick={() => setProcToRemove(null)}
+                                            className="text-gray-500 text-[10px] px-2 py-1 hover:bg-gray-50 rounded"
+                                          >
+                                            Cancel
+                                          </button>
+                                       </div>
+                                     ) : (
+                                       <button
+                                         onClick={() => setProcToRemove(pi.id)}
+                                         className="text-white/60 hover:text-white transition-colors"
+                                         title="Remove Procedure"
+                                       >
+                                         <Trash2 size={16} />
+                                       </button>
+                                     )}
+                                  </div>
+                                </div>
+                                <div className="p-4 space-y-4">
+                                  {pi.procedureSchemaSnapshot.map((section) => (
+                                    <SectionRenderer
+                                      key={section.id}
+                                      section={section}
+                                      onUpdate={(updates) => handleUpdateSection(section.id, updates)}
+                                      disabled={selectedWorkOrder.status === 'Done'}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
                             ))}
+
+                            {/* Legacy Sections */}
+                            {(selectedWorkOrder.sections || []).length > 0 && (
+                               <div className="border border-amber-100 rounded-lg overflow-hidden bg-white shadow-sm">
+                                  <div className="bg-amber-50 px-4 py-2 border-b border-amber-100 flex items-center gap-2 text-amber-800">
+                                    <AlertTriangle size={16} />
+                                    <span className="text-xs font-semibold uppercase tracking-wider">Legacy Form Data</span>
+                                  </div>
+                                  <div className="p-4 space-y-4">
+                                    {selectedWorkOrder.sections.map((section) => (
+                                      <SectionRenderer
+                                        key={section.id}
+                                        section={section}
+                                        onUpdate={(updates) => handleUpdateSection(section.id, updates)}
+                                        disabled={selectedWorkOrder.status === 'Done'}
+                                      />
+                                    ))}
+                                  </div>
+                               </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -356,6 +582,7 @@ export const WorkOrderList = () => {
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>

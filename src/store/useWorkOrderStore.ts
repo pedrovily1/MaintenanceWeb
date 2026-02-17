@@ -28,34 +28,69 @@ const SEED_DATA: WorkOrder[] = [
     sections: DEFAULT_SECTIONS,
     attachments: [],
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+    isRepeating: true,
+    schedule: {
+      frequency: 'weekly',
+      startDate: "2026-02-01",
+    }
+  },
+  {
+    id: "86733637",
+    title: "Monthly Fire Extinguisher Inspection",
+    description: "Check all fire extinguishers on floor 1.",
+    workOrderNumber: "#412",
+    asset: "Fire Safety Equipment",
+    status: "Open",
+    priority: "Medium",
+    dueDate: "2026-02-15",
+    assignedTo: "Pedro Modesto",
+    location: "Floor 1",
+    categories: ["Safety"],
+    workType: "Inspection",
+    sections: [],
+    attachments: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    isRepeating: true,
+    schedule: {
+      frequency: 'monthly',
+      startDate: "2026-01-15",
+    }
   }
 ];
 
+let globalWorkOrders: WorkOrder[] = [];
+const listeners = new Set<() => void>();
+
+// Hydrate from localStorage once
+const saved = localStorage.getItem(STORAGE_KEY);
+if (saved) {
+  try {
+    globalWorkOrders = JSON.parse(saved);
+  } catch (e) {
+    console.error('Failed to parse saved work orders', e);
+    globalWorkOrders = SEED_DATA;
+  }
+} else {
+  globalWorkOrders = SEED_DATA;
+}
+
+const notify = () => {
+  listeners.forEach(l => l());
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(globalWorkOrders));
+};
+
 export const useWorkOrderStore = () => {
-  const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
+  const [workOrders, setWorkOrders] = useState<WorkOrder[]>(globalWorkOrders);
 
-  // Hydrate state from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setWorkOrders(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved work orders', e);
-        setWorkOrders(SEED_DATA);
-      }
-    } else {
-      setWorkOrders(SEED_DATA);
-    }
+    const l = () => setWorkOrders([...globalWorkOrders]);
+    listeners.add(l);
+    return () => {
+      listeners.delete(l);
+    };
   }, []);
-
-  // Persist state to localStorage on changes
-  useEffect(() => {
-    if (workOrders.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(workOrders));
-    }
-  }, [workOrders]);
 
   const addWorkOrder = useCallback((wo: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'>) => {
     const newWo: WorkOrder = {
@@ -65,12 +100,13 @@ export const useWorkOrderStore = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    setWorkOrders(prev => [...prev, newWo]);
+    globalWorkOrders = [...globalWorkOrders, newWo];
+    notify();
     return newWo;
   }, []);
 
   const updateWorkOrder = useCallback((id: string, updates: Partial<WorkOrder>) => {
-    setWorkOrders(prev => prev.map(wo => {
+    globalWorkOrders = globalWorkOrders.map(wo => {
       if (wo.id === id) {
         return {
           ...wo,
@@ -79,16 +115,18 @@ export const useWorkOrderStore = () => {
         };
       }
       return wo;
-    }));
+    });
+    notify();
   }, []);
 
   const deleteWorkOrder = useCallback((id: string) => {
-    setWorkOrders(prev => prev.filter(wo => wo.id !== id));
+    globalWorkOrders = globalWorkOrders.filter(wo => wo.id !== id);
+    notify();
   }, []);
 
   const getWorkOrderById = useCallback((id: string) => {
-    return workOrders.find(wo => wo.id === id);
-  }, [workOrders]);
+    return globalWorkOrders.find(wo => wo.id === id);
+  }, []);
 
   return {
     workOrders,
