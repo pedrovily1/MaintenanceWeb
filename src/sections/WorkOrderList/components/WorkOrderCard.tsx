@@ -6,6 +6,7 @@ export type WorkOrderCardProps = {
   assetImageUrl?: string;
   status: string;
   priority: string;
+  startDate?: string;
   dueDate: string;
   isOverdue?: boolean;
   isRecurring?: boolean;
@@ -23,6 +24,7 @@ export const WorkOrderCard = ({
   assetImageUrl,
   status,
   priority,
+  startDate,
   dueDate,
   isOverdue,
   isRecurring,
@@ -145,8 +147,14 @@ export const WorkOrderCard = ({
           </div>
 
           {/* Due Date / Overdue */}
-          <div className="flex items-center text-xs ml-auto mr-4">
-            {isOverdue && (
+          <div className="flex items-center text-xs ml-auto mr-4 text-gray-600">
+            {startDate && (
+              <span className="flex items-center">
+                S: {startDate}
+                <span className="mx-1.5">•</span>
+              </span>
+            )}
+            {isOverdue && status !== 'Done' && (
               <span className="text-red-600 font-medium flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 mr-1">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -154,8 +162,8 @@ export const WorkOrderCard = ({
                 Overdue
               </span>
             )}
-            {isOverdue && <span className="text-gray-400 mx-1.5">•</span>}
-            <span className={`${isOverdue ? 'text-red-600' : 'text-gray-600'}`}>{dueDate}</span>
+            {isOverdue && status !== 'Done' && <span className="text-gray-400 mx-1.5">•</span>}
+            <span className={`${isOverdue && status !== 'Done' ? 'text-red-600' : ''}`}>D: {dueDate}</span>
           </div>
         </div>
       </div>

@@ -309,8 +309,8 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
 
             {/* Metadata */}
             <div className="text-sm text-gray-600 space-y-2 mb-6">
-              <div>Created By Lara Makdah on 31/12/2024, 21:36</div>
-              <div>Last updated By Pedro Modesto on 17/12/2025, 09:27</div>
+              <div>Created By Admin on 31/12/2024, 21:36</div>
+              <div>Last updated By Admin on 17/12/2025, 09:27</div>
             </div>
 
             <div className="border-b border-zinc-200 my-4"></div>

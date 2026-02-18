@@ -1,10 +1,5 @@
-type Vendor = {
-  id: string;
-  name: string;
-  contactCount: number;
-  initials: string;
-  color: string;
-};
+import React from 'react';
+import { Vendor } from '@/types/vendor';
 
 type VendorListProps = {
   vendors: Vendor[];
@@ -12,7 +7,42 @@ type VendorListProps = {
   onSelectVendor: (id: string) => void;
 };
 
+const getInitials = (name: string): string => {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
+const COLORS = [
+  'bg-teal-400',
+  'bg-orange-400',
+  'bg-purple-500',
+  'bg-blue-500',
+  'bg-pink-500',
+  'bg-green-500',
+  'bg-yellow-500',
+  'bg-red-500',
+];
+
+const getColorForVendor = (id: string): string => {
+  const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return COLORS[hash % COLORS.length];
+};
+
 export const VendorList = ({ vendors, selectedVendorId, onSelectVendor }: VendorListProps) => {
+  if (vendors.length === 0) {
+    return (
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
+        <div className="flex items-center justify-center w-full h-64 p-8">
+          <div className="text-center text-gray-500">
+            <p className="text-sm">No vendors yet</p>
+            <p className="text-xs mt-2">Click "New Vendor" to create one</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
       {/* Sort Controls */}
@@ -48,37 +78,43 @@ export const VendorList = ({ vendors, selectedVendorId, onSelectVendor }: Vendor
 
       {/* Vendor List */}
       <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br">
-        {vendors.map((vendor) => (
-          <div
-            key={vendor.id}
-            onClick={() => onSelectVendor(vendor.id)}
-            className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
-              selectedVendorId === vendor.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-            }`}
-          >
-            <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-              <div className={`${vendor.color} text-white text-lg font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center w-12 rounded-full`}>
-                {vendor.initials}
+        {vendors.map((vendor) => {
+          const initials = getInitials(vendor.name);
+          const color = getColorForVendor(vendor.id);
+          return (
+            <div
+              key={vendor.id}
+              onClick={() => onSelectVendor(vendor.id)}
+              className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
+                selectedVendorId === vendor.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+              }`}
+            >
+              <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
+                <div className={`${color} text-white text-lg font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center w-12 rounded-full`}>
+                  {initials}
+                </div>
               </div>
-            </div>
 
-            <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
-              <div className="items-center box-border caret-transparent flex shrink-0 my-px">
-                <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
-                  <div
-                    title={vendor.name}
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
-                  >
-                    {vendor.name}
+              <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
+                <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                  <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
+                    <div
+                      title={vendor.name}
+                      className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
+                    >
+                      {vendor.name}
+                    </div>
                   </div>
-                </div>
-                <div className="text-gray-600 text-sm box-border caret-transparent shrink-0">
-                  {vendor.contactCount} contact{vendor.contactCount !== 1 ? 's' : ''}
+                  {vendor.trade && (
+                    <div className="text-gray-600 text-sm box-border caret-transparent shrink-0">
+                      {vendor.trade}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

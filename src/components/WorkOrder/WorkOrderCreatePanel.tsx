@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { DEFAULT_SECTIONS } from "@/utils/defaultSections";
 import { WorkOrder } from "@/types/workOrder";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import { useVendorStore } from "@/store/useVendorStore";
 
 // Draft work order type used before persisting to the store
 export type DraftWorkOrder = Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'>;
@@ -15,6 +17,9 @@ interface WorkOrderCreatePanelProps {
 // NOTE: This panel reuses the same visual language as the detail pane (spacing, typography, borders)
 // It is lightweight and controlled by the parent to preserve partially entered data if user navigates away.
 export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: WorkOrderCreatePanelProps) => {
+  const { activeCategories, getCategoryById } = useCategoryStore();
+  const { activeVendors } = useVendorStore();
+
   const isValid = useMemo(() => {
     // Minimal inline validation: Title and Due Date are required to create
     return Boolean(value.title && value.title.trim().length > 0 && value.dueDate && value.workType && value.priority && value.status);
@@ -114,8 +119,19 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   </div>
                 </div>
 
-                {/* Row: Due Date, Status */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                {/* Row: Start Date, Due Date, Status */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                  <div>
+                    <div className="box-border caret-transparent shrink-0 pb-2">
+                      <strong className="font-semibold box-border caret-transparent shrink-0">Start Date</strong>
+                    </div>
+                    <input
+                      type="date"
+                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      value={value.startDate || ''}
+                      onChange={(e) => update('startDate', e.target.value)}
+                    />
+                  </div>
                   <div>
                     <div className="box-border caret-transparent shrink-0 pb-2">
                       <strong className="font-semibold box-border caret-transparent shrink-0">Due Date</strong>
@@ -168,7 +184,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   </div>
                 </div>
 
-                {/* Location & Categories */}
+                {/* Location & Category */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   <div>
                     <div className="box-border caret-transparent shrink-0 pb-2">
@@ -182,27 +198,111 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   </div>
                   <div>
                     <div className="box-border caret-transparent shrink-0 pb-2">
-                      <strong className="font-semibold box-border caret-transparent shrink-0">Categories</strong>
+                      <strong className="font-semibold box-border caret-transparent shrink-0">Category</strong>
                     </div>
-                    <input
+                    <select
                       className="w-full border border-zinc-200 rounded p-2 text-sm"
-                      placeholder="Comma separated"
-                      value={(value.categories || []).join(', ')}
-                      onChange={(e) => update('categories', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-                    />
+                      value={value.categoryId || ''}
+                      onChange={(e) => update('categoryId', e.target.value || null)}
+                    >
+                      <option value="">No Category</option>
+                      {activeCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
-                {/* Repeating */}
-                <div className="mt-6 flex items-center gap-2">
+                {/* Vendor */}
+                <div className="mt-6">
+                  <div className="box-border caret-transparent shrink-0 pb-2">
+                    <strong className="font-semibold box-border caret-transparent shrink-0">Vendor</strong>
+                    <span className="text-gray-500 text-xs ml-2">(optional - for external contractor work)</span>
+                  </div>
+                  <select
+                    className="w-full border border-zinc-200 rounded p-2 text-sm"
+                    value={value.vendorId || ''}
+                    onChange={(e) => update('vendorId', e.target.value || null)}
+                  >
+                    <option value="">Internal Work (No Vendor)</option>
+                    {activeVendors.map((vendor) => (
+                      <option key={vendor.id} value={vendor.id}>
+                        {vendor.name}{vendor.trade ? ` - ${vendor.trade}` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Legacy Categories (tags) */}
+                <div className="mt-6">
+                  <div className="box-border caret-transparent shrink-0 pb-2">
+                    <strong className="font-semibold box-border caret-transparent shrink-0">Tags</strong>
+                  </div>
                   <input
-                    id="isRepeating"
-                    type="checkbox"
-                    className="h-4 w-4"
-                    checked={Boolean(value.isRepeating)}
-                    onChange={(e) => update('isRepeating', e.target.checked)}
+                    className="w-full border border-zinc-200 rounded p-2 text-sm"
+                    placeholder="Comma separated tags"
+                    value={(value.categories || []).join(', ')}
+                    onChange={(e) => update('categories', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
                   />
-                  <label htmlFor="isRepeating" className="text-sm">Repeating schedule</label>
+                </div>
+
+                {/* Repeating */}
+                <div className="mt-6">
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="isRepeating"
+                      type="checkbox"
+                      className="h-4 w-4"
+                      checked={Boolean(value.isRepeating)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        onChange({
+                          isRepeating: checked,
+                          schedule: checked ? {
+                            frequency: 'weekly',
+                            startDate: value.startDate || new Date().toISOString().split('T')[0]
+                          } : undefined
+                        });
+                      }}
+                    />
+                    <label htmlFor="isRepeating" className="text-sm font-semibold">Repeating schedule</label>
+                  </div>
+
+                  {value.isRepeating && (
+                    <div className="mt-3 pl-6 border-l-2 border-blue-500">
+                      <div className="box-border caret-transparent shrink-0 pb-2">
+                        <strong className="text-xs font-semibold box-border caret-transparent shrink-0">Frequency</strong>
+                      </div>
+                      <select
+                        className="w-full border border-zinc-200 rounded p-2 text-sm"
+                        value={value.schedule?.frequency || 'weekly'}
+                        onChange={(e) => {
+                          const freq = e.target.value as any;
+                          update('schedule', { ...value.schedule, frequency: freq });
+                        }}
+                      >
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                      </select>
+
+                      <div className="mt-3">
+                        <div className="box-border caret-transparent shrink-0 pb-2">
+                          <strong className="text-xs font-semibold box-border caret-transparent shrink-0">Schedule Start Date</strong>
+                        </div>
+                        <input
+                          type="date"
+                          className="w-full border border-zinc-200 rounded p-2 text-sm"
+                          value={value.schedule?.startDate || value.startDate || ''}
+                          onChange={(e) => {
+                            update('schedule', { ...value.schedule, startDate: e.target.value });
+                            // Also sync main startDate for consistency if needed
+                            update('startDate', e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Sections (optional at creation) */}
@@ -224,9 +324,10 @@ export const buildDefaultDraft = (): DraftWorkOrder => ({
   description: "",
   status: 'Open',
   priority: 'Medium',
+  startDate: new Date().toISOString().split('T')[0],
   dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  assignedTo: 'Pedro Modesto',
-  assignedUsers: [{ name: 'Pedro Modesto', imageUrl: 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png' }],
+  assignedTo: 'Admin',
+  assignedUsers: [{ name: 'Admin', imageUrl: 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png' }],
   asset: 'GENERAL PURPOSE',
   location: 'Site',
   categories: ['Maintenance'],

@@ -88,6 +88,7 @@ export interface WorkOrder {
   description: string;
   status: WorkOrderStatus;
   priority: WorkOrderPriority;
+  startDate?: string;
   dueDate: string;
   assignedTo: string; // user or role string
   assignedUsers?: AssignedUser[];
@@ -97,6 +98,8 @@ export interface WorkOrder {
   assetImageUrl?: string;
   location: string;
   categories: string[];
+  categoryId?: string | null; // Reference to Category entity
+  vendorId?: string | null; // Reference to Vendor entity (null = internal work)
   workType: WorkType;
   workOrderNumber: string;
   // Legacy sections (pre-filled in old version)
@@ -114,11 +117,13 @@ export interface WorkOrder {
   occurrenceInstances?: Record<string, string>; // date (YYYY-MM-DD) -> instanceId created from this template occurrence
   totalTimeHours?: number;
   totalCost?: number;
+  createdByUserId: string;
+  assignedToUserId?: string;
 }
 
 export interface WorkOrderStore {
   workOrders: WorkOrder[];
-  addWorkOrder: (workOrder: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'>) => void;
+  addWorkOrder: (workOrder: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'>) => void;
   updateWorkOrder: (id: string, updates: Partial<WorkOrder>) => void;
   deleteWorkOrder: (id: string) => void;
   getWorkOrderById: (id: string) => WorkOrder | undefined;

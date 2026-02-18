@@ -1,64 +1,33 @@
 import { useState } from "react";
+import { useUserStore } from "@/store/useUserStore";
+import { UserRole } from "@/types/user";
+import { UserInviteModal } from "./components/UserInviteModal";
+
+const ROLE_LABELS: Record<UserRole, string> = {
+  Administrator: 'Administrator',
+  Technician: 'Technician',
+  Viewer: 'Viewer'
+};
+
+const formatLastVisit = (isoString: string) => {
+  if (!isoString) return 'Never';
+  const date = new Date(isoString);
+  const now = new Date();
+  
+  // Reset time for comparison
+  const d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffInDays = Math.floor((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (diffInDays === 0) return 'Today';
+  if (diffInDays === 1) return 'Yesterday';
+  return date.toLocaleDateString();
+};
 
 export const Users = () => {
   const [activeTab, setActiveTab] = useState<'users' | 'teams'>('users');
-
-  const users = [
-    {
-      id: "829988",
-      name: "Dean Wilken",
-      role: "Full User",
-      teams: ["Site Maintenance", "Slovakia SSF"],
-      lastVisit: "05/12/2025",
-      avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture9.png",
-      hasJoined: true
-    },
-    {
-      id: "806243",
-      name: "Demitrious Davidson",
-      role: "Requester Only",
-      teams: ["[MX Permissions - CWS Admins]"],
-      lastVisit: "Didn't join yet",
-      avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture5.png",
-      hasJoined: false
-    },
-    {
-      id: "870649",
-      name: "Jason Degg",
-      role: "Administrator",
-      teams: ["Slovakia SSF"],
-      lastVisit: "Today",
-      avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png",
-      hasJoined: true
-    },
-    {
-      id: "1178194",
-      name: "Matt Vita",
-      role: "Administrator",
-      teams: [],
-      lastVisit: "17/12/2025",
-      avatarUrl: "https://app.getmaintainx.com/img/c554ba0a-a4cd-4b02-874e-86a3d5d6dd8c_3757796550588235882.jpeg?w=256&h=256&rmode=crop",
-      hasJoined: true
-    },
-    {
-      id: "849627",
-      name: "Pedro Modesto",
-      role: "Administrator",
-      teams: ["Slovakia SSF"],
-      lastVisit: "Today",
-      avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      hasJoined: true
-    },
-    {
-      id: "1178849",
-      name: "Wesley Rivenburgh",
-      role: "Full User",
-      teams: [],
-      lastVisit: "Didn't join yet",
-      avatarUrl: "https://app.getmaintainx.com/img/8f078e92-1bb4-41b1-96c2-671372dfceeb_Scan_202511112.png?w=256&h=256&rmode=crop",
-      hasJoined: false
-    }
-  ];
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const { allUsers } = useUserStore();
 
   return (
     <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -82,10 +51,11 @@ export const Users = () => {
             </div>
             <button
               type="button"
+              onClick={() => setIsInviteModalOpen(true)}
               className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                Invite Users
+                Create New User
               </span>
             </button>
           </div>
@@ -151,55 +121,37 @@ export const Users = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id} className="border-b border-zinc-200 hover:bg-gray-50">
+                  {allUsers.map((user) => (
+                    <tr key={user.id} className={`border-b border-zinc-200 hover:bg-gray-50 ${!user.isActive ? 'opacity-50' : ''}`}>
                       <td className="px-4 py-3">
-                        <a
-                          href={`/users/profile/${user.id}`}
-                          className="flex items-center gap-3 text-blue-500 hover:text-blue-400"
+                        <div
+                          className="flex items-center gap-3"
                         >
                           <div
-                            className={`items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center w-9 bg-center rounded-full ${
-                              !user.hasJoined ? 'opacity-50' : ''
-                            }`}
-                            style={{ backgroundImage: `url('${user.avatarUrl}')` }}
+                            className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center w-9 bg-center rounded-full"
+                            style={{ backgroundImage: `url('${user.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
                           ></div>
-                          <span className="font-normal text-gray-800">{user.name}</span>
-                        </a>
+                          <span className="font-normal text-gray-800">{user.fullName}</span>
+                        </div>
                       </td>
-                      <td className="px-4 py-3 text-gray-800">{user.role}</td>
+                      <td className="px-4 py-3 text-gray-800">{ROLE_LABELS[user.role] || user.role}</td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
-                          {user.teams.map((team, idx) => (
+                          {(user.teams || []).map((team, idx) => (
                             <span
                               key={idx}
-                              className={`text-white text-xs px-2 py-1 rounded ${
-                                team.includes('[MX Permissions')
-                                  ? 'bg-teal-500'
-                                  : 'bg-pink-500'
-                              }`}
+                              className="text-white text-xs px-2 py-1 rounded bg-teal-500"
                             >
                               {team}
                             </span>
                           ))}
+                          {user.teams?.length === 0 && <span className="text-gray-400 text-xs">—</span>}
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        {user.hasJoined ? (
-                          <span className="text-gray-800" title={user.lastVisit}>
-                            {user.lastVisit}
-                          </span>
-                        ) : (
-                          <div className="flex flex-col gap-1">
-                            <span className="text-gray-600 text-sm">{user.lastVisit}</span>
-                            <button
-                              type="button"
-                              className="text-blue-500 text-sm font-medium hover:text-blue-400 text-left"
-                            >
-                              Resend Invite
-                            </button>
-                          </div>
-                        )}
+                        <span className="text-gray-800">
+                          {formatLastVisit(user.lastVisit)}
+                        </span>
                       </td>
                       <td className="px-4 py-3">
                         <button
@@ -222,7 +174,7 @@ export const Users = () => {
             {/* Pagination */}
             <div className="border-t border-zinc-200 px-4 py-3 flex items-center justify-between bg-white">
               <div className="text-sm text-gray-600">
-                1 – 6 of 6
+                {allUsers.length > 0 ? `1 – ${allUsers.length} of ${allUsers.length}` : '0 of 0'}
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -259,6 +211,11 @@ export const Users = () => {
           </div>
         )}
       </div>
+      
+      <UserInviteModal 
+        isOpen={isInviteModalOpen} 
+        onClose={() => setIsInviteModalOpen(false)} 
+      />
     </div>
   );
 };

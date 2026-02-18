@@ -53,27 +53,6 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
           </span>
         </a>
       </li>
-      <li title="Requests" className="box-border caret-transparent shrink-0">
-        <a
-          href="/requests"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.hash = 'requests';
-          }}
-          className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'requests' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
-          }`}
-        >
-          <img
-            src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-6.svg"
-            alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-          />
-          <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
-            Requests
-          </span>
-        </a>
-      </li>
       <li title="Assets" className="box-border caret-transparent shrink-0">
         <a
           href="/assets"

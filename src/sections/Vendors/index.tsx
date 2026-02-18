@@ -1,40 +1,38 @@
 import { useState } from "react";
 import { VendorList } from "./components/VendorList";
 import { VendorDetail } from "./components/VendorDetail";
+import { VendorModal } from "./components/VendorModal";
+import { useVendorStore } from "@/store/useVendorStore";
+import { useUserStore } from "@/store/useUserStore";
 
 export const Vendors = () => {
-  const [selectedVendorId, setSelectedVendorId] = useState<string | null>("1413237");
+  const { activeVendors, selectedVendorId, selectVendor, createVendor, updateVendor, getVendorById } = useVendorStore();
+  const { activeUserId } = useUserStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingVendor, setEditingVendor] = useState<string | null>(null);
 
-  const vendors = [
-    {
-      id: "1413237",
-      name: "A-Studio S.R.O & VSE Solutions",
-      contactCount: 1,
-      initials: "AS",
-      color: "bg-teal-400"
-    },
-    {
-      id: "876243",
-      name: "CAT Zeppelin service provider",
-      contactCount: 4,
-      initials: "CP",
-      color: "bg-orange-400"
-    },
-    {
-      id: "878653",
-      name: "Sliac Air Base Services",
-      contactCount: 1,
-      initials: "SS",
-      color: "bg-teal-500"
-    },
-    {
-      id: "916467",
-      name: "Torus Technology",
-      contactCount: 1,
-      initials: "TT",
-      color: "bg-purple-500"
+  const handleSave = (data: any) => {
+    if (editingVendor) {
+      updateVendor(editingVendor, data, activeUserId || 'admin-001');
+    } else {
+      const newVendor = createVendor(data, activeUserId || 'admin-001');
+      selectVendor(newVendor.id);
     }
-  ];
+    setIsModalOpen(false);
+    setEditingVendor(null);
+  };
+
+  const handleEdit = () => {
+    if (selectedVendorId) {
+      setEditingVendor(selectedVendorId);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleNewVendor = () => {
+    setEditingVendor(null);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -84,6 +82,7 @@ export const Vendors = () => {
             </div>
             <button
               type="button"
+              onClick={handleNewVendor}
               className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
@@ -165,12 +164,23 @@ export const Vendors = () => {
       {/* Main Content */}
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">
         <VendorList
-          vendors={vendors}
+          vendors={activeVendors}
           selectedVendorId={selectedVendorId}
-          onSelectVendor={setSelectedVendorId}
+          onSelectVendor={selectVendor}
         />
-        <VendorDetail vendorId={selectedVendorId} />
+        <VendorDetail vendorId={selectedVendorId} onEdit={handleEdit} />
       </div>
+
+      {/* Modal */}
+      <VendorModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingVendor(null);
+        }}
+        onSave={handleSave}
+        vendor={editingVendor ? getVendorById(editingVendor) : null}
+      />
     </div>
   );
 };

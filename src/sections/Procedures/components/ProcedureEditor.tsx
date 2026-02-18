@@ -12,6 +12,7 @@ interface ProcedureEditorProps {
 
 export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps) => {
   const {
+    procedures,
     getProcedureById,
     updateProcedure,
     addSection,
@@ -24,7 +25,11 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
     reorderItems,
   } = useProcedureStore();
 
-  const procedure = useMemo(() => (procedureId ? getProcedureById(procedureId) : undefined), [procedureId, getProcedureById]);
+  const procedure = useMemo(
+    () => (procedureId ? procedures.find(p => p.id === procedureId) ?? getProcedureById(procedureId) : undefined),
+    [procedureId, procedures, getProcedureById]
+  );
+
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -60,7 +65,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
     updateProcedure(procedure.id, { name: procedure.name });
   };
 
-  const fieldCount = procedure.meta.fieldCount;
+  const fieldCount = procedure.meta?.fieldCount ?? 0;
 
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
@@ -121,10 +126,13 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                     onRename={(title) => updateSection(procedure.id, section.id, { title })}
                     onRemove={(e) => {
                       e?.stopPropagation();
-                      if (activeSectionId === section.id) {
-                        setActiveSectionId(null);
-                      }
                       removeSection(procedure.id, section.id);
+
+                      if (activeSectionId === section.id) {
+                        const remaining = procedure.sections.filter(s => s.id !== section.id);
+                        setActiveSectionId(remaining[0]?.id ?? null);
+                      }
+
                     }}
                     onMoveUp={(e) => {
                       e?.stopPropagation();

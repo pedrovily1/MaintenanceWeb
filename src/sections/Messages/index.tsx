@@ -9,8 +9,8 @@ export const Messages = () => {
   const conversations = [
     {
       id: "956131",
-      name: "Jason Degg",
-      lastMessage: "You: Work orders are ready for review ( #372) and signing (#296,#369)",
+      name: "Admin",
+      lastMessage: "You: Work orders are ready for review (#372) and signing (#296, #369)",
       lastMessageDate: "17/12/2025",
       avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png",
       isActive: true
@@ -24,15 +24,15 @@ export const Messages = () => {
     },
     {
       id: "743491",
-      name: "Jason Degg",
-      lastMessage: "Victor: Sorry just saw the message on maintainX",
+      name: "Admin",
+      lastMessage: "Update received.",
       lastMessageDate: "31/03/2025",
       avatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png"
     },
     {
       id: "678949",
       name: "All Team",
-      lastMessage: "Jason joined CWS - Slovakia",
+      lastMessage: "Admin joined CWS - Slovakia",
       lastMessageDate: "12/02/2025",
       avatarUrl: "https://app.getmaintainx.com/img/93eafef8-3c18-48b5-a95a-2a8d545d9ac5_Chenega-Logo-Simplified-4C.png?w=512&h=512"
     }
@@ -42,160 +42,18 @@ export const Messages = () => {
   const messages = [
     {
       id: "1",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Test",
-      timestamp: "02/09/2025, 07:49",
+      authorName: "Admin",
+      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png",
+      text: "Welcome to the messaging panel.",
+      timestamp: "Today",
       showAvatar: true
     },
     {
       id: "2",
-      authorName: "Jason Degg",
+      authorName: "Admin",
       authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png",
-      text: "👌",
-      timestamp: "02/09/2025, 07:50",
-      showAvatar: true
-    },
-    {
-      id: "3",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Did you receive the notification for the work order ?",
-      timestamp: "02/09/2025, 07:51",
-      showAvatar: true
-    },
-    {
-      id: "4",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "I sent a message asking you to sign it",
-      timestamp: "07:51",
-      showAvatar: false
-    },
-    {
-      id: "5",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Test",
-      timestamp: "07:56",
-      showAvatar: false
-    },
-    {
-      id: "6",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Manhole Grass cutting WO ready for review and signature",
-      timestamp: "02/09/2025, 10:31",
-      showAvatar: true
-    },
-    {
-      id: "7",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "work order created as requested",
-      timestamp: "08:42",
-      showAvatar: false
-    },
-    {
-      id: "8",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Weekly wo ready for signing",
-      timestamp: "26/09/2025, 08:02",
-      showAvatar: true,
-      reactions: [{ emoji: "👍", count: 1 }]
-    },
-    {
-      id: "9",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Hvac wo ready for signing",
-      timestamp: "26/09/2025, 12:02",
-      showAvatar: true
-    },
-    {
-      id: "10",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Manhole monthly maintenance wo#252 ready for review and signing",
-      timestamp: "30/09/2025, 09:54",
-      showAvatar: true
-    },
-    {
-      id: "11",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Warehouse light replacement #288 ready for review and signing",
-      timestamp: "06/10/2025, 10:19",
-      showAvatar: true
-    },
-    {
-      id: "12",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "289 ready for review and signing",
-      timestamp: "06/10/2025, 12:05",
-      showAvatar: true
-    },
-    {
-      id: "13",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Weekly WO - #341 is ready for signing",
-      timestamp: "29/11/2025, 08:34",
-      showAvatar: true,
-      reactions: [{ emoji: "👍", count: 1 }]
-    },
-    {
-      id: "14",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "WO #320, #216 ready for review and signing",
-      timestamp: "02/12/2025, 14:34",
-      showAvatar: true,
-      reactions: [{ emoji: "👍", count: 1 }]
-    },
-    {
-      id: "15",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "Manhole monthly maintenance  WO #320 Is ready for signing",
-      timestamp: "03/12/2025, 13:27",
-      showAvatar: true,
-      reactions: [{ emoji: "👍", count: 1 }]
-    },
-    {
-      id: "16",
-      authorName: "Jason Degg",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png",
-      text: "Dobre",
-      timestamp: "27/11/2025, 14:37",
-      showAvatar: true
-    },
-    {
-      id: "17",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: "WO#250 is ready for signing",
-      timestamp: "27/11/2025, 14:32",
-      showAvatar: true,
-      reactions: [{ emoji: "👍", count: 1 }]
-    },
-    {
-      id: "18",
-      authorName: "Pedro Modesto",
-      authorAvatarUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
-      text: `Work orders are ready for review ( #372) and signing (#296,#369)
-
-HVAC Control System Troubleshooting & Repair
-#372
-
-Quarterly Split unit AC Air Filter Cleaning
-#296
-
-Weekly Maintenance Service
-#369`,
-      timestamp: "17/12/2025, 09:23",
+      text: "This area will show recent updates.",
+      timestamp: "Today",
       showAvatar: true
     }
   ];

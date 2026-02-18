@@ -79,7 +79,9 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
         <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
           <div>
             <div className="text-lg font-semibold">{wo.title}</div>
-            <div className="text-xs text-gray-500">{wo.asset} • Due {new Date(wo.dueDate).toLocaleDateString()}</div>
+            <div className="text-xs text-gray-500">
+              {wo.asset} • {wo.startDate ? `Starts ${new Date(wo.startDate).toLocaleDateString()} • ` : ''}Due {new Date(wo.dueDate).toLocaleDateString()}
+            </div>
           </div>
           <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>✕</button>
         </div>
@@ -109,10 +111,70 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
               <label className="block text-xs text-gray-500 mb-1">Assigned To</label>
               <input value={wo.assignedTo} onChange={(e) => updateMeta({ assignedTo: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Start Date</label>
+              <input type="date" value={wo.startDate || ''} onChange={(e) => updateMeta({ startDate: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
+            </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Due Date</label>
               <input type="date" value={wo.dueDate} onChange={(e) => updateMeta({ dueDate: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
             </div>
+          </div>
+
+          <div className="border-t border-zinc-100 pt-3">
+            <div className="flex items-center gap-2 mb-2">
+              <input
+                id="modalIsRepeating"
+                type="checkbox"
+                className="h-4 w-4"
+                checked={Boolean(wo.isRepeating)}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  updateMeta({
+                    isRepeating: checked,
+                    schedule: checked ? {
+                      frequency: 'weekly',
+                      startDate: wo.startDate || new Date().toISOString().split('T')[0]
+                    } : undefined
+                  });
+                }}
+              />
+              <label htmlFor="modalIsRepeating" className="text-sm font-semibold text-gray-700">Repeating Schedule</label>
+            </div>
+
+            {wo.isRepeating && (
+              <div className="grid grid-cols-2 gap-3 pl-6 border-l-2 border-blue-500">
+                <div>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Frequency</label>
+                  <select
+                    className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                    value={wo.schedule?.frequency || 'weekly'}
+                    onChange={(e) => updateMeta({ schedule: { ...(wo.schedule as any), frequency: e.target.value as any } })}
+                  >
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Schedule Start Date</label>
+                  <input
+                    type="date"
+                    className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                    value={wo.schedule?.startDate || wo.startDate || ''}
+                    onChange={(e) => {
+                      updateMeta({
+                        schedule: { ...(wo.schedule as any), startDate: e.target.value },
+                        startDate: e.target.value
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Attached Procedures */}

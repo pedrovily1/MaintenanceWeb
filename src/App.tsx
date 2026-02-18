@@ -1,7 +1,6 @@
 import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
 import { Reporting } from "@/sections/Reporting";
-import { Requests } from "@/sections/Requests";
 import { Assets } from "@/sections/Assets";
 import { Messages } from "@/sections/Messages";
 import { Categories } from "@/sections/Categories";
@@ -14,15 +13,21 @@ import { Users } from "@/sections/Users";
 import { Vendors } from "@/sections/Vendors";
 import { Settings } from "@/sections/Settings";
 
+import { useWorkOrderStore } from "@/store/useWorkOrderStore";
+
 export const App = () => {
-  const [currentView, setCurrentView] = useState<'workorders' | 'reporting' | 'requests' | 'assets' | 'messages' | 'categories' | 'parts' | 'procedures' | 'meters' | 'locations' | 'users' | 'vendors' | 'settings'>('workorders');
+  const [currentView, setCurrentView] = useState<'workorders' | 'reporting' | 'assets' | 'messages' | 'categories' | 'parts' | 'procedures' | 'meters' | 'locations' | 'users' | 'vendors' | 'settings'>('workorders');
+  const { ensureActiveRecurringInstances } = useWorkOrderStore();
+
+  useEffect(() => {
+    // Ensure active instances for recurring work orders on app load
+    ensureActiveRecurringInstances();
+  }, [ensureActiveRecurringInstances]);
 
   useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#reporting') {
         setCurrentView('reporting');
-      } else if (window.location.hash === '#requests') {
-        setCurrentView('requests');
       } else if (window.location.hash === '#assets') {
         setCurrentView('assets');
       } else if (window.location.hash === '#messages') {
@@ -62,8 +67,6 @@ export const App = () => {
           <Sidebar currentView={currentView} />
           {currentView === 'reporting' ? (
             <Reporting />
-          ) : currentView === 'requests' ? (
-            <Requests />
           ) : currentView === 'assets' ? (
             <Assets />
           ) : currentView === 'messages' ? (

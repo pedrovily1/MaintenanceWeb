@@ -5,6 +5,9 @@ import { SortControls } from "@/sections/WorkOrderList/components/SortControls";
 import { WorkOrderCard } from "@/sections/WorkOrderList/components/WorkOrderCard";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 import { useProcedureStore } from "@/store/useProcedureStore";
+import { useUserStore } from "@/store/useUserStore";
+import { useFilterStore } from "@/store/useFilterStore";
+import { useCategoryStore } from "@/store/useCategoryStore";
 import { procedureToWorkOrderSections } from "@/utils/procedureMapping";
 
 import { attachmentService } from "@/services/attachmentService";
@@ -17,6 +20,9 @@ export const WorkOrderList = () => {
   const [activeTab, setActiveTab] = useState<'todo' | 'done'>('todo');
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string | null>(null);
   const { workOrders, addWorkOrder, updateWorkOrder, deleteWorkOrder } = useWorkOrderStore();
+  const { getUserById } = useUserStore();
+  const { assignedTo, search: filterSearch } = useFilterStore();
+  const { getCategoryById } = useCategoryStore();
   const [panelMode, setPanelMode] = useState<'view' | 'create'>('view');
   const [draft, setDraft] = useState<DraftWorkOrder | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
@@ -28,11 +34,53 @@ export const WorkOrderList = () => {
 
   const filteredWorkOrders = useMemo(() => {
     if (!Array.isArray(workOrders)) return [];
+    let list = workOrders;
+
+    // Filter out templates (recurring items that are used to generate instances)
+    list = list.filter(wo => !wo.isRepeating);
+
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+
     if (activeTab === 'done') {
-      return workOrders.filter(wo => wo && wo.status === 'Done');
+      list = list.filter(wo => wo && wo.status === 'Done');
+    } else {
+      // PART 2 Logic: Show if Open/In Progress/Overdue AND not future recurring
+      list = list.filter(wo => {
+        if (!wo || wo.status === 'Done') return false;
+        
+        // Exclude future recurring instances (those whose occurrenceDate > today AND whose previous cycle is incomplete)
+        // Wait, "One cycle at a time" means if it's in the store and not Done, it IS the current active one.
+        // And we don't pre-create future ones.
+        // So any instance in the store with status !== 'Done' is an active instance.
+        
+        // Just check for overdue
+        const isOverdue = wo.dueDate < todayStr;
+        
+        // Exclude future instances that might have been accidentally pre-created or if logic changes
+        if (wo.occurrenceDate && wo.occurrenceDate > todayStr) {
+           // In MaintainX, future instances don't show in To-Do.
+           return false;
+        }
+
+        return true;
+      });
     }
-    return workOrders.filter(wo => wo && wo.status !== 'Done');
-  }, [workOrders, activeTab]);
+
+    if (assignedTo) {
+      list = list.filter(wo => wo.assignedToUserId === assignedTo || wo.assignedTo === assignedTo);
+    }
+
+    if (filterSearch) {
+      const term = filterSearch.toLowerCase();
+      list = list.filter(wo => 
+        wo.title.toLowerCase().includes(term) || 
+        wo.workOrderNumber.toLowerCase().includes(term)
+      );
+    }
+
+    return list;
+  }, [workOrders, activeTab, assignedTo, filterSearch]);
 
   const selectedWorkOrder = useMemo(() => {
     try {
@@ -190,8 +238,16 @@ export const WorkOrderList = () => {
 
   const todoCount = useMemo(() => {
     if (!Array.isArray(workOrders)) return 0;
-    return workOrders.filter(wo => wo && wo.status !== 'Done').length;
+    const todayStr = new Date().toISOString().split('T')[0];
+    return workOrders.filter(wo => 
+      wo && 
+      wo.status !== 'Done' && 
+      !wo.isRepeating && 
+      (!wo.occurrenceDate || wo.occurrenceDate <= todayStr)
+    ).length;
   }, [workOrders]);
+
+  const todayStr = new Date().toISOString().split('T')[0];
 
   return (
     <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -207,15 +263,20 @@ export const WorkOrderList = () => {
                     Assigned to Me ({todoCount})
                   </span>
                 </div>
-                {filteredWorkOrders.map((wo) => (
-                  <WorkOrderCard 
-                    key={wo.id} 
-                    {...wo} 
-                    assetName={wo.asset} 
-                    onClick={() => setSelectedWorkOrderId(wo.id)}
-                    isActive={selectedWorkOrder?.id === wo.id}
-                  />
-                ))}
+                {filteredWorkOrders.map((wo) => {
+                  const isOverdue = wo.status !== 'Done' && wo.dueDate < todayStr;
+                  return (
+                    <WorkOrderCard 
+                      key={wo.id} 
+                      {...wo} 
+                      isOverdue={isOverdue}
+                      startDate={wo.startDate}
+                      assetName={wo.asset} 
+                      onClick={() => setSelectedWorkOrderId(wo.id)}
+                      isActive={selectedWorkOrder?.id === wo.id}
+                    />
+                  );
+                })}
               </>
             ) : (
               <>
@@ -228,6 +289,7 @@ export const WorkOrderList = () => {
                   <WorkOrderCard 
                     key={wo.id} 
                     {...wo} 
+                    startDate={wo.startDate}
                     assetName={wo.asset} 
                     onClick={() => setSelectedWorkOrderId(wo.id)}
                     isActive={selectedWorkOrder?.id === wo.id}
@@ -300,10 +362,17 @@ export const WorkOrderList = () => {
                                   {selectedWorkOrder.workType}
                                 </span>
                               </div>
+                              {selectedWorkOrder.startDate && (
+                                <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
+                                  <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
+                                    - Start {new Date(selectedWorkOrder.startDate).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              )}
                               <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
                                 <span className="box-border caret-transparent flex mr-px">
                                   <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
-                                    - Due {new Date(selectedWorkOrder.dueDate).toLocaleDateString()}
+                                    {selectedWorkOrder.startDate ? ' • ' : ' - '}Due {new Date(selectedWorkOrder.dueDate).toLocaleDateString()}
                                   </span>
                                 </span>
                               </div>
@@ -435,6 +504,27 @@ export const WorkOrderList = () => {
                               </div>
                             </div>
                           </div>
+                          
+                          <div className="box-border caret-transparent shrink-0 mt-6 pt-6 border-t border-zinc-100 text-xs text-gray-500 space-y-1">
+                            <div>Created by {getUserById(selectedWorkOrder.createdByUserId)?.fullName || (selectedWorkOrder.createdByUserId ? 'Deleted User' : 'Admin')} on {new Date(selectedWorkOrder.createdAt).toLocaleString()}</div>
+                            {selectedWorkOrder.updatedAt && <div>Last updated on {new Date(selectedWorkOrder.updatedAt).toLocaleString()}</div>}
+                            {selectedWorkOrder.categoryId && (
+                              <div className="flex items-center gap-2 mt-2">
+                                <span>Category:</span>
+                                {(() => {
+                                  const cat = getCategoryById(selectedWorkOrder.categoryId);
+                                  return cat ? (
+                                    <span className={`text-blue-500 text-xs bg-sky-100 px-2 py-1 rounded ${!cat.isActive ? 'opacity-60' : ''}`}>
+                                      {cat.name}{!cat.isActive && ' (Archived)'}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400 text-xs bg-gray-100 px-2 py-1 rounded">Unknown Category</span>
+                                  );
+                                })()}
+                              </div>
+                            )}
+                          </div>
+
                           {statusError && (
                             <div className="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
                               {statusError}

@@ -1,29 +1,33 @@
 import { useMemo, useState, useCallback } from 'react';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
-import { expandOccurrencesForRange, CalendarEvent } from '@/utils/scheduleUtils';
+import { expandOccurrencesForRange, CalendarEvent, instantiateFromTemplate } from '@/utils/scheduleUtils';
 import { WorkOrder } from '@/types/workOrder';
 import { useFilterStore } from '@/store/useFilterStore';
 
 // Simple date utilities
-const toISODate = (d: Date) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().split('T')[0];
+const toISODate = (d: Date) => d.toISOString().split('T')[0];
 const startOfMonth = (d: Date) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
 const endOfMonth = (d: Date) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0));
 const startOfWeek = (d: Date) => {
-  const day = d.getDay(); // 0=Sun
+  const day = d.getUTCDay(); // 0=Sun
   const diff = (day === 0 ? -6 : 1) - day; // Monday as first day
   const res = new Date(d);
-  res.setDate(d.getDate() + diff);
-  res.setHours(0,0,0,0);
+  res.setUTCDate(d.getUTCDate() + diff);
   return res;
 };
-const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(d.getDate() + n); return x; };
-const isSameDay = (a: Date, b: Date) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+const addDays = (d: Date, n: number) => { const x = new Date(d); x.setUTCDate(d.getUTCDate() + n); return x; };
+const isSameDay = (a: Date, b: Date) => {
+  return a.getUTCFullYear()===b.getUTCFullYear() && a.getUTCMonth()===b.getUTCMonth() && a.getUTCDate()===b.getUTCDate();
+};
 
 export const CalendarView = () => {
   const { workOrders, addWorkOrder, updateWorkOrder } = useWorkOrderStore();
   const { search, assignedTo, location, priority, dueDate } = useFilterStore();
   const [mode, setMode] = useState<'month' | 'week'>('month');
-  const [cursor, setCursor] = useState<Date>(new Date());
+  const [cursor, setCursor] = useState<Date>(() => {
+    const d = new Date();
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [expandedDays, setExpandedDays] = useState<Record<string, boolean>>({});
 
@@ -37,47 +41,50 @@ export const CalendarView = () => {
     return { start, end };
   }, [mode, cursor]);
 
-  // Filter work orders (both recurring and non-recurring) before expansion
-  const filteredWorkOrders = useMemo(() => {
-    const list = workOrders || [];
-    return list.filter(w => {
-      if (assignedTo && (!w.assignedTo || w.assignedTo !== assignedTo)) return false;
-      if (location && w.location !== location) return false;
-      if (priority && w.priority !== (priority as any)) return false;
-      if (search) {
-        const term = search.toLowerCase();
-        const hay = [w.title, w.asset, w.assignedTo, w.location].filter(Boolean).join(' ').toLowerCase();
-        if (!hay.includes(term)) return false;
-      }
-      return true;
-    });
-  }, [workOrders, assignedTo, location, priority, search]);
-
+  // PART 3 Logic: Remove projection, use 1:1 mapping from store
   const eventsByDay = useMemo(() => {
-    const events: CalendarEvent[] = expandOccurrencesForRange(filteredWorkOrders as WorkOrder[], range.start, range.end);
-    // Optional due date filter (apply to occurrence date)
+    const list = workOrders || [];
+    const events = list
+      .filter(w => !w.isRepeating) // Only show actual instances (active or completed)
+      .filter(w => {
+        if (assignedTo && (!w.assignedTo || w.assignedTo !== assignedTo)) return false;
+        if (location && w.location !== location) return false;
+        if (priority && w.priority !== (priority as any)) return false;
+        if (search) {
+          const term = search.toLowerCase();
+          const hay = [w.title, w.asset, w.assignedTo, w.location].filter(Boolean).join(' ').toLowerCase();
+          if (!hay.includes(term)) return false;
+        }
+        return true;
+      })
+      .map(wo => ({
+        id: wo.id,
+        workOrderId: wo.id,
+        occurrenceDate: (wo.dueDate || '').split('T')[0],
+        title: wo.title,
+        status: wo.status,
+        priority: wo.priority,
+        assignedTo: wo.assignedTo
+      }));
+
     const filtered = dueDate ? events.filter(e => e.occurrenceDate === dueDate) : events;
 
-    if (import.meta.env.DEV) {
-      // Debug aids (dev only)
-      // eslint-disable-next-line no-console
-      console.debug('[Calendar] filtered WOs:', filteredWorkOrders.length, 'range:', range.start.toISOString(), range.end.toISOString(), 'events:', filtered.length);
-    }
-
-    const map: Record<string, CalendarEvent[]> = {};
+    const map: Record<string, any[]> = {};
     for (const ev of filtered) {
+      if (!ev.occurrenceDate) continue;
       if (!map[ev.occurrenceDate]) map[ev.occurrenceDate] = [];
       map[ev.occurrenceDate].push(ev);
     }
+    
     Object.keys(map).forEach(d => {
       map[d].sort((a,b) => {
-        const prio = (x: CalendarEvent) => x.priority === 'High' ? 0 : x.priority === 'Medium' ? 1 : 2;
+        const prio = (x: any) => x.priority === 'High' ? 0 : x.priority === 'Medium' ? 1 : 2;
         const s = prio(a) - prio(b);
         return s !== 0 ? s : a.title.localeCompare(b.title);
       });
     });
     return map;
-  }, [filteredWorkOrders, range.start, range.end, dueDate]);
+  }, [workOrders, assignedTo, location, priority, search, dueDate]);
 
   const days = useMemo(() => {
     if (mode === 'week') {
@@ -93,36 +100,14 @@ export const CalendarView = () => {
   }, [mode, cursor]);
 
   const createOrOpenOccurrence = useCallback((template: WorkOrder, dateISO: string) => {
-    // If instance exists for this date, open it. Otherwise create from template (Option A preferred).
+    // If instance exists for this date, open it. Otherwise create from template.
     const existing = template.occurrenceInstances?.[dateISO];
     if (existing) {
       setSelectedId(existing);
       return;
     }
     // Instantiate a concrete WorkOrder instance from template
-    const instance: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'> = {
-      title: template.title,
-      description: template.description,
-      status: 'Open',
-      priority: template.priority,
-      dueDate: dateISO,
-      assignedTo: template.assignedTo,
-      assignedUsers: template.assignedUsers,
-      assignedTeams: template.assignedTeams,
-      asset: template.asset,
-      assetImageUrl: template.assetImageUrl,
-      location: template.location,
-      categories: template.categories,
-      workType: template.workType,
-      sections: [], // Start blank; procedures drive content
-      procedureInstances: template.procedureInstances ? JSON.parse(JSON.stringify(template.procedureInstances)) : [],
-      attachments: [],
-      isRepeating: false,
-      parentWorkOrderId: template.id,
-      occurrenceDate: dateISO,
-      totalTimeHours: 0,
-      totalCost: 0,
-    };
+    const instance = instantiateFromTemplate(template, dateISO);
     const created = addWorkOrder(instance) as unknown as WorkOrder; // store returns new WO in our impl
     // Persist mapping on template for future clicks
     const map = { ...(template.occurrenceInstances || {}) };
@@ -131,22 +116,30 @@ export const CalendarView = () => {
     setSelectedId(created.id);
   }, [addWorkOrder, updateWorkOrder]);
 
-  const prev = () => setCursor(prev => mode === 'month' ? new Date(prev.getFullYear(), prev.getMonth() - 1, 1) : addDays(prev, -7));
-  const next = () => setCursor(prev => mode === 'month' ? new Date(prev.getFullYear(), prev.getMonth() + 1, 1) : addDays(prev, 7));
-  const today = () => setCursor(new Date());
+  const prev = () => setCursor(prev => mode === 'month' ? new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() - 1, 1)) : addDays(prev, -7));
+  const next = () => setCursor(prev => mode === 'month' ? new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1)) : addDays(prev, 7));
+  const today = () => {
+    const d = new Date();
+    setCursor(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+  };
 
   const renderDayCell = (d: Date, idx: number) => {
     const dateISO = toISODate(d);
     const items = eventsByDay[dateISO] || [];
     const showCount = 3; // max visible per cell
-    const isOtherMonth = mode === 'month' && d.getMonth() !== cursor.getMonth();
+    const isOtherMonth = mode === 'month' && d.getUTCMonth() !== cursor.getUTCMonth();
     const expanded = !!expandedDays[dateISO];
+
+    const todayUTC = (() => {
+      const d = new Date();
+      return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    })();
 
     return (
       <div key={idx} className={`border border-zinc-200 p-1 min-h-[96px] ${isOtherMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'}`}>
         <div className="flex items-center justify-between text-xs mb-1">
-          <span className={`font-medium ${isSameDay(d, new Date()) ? 'text-blue-600' : ''}`}>{d.getDate()}</span>
-          {mode === 'week' && <span className="text-gray-400">{d.toLocaleDateString(undefined, { weekday: 'short' })}</span>}
+          <span className={`font-medium ${isSameDay(d, todayUTC) ? 'text-blue-600' : ''}`}>{d.getUTCDate()}</span>
+          {mode === 'week' && <span className="text-gray-400">{d.toLocaleDateString(undefined, { weekday: 'short', timeZone: 'UTC' })}</span>}
         </div>
 
         {(expanded ? items : items.slice(0, showCount)).map((o, i) => (
@@ -196,7 +189,7 @@ export const CalendarView = () => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="text-lg font-semibold">
-            {cursor.toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}
+            {cursor.toLocaleDateString(undefined, { year: 'numeric', month: 'long', timeZone: 'UTC' })}
           </div>
           <div className="inline-flex border border-zinc-200 rounded overflow-hidden">
             <button

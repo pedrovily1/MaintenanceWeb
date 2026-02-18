@@ -232,17 +232,6 @@ export const Settings = () => {
               <p className="text-sm font-medium">Vendors</p>
             </a>
             <a
-              href="/settings/export/requests"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
-            >
-              <img
-                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-6.svg"
-                alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
-              />
-              <p className="text-sm font-medium">Requests</p>
-            </a>
-            <a
               href="/settings/export/timeAndCost"
               className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
             >

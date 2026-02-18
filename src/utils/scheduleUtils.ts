@@ -108,3 +108,40 @@ export const expandOccurrencesForRange = (
   }
   return out;
 };
+
+/**
+ * Creates a concrete WorkOrder instance from a recurring template for a specific date.
+ * Does NOT persist to store; returns the Omit-style draft used by addWorkOrder.
+ */
+export const instantiateFromTemplate = (
+  template: WorkOrder,
+  dateISO: string
+): Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'> => {
+  return {
+    title: template.title,
+    description: template.description,
+    status: 'Open',
+    priority: template.priority,
+    startDate: dateISO, // Use the occurrence date as start date
+    dueDate: dateISO,   // Use the occurrence date as due date (can be refined if needed)
+    assignedTo: template.assignedTo,
+    assignedUsers: template.assignedUsers ? JSON.parse(JSON.stringify(template.assignedUsers)) : [],
+    assignedTeams: template.assignedTeams ? JSON.parse(JSON.stringify(template.assignedTeams)) : [],
+    asset: template.asset,
+    assetId: template.assetId,
+    assetImageUrl: template.assetImageUrl,
+    location: template.location,
+    categories: template.categories ? [...template.categories] : [],
+    categoryId: template.categoryId,
+    vendorId: template.vendorId,
+    workType: template.workType,
+    sections: [], // Start blank; procedures drive content
+    procedureInstances: template.procedureInstances ? JSON.parse(JSON.stringify(template.procedureInstances)) : [],
+    attachments: [],
+    isRepeating: false, // Instances are not repeating
+    parentWorkOrderId: template.id,
+    occurrenceDate: dateISO,
+    totalTimeHours: 0,
+    totalCost: 0,
+  };
+};
