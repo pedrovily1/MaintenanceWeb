@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ProceduresNavBadge } from './ProceduresNavBadge';
 import { NavItem } from "@/sections/Sidebar/components/NavItem";
 import { CollapsibleNavItem } from "@/sections/Sidebar/components/CollapsibleNavItem";
 
@@ -177,16 +178,12 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
               alt="Icon"
               className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
             />
-            <div className="lg:hidden absolute -top-1 -right-1 text-white text-[8px] font-semibold items-center bg-blue-500 box-border caret-transparent flex shrink-0 h-3 w-3 justify-center rounded-full">
-              24
-            </div>
+            <ProceduresNavBadge className="lg:hidden absolute -top-1 -right-1 text-white text-[8px] font-semibold items-center bg-blue-500 box-border caret-transparent flex shrink-0 h-3 w-3 justify-center rounded-full" />
           </div>
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Procedures
           </span>
-          <div className="hidden lg:flex text-white text-[10.0002px] font-semibold items-center bg-blue-500 box-border caret-transparent shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr">
-            24
-          </div>
+          <ProceduresNavBadge className="hidden lg:flex text-white text-[10.0002px] font-semibold items-center bg-blue-500 box-border caret-transparent shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr" />
         </a>
       </li>
       <li title="Meters" className="box-border caret-transparent shrink-0">

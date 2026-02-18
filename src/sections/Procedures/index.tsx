@@ -5,7 +5,7 @@ import { ProcedureEditor } from "./components/ProcedureEditor";
 import { useProcedureStore } from "@/store/useProcedureStore";
 
 export const Procedures = () => {
-  const { addProcedure, search } = useProcedureStore();
+  const { addProcedure, deleteProcedure, search, procedures } = useProcedureStore();
   const [selectedProcedureId, setSelectedProcedureId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
@@ -16,417 +16,32 @@ export const Procedures = () => {
     setSelectedProcedureId(p.id);
   };
 
+  const handleDelete = (id: string) => {
+    // Find next selection before deleting
+    // We use the same sorting logic as the store to determine "next"
+    const sorted = [...procedures].sort((a, b) => a.name.localeCompare(b.name));
+    const index = sorted.findIndex(p => p.id === id);
+    
+    deleteProcedure(id);
+
+    const remaining = sorted.filter(p => p.id !== id);
+    if (remaining.length > 0) {
+      const nextIndex = Math.min(index, remaining.length - 1);
+      setSelectedProcedureId(remaining[nextIndex].id);
+    } else {
+      setSelectedProcedureId(null);
+    }
+  };
+
   const computedList = filtered.map(p => ({
     id: p.id,
     name: p.name,
-    fieldCount: `${p.meta.fieldCount} fields`,
+    fieldCount: `${p.meta.fieldCount} ${p.meta.fieldCount === 1 ? 'field' : 'fields'}`,
     category: "",
     isMyTemplate: true
   }));
 
   // BEGIN legacy static list (removed)
-  const procedures = [
-    {
-      id: "2819790",
-      name: "Annual Fire Extinguisher Inspection",
-      fieldCount: "10 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3881820",
-      name: "Coolant Heater Warranty Replacement Documentation",
-      fieldCount: "14 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "2698397",
-      name: "Door Delay Troubleshooting",
-      fieldCount: "6 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3600943",
-      name: "Floodlights Replacement Procedure",
-      fieldCount: "12 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "3931127",
-      name: "Generator complete check",
-      fieldCount: "31 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3424411",
-      name: "HVAC Air Filter/ Leak Check service",
-      fieldCount: "8 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "4086432",
-      name: "Light Change Procedure",
-      fieldCount: "13 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "3237316",
-      name: "Manhole Grass Cutting",
-      fieldCount: "47 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "2496940",
-      name: "Manhole Maintenance/Cleaning",
-      fieldCount: "12 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "4033509",
-      name: "Manhole Monthly Preventative Maintenance - Slovakia SSF",
-      fieldCount: "19 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3046856",
-      name: "Quarterly Horizontal Sliding Door",
-      fieldCount: "12 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3573984",
-      name: "Motion Sensor Cleaning Procedure",
-      fieldCount: "8 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "3204822",
-      name: "Quarterly HVAC Air Filter Cleaning",
-      fieldCount: "9 fields",
-      category: "",
-      isMyTemplate: true
-    },
-    {
-      id: "3046596",
-      name: "Quarterly Overhead Sliding Door inspection",
-      fieldCount: "14 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "3248236",
-      name: "Quarterly Split unit AC Air Filter Cleaning",
-      fieldCount: "6 fields",
-      category: "Preventive/Inspection",
-      isMyTemplate: true
-    },
-    {
-      id: "4030773",
-      name: "Weekly maintenance work order Template",
-      fieldCount: "28 fields",
-      category: "Standard Operating Procedure",
-      isMyTemplate: true
-    },
-    {
-      id: "2267298",
-      name: "CCTV Pictures Form",
-      fieldCount: "6 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267299",
-      name: "Constant Warning Alarms",
-      fieldCount: "25 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267300",
-      name: "Database Backups",
-      fieldCount: "15 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267301",
-      name: "DNA information",
-      fieldCount: "4 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267302",
-      name: "Forklift Inspection - Monthly PM",
-      fieldCount: "7 fields",
-      category: "Standard Operating Procedure",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267303",
-      name: "Full Manhole Sensor System Test - Yearly PM",
-      fieldCount: "10 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267304",
-      name: "Generator - Weekly PM",
-      fieldCount: "6 fields",
-      category: "Standard Operating Procedure",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267305",
-      name: "Generator Complete Maintenance",
-      fieldCount: "30 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267306",
-      name: "Generator Coolant Flush/Change",
-      fieldCount: "32 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267307",
-      name: "Generator Fuel/Water Separator Change",
-      fieldCount: "32 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267308",
-      name: "Generator Hour Meter Reading",
-      fieldCount: "1 field",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267309",
-      name: "Generator Oil/Filter Change",
-      fieldCount: "33 fields",
-      category: "Preventive/Inspection",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267310",
-      name: "Generator Testing",
-      fieldCount: "22 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267311",
-      name: "HVAC Inspection - Monthly PM",
-      fieldCount: "4 fields",
-      category: "Preventive/Inspection",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267312",
-      name: "Intrusion/Duress Test (Greece HAI)",
-      fieldCount: "26 fields",
-      category: "Testing",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "3040528",
-      name: "Intrusion/Duress Test (Slovakia SSF)",
-      fieldCount: "26 fields",
-      category: "Testing",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267314",
-      name: "Issue Request Form",
-      fieldCount: "14 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267315",
-      name: "LK-120S Auto Dialer (Adding/Deleting Personnel)",
-      fieldCount: "20 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267316",
-      name: "MaintainX Training - Administrators (MXAcademy)",
-      fieldCount: "19 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267317",
-      name: "MaintainX Training - Full Users (MXAcademy)",
-      fieldCount: "14 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267318",
-      name: "Manhole - Monthly PM",
-      fieldCount: "9 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267319",
-      name: "Manhole/Line Supervision Alarm",
-      fieldCount: "17 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267320",
-      name: "OO Client removal/replace",
-      fieldCount: "6 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267321",
-      name: "Operator Generator Maintenance - Daily PM",
-      fieldCount: "10 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267322",
-      name: "Operator Training",
-      fieldCount: "17 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267323",
-      name: "Phone Support Call Form",
-      fieldCount: "12 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267324",
-      name: "PMCS Auto Dialer",
-      fieldCount: "2 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267325",
-      name: "Power Outage Alarm Response",
-      fieldCount: "22 fields",
-      category: "",
-      isGlobal: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267326",
-      name: "Pull Access Log",
-      fieldCount: "12 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267327",
-      name: "Pull Alarm Log",
-      fieldCount: "14 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267328",
-      name: "RMA of Bosch Camera",
-      fieldCount: "8 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267329",
-      name: "Server/Client Replacement",
-      fieldCount: "19 fields",
-      category: "",
-      isGlobal: true,
-      isFeatured: true,
-      isMyTemplate: false
-    },
-    {
-      id: "2267330",
-      name: "SOP Maintenance Service Form",
-      fieldCount: "38 fields",
-      category: "Standard Operating Procedure",
-      isGlobal: true,
-      isMyTemplate: false
-    }
-  ];
-
   return (
     <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       {/* Header */}
@@ -583,7 +198,10 @@ export const Procedures = () => {
           selectedProcedureId={selectedProcedureId}
           onSelectProcedure={setSelectedProcedureId}
         />
-        <ProcedureEditor procedureId={selectedProcedureId} />
+        <ProcedureEditor 
+          procedureId={selectedProcedureId} 
+          onDelete={handleDelete}
+        />
       </div>
     </div>
   );

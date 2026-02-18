@@ -3,16 +3,19 @@ import { useProcedureStore } from '@/store/useProcedureStore';
 import { Palette } from '@/components/ProcedureBuilder/Palette';
 import { SectionEditor } from '@/components/ProcedureBuilder/SectionEditor';
 import { ProcedureItemKind } from '@/types/procedure';
+import { ConfirmationModal } from '@/components/Common/ConfirmationModal';
 
 interface ProcedureEditorProps {
   procedureId: string | null;
+  onDelete?: (id: string) => void;
 }
 
-export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
+export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps) => {
   const {
     getProcedureById,
     updateProcedure,
     addSection,
+    updateSection,
     removeSection,
     reorderSections,
     addItem,
@@ -23,6 +26,7 @@ export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
 
   const procedure = useMemo(() => (procedureId ? getProcedureById(procedureId) : undefined), [procedureId, getProcedureById]);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   if (!procedureId || !procedure) {
     return (
@@ -36,18 +40,19 @@ export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
     );
   }
 
-  const onAddItem = (kind: ProcedureItemKind) => {
-    const targetSectionId = activeSectionId || procedure.sections[0]?.id;
+  const onAddItem = (kind: ProcedureItemKind, sectionId?: string) => {
+    const targetSectionId = sectionId || activeSectionId || procedure.sections[0]?.id;
     if (!targetSectionId) return;
     // Initialize sensible defaults per kind
     const base: any = { kind, label: kind, required: false };
     if (kind === 'MultipleChoice') base.options = ['Option 1', 'Option 2'];
     if (kind === 'TextInput') base.placeholder = 'Enter text';
     addItem(procedure.id, targetSectionId, base);
+    if (targetSectionId !== activeSectionId) setActiveSectionId(targetSectionId);
   };
 
   const onAddSection = () => {
-    addSection(procedure.id, `Section ${procedure.sections.length + 1}`);
+    addSection(procedure.id);
   };
 
   const onSave = () => {
@@ -76,6 +81,13 @@ export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
                 <div className="text-xs text-gray-500 mr-2">Fields count: {fieldCount}/350</div>
                 <button
                   type="button"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-red-500 px-3 rounded text-red-500 hover:text-red-400 hover:border-red-400 mr-2"
+                >
+                  Delete Procedure
+                </button>
+                <button
+                  type="button"
                   onClick={onSave}
                   className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
                 >
@@ -95,17 +107,34 @@ export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
           <div className="relative box-border caret-transparent flex flex-row grow scroll-smooth overflow-auto scroll-pt-4 px-6 py-4 gap-4">
             <div className="basis-[70%] max-w-[816px] mr-4">
               {procedure.sections.map((section, index) => (
-                <div key={section.id} onClick={() => setActiveSectionId(section.id)}>
+                <div
+                  key={section.id}
+                  onClick={() => setActiveSectionId(section.id)}
+                  className={`transition-colors duration-200 rounded-lg mb-4 ${
+                    activeSectionId === section.id ? 'ring-2 ring-blue-500' : ''
+                  }`}
+                >
                   <SectionEditor
                     procedure={procedure}
                     section={section}
-                    onRename={(title) => updateProcedure(procedure.id, {
-                      sections: procedure.sections.map(s => s.id === section.id ? { ...s, title } : s)
-                    })}
-                    onRemove={() => removeSection(procedure.id, section.id)}
-                    onMoveUp={() => reorderSections(procedure.id, index, Math.max(0, index - 1))}
-                    onMoveDown={() => reorderSections(procedure.id, index, Math.min(procedure.sections.length - 1, index + 1))}
-                    onAddItem={(kind) => addItem(procedure.id, section.id, { kind, label: kind } as any)}
+                    index={index}
+                    onRename={(title) => updateSection(procedure.id, section.id, { title })}
+                    onRemove={(e) => {
+                      e?.stopPropagation();
+                      if (activeSectionId === section.id) {
+                        setActiveSectionId(null);
+                      }
+                      removeSection(procedure.id, section.id);
+                    }}
+                    onMoveUp={(e) => {
+                      e?.stopPropagation();
+                      reorderSections(procedure.id, index, Math.max(0, index - 1));
+                    }}
+                    onMoveDown={(e) => {
+                      e?.stopPropagation();
+                      reorderSections(procedure.id, index, Math.min(procedure.sections.length - 1, index + 1));
+                    }}
+                    onAddItem={(kind) => onAddItem(kind, section.id)}
                     onUpdateItem={(itemId, patch) => updateItem(procedure.id, section.id, itemId, patch as any)}
                     onRemoveItem={(itemId) => removeItem(procedure.id, section.id, itemId)}
                     onReorderItem={(from, to) => reorderItems(procedure.id, section.id, from, to)}
@@ -133,6 +162,18 @@ export const ProcedureEditor = ({ procedureId }: ProcedureEditorProps) => {
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Procedure"
+        message={`Are you sure you want to delete "${procedure.name}"? This action cannot be undone.`}
+        confirmLabel="Delete"
+        variant="danger"
+        onConfirm={() => {
+          onDelete?.(procedure.id);
+          setIsDeleteModalOpen(false);
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

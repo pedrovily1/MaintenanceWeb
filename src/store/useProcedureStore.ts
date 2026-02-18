@@ -1,25 +1,43 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Procedure, ProcedureSection, ProcedureItem, ProcedureItemKind } from '@/types/procedure';
-import { procedurePersistence } from '@/services/procedurePersistence';
+import { Procedure, ProcedureSection, ProcedureItem, ProcedureItemKind } from '../types/procedure';
+import { procedurePersistence } from '../services/procedurePersistence';
 
 const SEED: Procedure[] = [];
 
 const newId = () => crypto.randomUUID();
 
-export const useProcedureStore = () => {
-  const [procedures, setProcedures] = useState<Procedure[]>([]);
+let globalProcedures: Procedure[] = procedurePersistence.load();
+const listeners = new Set<() => void>();
 
-  // hydrate
+function useProcedureCount() {
+  const [count, setCount] = useState(globalProcedures.length);
+
   useEffect(() => {
-    const loaded = procedurePersistence.load();
-    if (loaded && loaded.length) setProcedures(loaded);
-    else setProcedures(SEED);
+    const l = () => setCount(globalProcedures.length);
+    listeners.add(l);
+    return () => {
+      listeners.delete(l);
+    };
   }, []);
 
-  // persist (debounced)
+  return count;
+}
+
+const notify = () => {
+  listeners.forEach(l => l());
+  procedurePersistence.saveDebounced(globalProcedures);
+};
+
+function useProcedureStore() {
+  const [procedures, setProcedures] = useState<Procedure[]>(globalProcedures);
+
   useEffect(() => {
-    procedurePersistence.saveDebounced(procedures);
-  }, [procedures]);
+    const l = () => setProcedures([...globalProcedures]);
+    listeners.add(l);
+    return () => {
+      listeners.delete(l);
+    };
+  }, []);
 
   const computeFieldCount = (p: Procedure) => {
     // Count only input-capable items (exclude Heading/TextBlock)
@@ -39,19 +57,20 @@ export const useProcedureStore = () => {
       sections: [
         {
           id: newId(),
-          title: 'Section 1',
+          title: '',
           orderIndex: 0,
           items: []
         }
       ]
     };
     p.meta.fieldCount = computeFieldCount(p);
-    setProcedures(prev => [...prev, p]);
+    globalProcedures = [...globalProcedures, p];
+    notify();
     return p;
   }, []);
 
   const updateProcedure = useCallback((id: string, patch: Partial<Procedure>) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== id) return p;
       const updated: Procedure = {
         ...p,
@@ -64,44 +83,72 @@ export const useProcedureStore = () => {
       } as Procedure;
       updated.meta.fieldCount = computeFieldCount(updated);
       return updated;
-    }));
+    });
+    notify();
   }, []);
 
   const deleteProcedure = useCallback((id: string) => {
-    setProcedures(prev => prev.filter(p => p.id !== id));
+    // Delete by stable ID to ensure precision
+    globalProcedures = globalProcedures.filter(p => p.id !== id);
+    notify();
   }, []);
 
-  const getProcedureById = useCallback((id: string) => procedures.find(p => p.id === id), [procedures]);
+  const getProcedureById = useCallback((id: string) => globalProcedures.find(p => p.id === id), []);
 
   // Section/item helpers
   const addSection = useCallback((procedureId: string, title?: string) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
       const nextIndex = p.sections.length;
-      return {
+      const updated: Procedure = {
         ...p,
         updatedAt: new Date().toISOString(),
+        // Derived from order: we store the title only if custom, or empty by default
         sections: [
           ...p.sections,
-          { id: newId(), title: title || `Section ${nextIndex + 1}` , orderIndex: nextIndex, items: [] }
+          { id: newId(), title: title || "" , orderIndex: nextIndex, items: [] }
         ]
       };
-    }));
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
+  }, []);
+
+  // Precise section update helper to avoid full array manipulation in components
+  const updateSection = useCallback((procedureId: string, sectionId: string, patch: Partial<ProcedureSection>) => {
+    globalProcedures = globalProcedures.map(p => {
+      if (p.id !== procedureId) return p;
+      const updated: Procedure = {
+        ...p,
+        updatedAt: new Date().toISOString(),
+        // Update only the target section by stable ID
+        sections: p.sections.map(s => s.id === sectionId ? { ...s, ...patch } : s)
+      };
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
   }, []);
 
   const removeSection = useCallback((procedureId: string, sectionId: string) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
-      return {
+      const updated: Procedure = {
         ...p,
         updatedAt: new Date().toISOString(),
+        // BUG FIX: Filter out by stable ID (not index) and re-index to maintain deterministic order.
+        // This prevents the "wrong section deleted" issue and ensures UI titles (Section 1, 2...) stay correct.
         sections: p.sections.filter(s => s.id !== sectionId).map((s, idx) => ({...s, orderIndex: idx}))
       };
-    }));
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
   }, []);
 
   const reorderSections = useCallback((procedureId: string, fromIndex: number, toIndex: number) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
       const arr = [...p.sections];
       const [moved] = arr.splice(fromIndex, 1);
@@ -109,57 +156,71 @@ export const useProcedureStore = () => {
       return {
         ...p,
         updatedAt: new Date().toISOString(),
+        // Always re-map orderIndex to avoid corruption during reordering
         sections: arr.map((s, i) => ({ ...s, orderIndex: i }))
       };
-    }));
+    });
+    notify();
   }, []);
 
   const addItem = useCallback((procedureId: string, sectionId: string, item: Omit<ProcedureItem,'id'|'orderIndex'>) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
-      return {
+      const updated: Procedure = {
         ...p,
         updatedAt: new Date().toISOString(),
         sections: p.sections.map(s => {
+          // Explicitly target section by ID to ensure items attach correctly
           if (s.id !== sectionId) return s;
           const idx = s.items.length;
           return { ...s, items: [...s.items, { ...item, id: newId(), orderIndex: idx }] };
         })
       };
-    }));
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
   }, []);
 
   const updateItem = useCallback((procedureId: string, sectionId: string, itemId: string, patch: Partial<ProcedureItem>) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
-      return {
+      const updated: Procedure = {
         ...p,
         updatedAt: new Date().toISOString(),
         sections: p.sections.map(s => {
           if (s.id !== sectionId) return s;
+          // Use stable itemId for precision
           return { ...s, items: s.items.map(i => i.id === itemId ? { ...i, ...patch } as ProcedureItem : i) };
         })
       };
-    }));
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
   }, []);
 
   const removeItem = useCallback((procedureId: string, sectionId: string, itemId: string) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
-      return {
+      const updated: Procedure = {
         ...p,
         updatedAt: new Date().toISOString(),
         sections: p.sections.map(s => {
           if (s.id !== sectionId) return s;
+          // Filter out by ID and re-index for stable ordering
           const items = s.items.filter(i => i.id !== itemId).map((i, idx) => ({ ...i, orderIndex: idx }));
           return { ...s, items };
         })
       };
-    }));
+      updated.meta.fieldCount = computeFieldCount(updated);
+      return updated;
+    });
+    notify();
   }, []);
 
   const reorderItems = useCallback((procedureId: string, sectionId: string, fromIndex: number, toIndex: number) => {
-    setProcedures(prev => prev.map(p => {
+    globalProcedures = globalProcedures.map(p => {
       if (p.id !== procedureId) return p;
       return {
         ...p,
@@ -172,7 +233,8 @@ export const useProcedureStore = () => {
           return { ...s, items: arr.map((i, idx) => ({ ...i, orderIndex: idx })) };
         })
       };
-    }));
+    });
+    notify();
   }, []);
 
   const search = useCallback((q: string) => {
@@ -185,6 +247,16 @@ export const useProcedureStore = () => {
     return [...procedures].sort((a,b) => a.name.localeCompare(b.name));
   }, [procedures]);
 
+  const clearProcedures = useCallback(() => {
+    globalProcedures = [];
+    notify();
+  }, []);
+
+  const importProcedures = useCallback((newProcedures: Procedure[]) => {
+    globalProcedures = [...globalProcedures, ...newProcedures];
+    notify();
+  }, []);
+
   return {
     procedures: sortedProcedures,
     addProcedure,
@@ -194,10 +266,15 @@ export const useProcedureStore = () => {
     addSection,
     removeSection,
     reorderSections,
+    updateSection,
     addItem,
     updateItem,
     removeItem,
     reorderItems,
     search,
+    clearProcedures,
+    importProcedures,
   };
-};
+}
+
+export { useProcedureStore, useProcedureCount };
