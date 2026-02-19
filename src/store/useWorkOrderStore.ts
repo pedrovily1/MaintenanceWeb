@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { WorkOrder, WorkOrderStatus, WorkOrderPriority, WorkType } from '../types/workOrder';
+import { WorkOrder } from '../types/workOrder';
 import { DEFAULT_SECTIONS } from '../utils/defaultSections';
 import { useUserStore } from './useUserStore';
 import { expandOccurrences, instantiateFromTemplate } from '../utils/scheduleUtils';
+import { meterStoreHelpers } from '@/store/useMeterStore';
 
 const STORAGE_KEY = 'workorders_v3';
 
@@ -71,18 +72,42 @@ const SEED_DATA: WorkOrder[] = [
 let globalWorkOrders: WorkOrder[] = [];
 const listeners = new Set<() => void>();
 
+// Migration for sequential numbers
+const migrateToSequentialNumbers = (orders: WorkOrder[]): WorkOrder[] => {
+  // Sort by createdAt date to re-assign sequentially
+  return [...orders].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    .map((wo, index) => ({
+      ...wo,
+      workOrderNumber: `#${index + 1}`
+    }));
+};
+
 // Hydrate from localStorage once
 const saved = localStorage.getItem(STORAGE_KEY);
 if (saved) {
   try {
-    globalWorkOrders = JSON.parse(saved);
+    let loaded = JSON.parse(saved);
+    // Check if we need to migrate (if we still have the old random format)
+    // We assume migration is needed if there's no way to tell yet, 
+    // but the request said "change current work orders to reflect that".
+    // So we apply it to existing orders.
+    globalWorkOrders = migrateToSequentialNumbers(loaded);
   } catch (e) {
     console.error('Failed to parse saved work orders', e);
-    globalWorkOrders = SEED_DATA;
+    globalWorkOrders = migrateToSequentialNumbers(SEED_DATA);
   }
 } else {
-  globalWorkOrders = SEED_DATA;
+  globalWorkOrders = migrateToSequentialNumbers(SEED_DATA);
 }
+
+const getNextWorkOrderNumber = () => {
+  if (globalWorkOrders.length === 0) return '#1';
+  const numbers = globalWorkOrders
+    .map(wo => parseInt(wo.workOrderNumber.replace('#', ''), 10))
+    .filter(n => !isNaN(n));
+  const max = Math.max(0, ...numbers);
+  return `#${max + 1}`;
+};
 
 const notify = () => {
   listeners.forEach(l => l());
@@ -105,7 +130,7 @@ export const useWorkOrderStore = () => {
     const newWo: WorkOrder = {
       ...wo,
       id: crypto.randomUUID(),
-      workOrderNumber: `#${Math.floor(Math.random() * 10000)}`,
+      workOrderNumber: getNextWorkOrderNumber(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       createdByUserId: activeUserId || 'admin-001'
@@ -119,11 +144,57 @@ export const useWorkOrderStore = () => {
     let nextWoToCreate: any = null;
     globalWorkOrders = globalWorkOrders.map(wo => {
       if (wo.id === id) {
+        const prevStatus = wo.status;
         const updated = {
           ...wo,
           ...updates,
           updatedAt: new Date().toISOString()
-        };
+        } as WorkOrder;
+
+        // PHASE 4: On completion, record meter readings once
+        const isCompleting = (updates.status === 'Done' || (updates as any).status === 'Completed') && prevStatus !== updates.status;
+        if (isCompleting) {
+          try {
+            const records: { meterId: string; value: number; unit?: string }[] = [];
+
+            // From legacy sections on WO
+            (updated.sections || []).forEach(sec => {
+              (sec.fields || []).forEach(f => {
+                if (f?.type === 'meter') {
+                  const v = (f as any).value;
+                  const meterId = (f as any).meterId || (v && typeof v === 'object' && v.meterId);
+                  const value = typeof v === 'number' ? v : (v && typeof v === 'object' ? v.value : undefined);
+                  if (meterId && typeof value === 'number') {
+                    records.push({ meterId, value, unit: f.unit });
+                  }
+                }
+              });
+            });
+
+            // From attached procedure instances (if any)
+            (updated.procedureInstances || []).forEach(pi => {
+              const fieldsById: Record<string, any> = {};
+              (pi.procedureSchemaSnapshot || []).forEach(sec => (sec.fields || []).forEach(f => { fieldsById[f.id] = f; }));
+              const responses = pi.responses || {};
+              Object.keys(responses).forEach(itemId => {
+                const field = fieldsById[itemId];
+                if (field?.type === 'meter') {
+                  const v = responses[itemId];
+                  const meterId = field.meterId || (v && typeof v === 'object' && v.meterId);
+                  const value = typeof v === 'number' ? v : (v && typeof v === 'object' ? v.value : undefined);
+                  if (meterId && typeof value === 'number') {
+                    records.push({ meterId, value, unit: field.unit });
+                  }
+                }
+              });
+            });
+
+            // Commit readings (dedupe handled in helper)
+            records.forEach(r => meterStoreHelpers.addReadingFromWO(r.meterId, r.value, r.unit, updated.id, activeUserId || undefined));
+          } catch (e) {
+            console.warn('Failed to record meter readings on completion', e);
+          }
+        }
 
         // PART 1 logic: Generate next instance after completion
         if (updates.status === 'Done' && wo.status !== 'Done' && wo.parentWorkOrderId && wo.occurrenceDate) {
@@ -155,7 +226,7 @@ export const useWorkOrderStore = () => {
       const newWo: WorkOrder = {
         ...nextWoToCreate,
         id: crypto.randomUUID(),
-        workOrderNumber: `#${Math.floor(Math.random() * 10000)}`,
+        workOrderNumber: getNextWorkOrderNumber(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         createdByUserId: activeUserId || 'admin-001'
@@ -214,7 +285,7 @@ export const useWorkOrderStore = () => {
           const newWo: WorkOrder = {
             ...draft,
             id: crypto.randomUUID(),
-            workOrderNumber: `#${Math.floor(Math.random() * 10000)}`,
+            workOrderNumber: getNextWorkOrderNumber(),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             createdByUserId: template.createdByUserId || 'admin-001'

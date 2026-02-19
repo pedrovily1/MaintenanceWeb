@@ -36,15 +36,15 @@ export const WorkOrderCard = ({
   return (
     <div 
       onClick={onClick}
-      className={`relative items-center bg-white border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-gray-50 cursor-pointer pl-3 py-3 ${
-        isActive ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+      className={`relative items-center bg-transparent border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-[var(--panel-2)] cursor-pointer pl-3 py-3 transition-colors ${
+        isActive ? "bg-[var(--panel-2)] border-l-4 border-l-[var(--accent)]" : ""
       }`}
     >
       {/* Image */}
       <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg z-0">
         <div
           title={assetName}
-          className="text-[16px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid bg-gray-100"
+          className="text-[16px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid bg-[var(--panel-2)]"
         >
           {assetImageUrl ? (
             <figure 

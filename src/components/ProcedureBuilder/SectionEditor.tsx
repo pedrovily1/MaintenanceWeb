@@ -53,7 +53,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
         <div className="flex items-center gap-3 grow">
           <span className="text-[11px] font-bold text-slate-400 tracking-wider whitespace-nowrap bg-slate-200/50 px-1.5 py-0.5 rounded">SECTION {index + 1}</span>
           <input
-            className="font-semibold text-sm text-gray-800 uppercase tracking-tight bg-transparent outline-none w-full placeholder:text-gray-300"
+            className="font-semibold text-sm text-gray-800 uppercase tracking-tight bg-transparent outline-none w-full placeholder:text-gray-300 border-b border-transparent focus:border-blue-500 transition-colors"
             placeholder="UNTITLED SECTION"
             value={section.title}
             onChange={(e) => onRename(e.target.value)}

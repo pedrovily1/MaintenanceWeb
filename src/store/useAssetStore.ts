@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Asset } from '../types/asset';
 import { assetPersistence } from '@/services/persistence/assetPersistence';
+import { unlinkMetersByAssetId } from '@/store/useMeterStore';
 
 const SEED_DATA: Asset[] = [
   {
@@ -102,6 +103,8 @@ export const useAssetStore = () => {
   }, []);
 
   const deleteAsset = useCallback((id: string) => {
+    // Unlink meters referencing this asset (fail-safe)
+    try { unlinkMetersByAssetId(id); } catch {}
     globalAssets = globalAssets.filter(a => a.id !== id);
     notify();
   }, []);

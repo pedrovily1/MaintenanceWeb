@@ -14,6 +14,7 @@ import { attachmentService } from "@/services/attachmentService";
 import { SectionRenderer } from "@/components/WorkOrder/SectionRenderer";
 import { WorkOrderSection, ProcedureInstance } from "@/types/workOrder";
 import { ProcedureSelector } from "@/components/WorkOrder/ProcedureSelector";
+import { WorkOrderEditorPanel } from "./components/WorkOrderEditorPanel";
 import { Plus, Trash2, ClipboardList, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
 
 export const WorkOrderList = () => {
@@ -27,6 +28,7 @@ export const WorkOrderList = () => {
   const [draft, setDraft] = useState<DraftWorkOrder | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showEditor, setShowEditor] = useState(false);
   const [pendingAttachProcedureId, setPendingAttachProcedureId] = useState<string | null>(null);
   const [showProcedureSelector, setShowProcedureSelector] = useState(false);
   const [procToRemove, setProcToRemove] = useState<string | null>(null);
@@ -250,16 +252,16 @@ export const WorkOrderList = () => {
   const todayStr = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-transparent box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-2 lg:mx-4 flex-col lg:flex-row gap-4 lg:gap-0">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-zinc-200 lg:mr-4 rounded-tl rounded-tr border-solid">
+        <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-zinc-200 lg:mr-4 rounded-tl rounded-tr border-solid">
           <TabButtons activeTab={activeTab} onTabChange={setActiveTab} />
           <SortControls />
           <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr">
             {activeTab === 'todo' ? (
               <>
-                <div className="text-blue-500 text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
-                  <span className="text-neutral-800 box-border caret-transparent shrink-0 pr-1">
+                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
+                  <span className="text-[var(--text)] box-border caret-transparent shrink-0 pr-1">
                     Assigned to Me ({todoCount})
                   </span>
                 </div>
@@ -280,8 +282,8 @@ export const WorkOrderList = () => {
               </>
             ) : (
               <>
-                <div className="text-blue-500 text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
-                  <span className="text-neutral-800 box-border caret-transparent shrink-0 pr-1">
+                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
+                  <span className="text-[var(--text)] box-border caret-transparent shrink-0 pr-1">
                     Completed ({filteredWorkOrders.length})
                   </span>
                 </div>
@@ -300,7 +302,7 @@ export const WorkOrderList = () => {
           </div>
         </div>
         <div className="box-border caret-transparent flex flex-col grow shrink-0 w-full lg:basis-[375px] lg:min-w-[200px] lg:pt-2 lg:px-2">
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
             {panelMode === 'create' && draft && (
               <WorkOrderCreatePanel
                 value={draft}
@@ -383,21 +385,8 @@ export const WorkOrderList = () => {
                           <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
                             <button
                               type="button"
-                              className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
-                            >
-                              <img
-                                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-38.svg"
-                                alt="Icon"
-                                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-                              />
-                              <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
-                                Comments
-                              </span>
-                            </button>
-                          </div>
-                          <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
-                            <label
-                              className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400 cursor-pointer"
+                              onClick={() => setShowEditor(true)}
+                              className="relative text-[var(--accent)] font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-[var(--accent)] px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:opacity-80 transition-opacity cursor-pointer"
                             >
                               <img
                                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-39.svg"
@@ -405,32 +394,14 @@ export const WorkOrderList = () => {
                                 className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
                               />
                               <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
-                                Photos ({(selectedWorkOrder.attachments || []).length})
+                                Edit
                               </span>
-                              <input 
-                                type="file" 
-                                accept="image/*" 
-                                className="hidden" 
-                                multiple
-                                onChange={async (e) => {
-                                  if (e.target.files) {
-                                    const newAtts = [];
-                                    for(let i=0; i<e.target.files.length; i++) {
-                                      const att = await attachmentService.uploadFile(e.target.files[i]);
-                                      newAtts.push(att);
-                                    }
-                                    updateWorkOrder(selectedWorkOrder.id, { 
-                                      attachments: [...(selectedWorkOrder.attachments || []), ...newAtts] 
-                                    });
-                                  }
-                                }}
-                              />
-                            </label>
+                            </button>
                           </div>
                           <div className="relative box-border caret-transparent flex shrink-0">
                             <button
                               type="button"
-                              className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-bl rounded-br rounded-tl rounded-tr hover:text-blue-400 hover:border-blue-400"
+                              className="relative text-[var(--accent)] font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-bl rounded-br rounded-tl rounded-tr border border-transparent hover:border-[var(--border)] transition-all cursor-pointer"
                               onClick={() => setConfirmDelete((v) => !v)}
                             >
                               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
@@ -482,8 +453,8 @@ export const WorkOrderList = () => {
                                     onClick={() => handleStatusUpdate(status)}
                                     className={`${
                                       selectedWorkOrder.status === status 
-                                      ? 'text-white bg-blue-500 border-blue-500' 
-                                      : 'text-blue-500 bg-white border-zinc-200'
+                                      ? 'text-white bg-[var(--accent)] border-[var(--accent)]'
+                                      : 'text-[var(--accent)] bg-transparent border-zinc-200'
                                     } text-[11.2px] items-center caret-transparent flex flex-col shrink-0 h-[50px] justify-center leading-[13.44px] text-center w-[71.25px] border mr-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid md:h-[60px] md:w-[90px] hover:opacity-80`}
                                   >
                                     <img
@@ -536,12 +507,8 @@ export const WorkOrderList = () => {
                               Description
                             </strong>
                           </div>
-                          <div className="box-border caret-transparent shrink-0">
-                            <textarea
-                              className="w-full border border-zinc-200 rounded p-2 text-sm min-h-[100px]"
-                              value={selectedWorkOrder.description}
-                              onChange={(e) => updateWorkOrder(selectedWorkOrder.id, { description: e.target.value })}
-                            />
+                          <div className="box-border caret-transparent shrink-0 text-sm text-gray-700 whitespace-pre-wrap">
+                            {selectedWorkOrder.description || 'No description provided.'}
                           </div>
 
                           <div className="box-border caret-transparent shrink-0 mt-6 pb-2 flex items-center justify-between">
@@ -670,6 +637,15 @@ export const WorkOrderList = () => {
                     </div>
                   </div>
                 </div>
+                <WorkOrderEditorPanel
+                  open={showEditor}
+                  initial={selectedWorkOrder}
+                  onClose={() => setShowEditor(false)}
+                  onSubmit={(val) => {
+                    updateWorkOrder(selectedWorkOrder.id, val);
+                    setShowEditor(false);
+                  }}
+                />
               </div>
             )}
             </div>

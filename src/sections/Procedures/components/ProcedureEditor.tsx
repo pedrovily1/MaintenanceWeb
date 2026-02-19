@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useProcedureStore } from '@/store/useProcedureStore';
 import { Palette } from '@/components/ProcedureBuilder/Palette';
 import { SectionEditor } from '@/components/ProcedureBuilder/SectionEditor';
-import { ProcedureItemKind } from '@/types/procedure';
+import { Procedure, ProcedureItemKind, ProcedureSection } from '@/types/procedure';
 import { ConfirmationModal } from '@/components/Common/ConfirmationModal';
 
 interface ProcedureEditorProps {
@@ -14,26 +14,28 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
   const {
     procedures,
     getProcedureById,
-    updateProcedure,
-    addSection,
-    updateSection,
-    removeSection,
-    reorderSections,
-    addItem,
-    updateItem,
-    removeItem,
-    reorderItems,
+    saveProcedure,
   } = useProcedureStore();
 
-  const procedure = useMemo(
+  const storeProcedure = useMemo(
     () => (procedureId ? procedures.find(p => p.id === procedureId) ?? getProcedureById(procedureId) : undefined),
     [procedureId, procedures, getProcedureById]
   );
 
+  const [draft, setDraft] = useState<Procedure | undefined>(undefined);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSaveSuccessModalOpen, setIsSaveSuccessModalOpen] = useState(false);
 
-  if (!procedureId || !procedure) {
+  useEffect(() => {
+    if (storeProcedure) {
+      setDraft(JSON.parse(JSON.stringify(storeProcedure)));
+    } else {
+      setDraft(undefined);
+    }
+  }, [storeProcedure]);
+
+  if (!procedureId || !draft) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
         <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
@@ -45,27 +47,63 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
     );
   }
 
+  const computeFieldCount = (p: Procedure) => {
+    return p.sections.reduce((acc, s) => acc + s.items.filter(i => !['Heading', 'TextBlock'].includes(i.kind)).length, 0);
+  };
+
+  const updateDraft = (patch: Partial<Procedure> | ((prev: Procedure) => Procedure)) => {
+    setDraft(prev => {
+      if (!prev) return prev;
+      const next = typeof patch === 'function' ? patch(prev) : { ...prev, ...patch };
+      next.meta.fieldCount = computeFieldCount(next);
+      return next;
+    });
+  };
+
   const onAddItem = (kind: ProcedureItemKind, sectionId?: string) => {
-    const targetSectionId = sectionId || activeSectionId || procedure.sections[0]?.id;
+    const targetSectionId = sectionId || activeSectionId || draft.sections[0]?.id;
     if (!targetSectionId) return;
-    // Initialize sensible defaults per kind
-    const base: any = { kind, label: kind, required: false };
-    if (kind === 'MultipleChoice') base.options = ['Option 1', 'Option 2'];
-    if (kind === 'TextInput') base.placeholder = 'Enter text';
-    addItem(procedure.id, targetSectionId, base);
+
+    updateDraft(prev => ({
+      ...prev,
+      sections: prev.sections.map(s => {
+        if (s.id !== targetSectionId) return s;
+        const newItem = {
+          id: crypto.randomUUID(),
+          kind,
+          label: kind,
+          required: false,
+          orderIndex: s.items.length,
+          ...(kind === 'MultipleChoice' ? { options: ['Option 1', 'Option 2'] } : {}),
+          ...(kind === 'TextInput' ? { placeholder: 'Enter text' } : {}),
+        };
+        return { ...s, items: [...s.items, newItem as any] };
+      })
+    }));
+
     if (targetSectionId !== activeSectionId) setActiveSectionId(targetSectionId);
   };
 
   const onAddSection = () => {
-    addSection(procedure.id);
+    updateDraft(prev => ({
+      ...prev,
+      sections: [...prev.sections, {
+        id: crypto.randomUUID(),
+        title: `Section ${prev.sections.length + 1}`,
+        items: [],
+        orderIndex: prev.sections.length
+      }]
+    }));
   };
 
   const onSave = () => {
-    // Bump version; data already persisted reactively
-    updateProcedure(procedure.id, { name: procedure.name });
+    if (draft) {
+      saveProcedure(draft);
+      setIsSaveSuccessModalOpen(true);
+    }
   };
 
-  const fieldCount = procedure.meta?.fieldCount ?? 0;
+  const fieldCount = draft.meta?.fieldCount ?? 0;
 
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
@@ -78,8 +116,8 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                 <input
                   className="text-xl font-medium box-border caret-transparent tracking-[-0.2px] w-full border-b border-transparent focus:border-blue-500 outline-none"
                   placeholder="Enter Procedure Name"
-                  value={procedure.name}
-                  onChange={(e) => updateProcedure(procedure.id, { name: e.target.value })}
+                  value={draft.name}
+                  onChange={(e) => updateDraft({ name: e.target.value })}
                 />
               </div>
               <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
@@ -103,15 +141,15 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
             <textarea
               className="w-full border border-zinc-200 rounded p-2 text-sm min-h-[60px]"
               placeholder="Description (optional)"
-              value={procedure.description || ''}
-              onChange={(e) => updateProcedure(procedure.id, { description: e.target.value })}
+              value={draft.description || ''}
+              onChange={(e) => updateDraft({ description: e.target.value })}
             />
           </header>
 
           {/* Canvas */}
           <div className="relative box-border caret-transparent flex flex-row grow scroll-smooth overflow-auto scroll-pt-4 px-6 py-4 gap-4">
             <div className="basis-[70%] max-w-[816px] mr-4">
-              {procedure.sections.map((section, index) => (
+              {draft.sections.map((section, index) => (
                 <div
                   key={section.id}
                   onClick={() => setActiveSectionId(section.id)}
@@ -120,32 +158,70 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                   }`}
                 >
                   <SectionEditor
-                    procedure={procedure}
+                    procedure={draft}
                     section={section}
                     index={index}
-                    onRename={(title) => updateSection(procedure.id, section.id, { title })}
+                    onRename={(title) => updateDraft(prev => ({
+                      ...prev,
+                      sections: prev.sections.map(s => s.id === section.id ? { ...s, title } : s)
+                    }))}
                     onRemove={(e) => {
                       e?.stopPropagation();
-                      removeSection(procedure.id, section.id);
+                      updateDraft(prev => ({
+                        ...prev,
+                        sections: prev.sections.filter(s => s.id !== section.id).map((s, idx) => ({ ...s, orderIndex: idx }))
+                      }));
 
                       if (activeSectionId === section.id) {
-                        const remaining = procedure.sections.filter(s => s.id !== section.id);
+                        const remaining = draft.sections.filter(s => s.id !== section.id);
                         setActiveSectionId(remaining[0]?.id ?? null);
                       }
-
                     }}
                     onMoveUp={(e) => {
                       e?.stopPropagation();
-                      reorderSections(procedure.id, index, Math.max(0, index - 1));
+                      updateDraft(prev => {
+                        const sections = [...prev.sections];
+                        const toIndex = Math.max(0, index - 1);
+                        const [moved] = sections.splice(index, 1);
+                        sections.splice(toIndex, 0, moved);
+                        return { ...prev, sections: sections.map((s, i) => ({ ...s, orderIndex: i })) };
+                      });
                     }}
                     onMoveDown={(e) => {
                       e?.stopPropagation();
-                      reorderSections(procedure.id, index, Math.min(procedure.sections.length - 1, index + 1));
+                      updateDraft(prev => {
+                        const sections = [...prev.sections];
+                        const toIndex = Math.min(sections.length - 1, index + 1);
+                        const [moved] = sections.splice(index, 1);
+                        sections.splice(toIndex, 0, moved);
+                        return { ...prev, sections: sections.map((s, i) => ({ ...s, orderIndex: i })) };
+                      });
                     }}
                     onAddItem={(kind) => onAddItem(kind, section.id)}
-                    onUpdateItem={(itemId, patch) => updateItem(procedure.id, section.id, itemId, patch as any)}
-                    onRemoveItem={(itemId) => removeItem(procedure.id, section.id, itemId)}
-                    onReorderItem={(from, to) => reorderItems(procedure.id, section.id, from, to)}
+                    onUpdateItem={(itemId, patch) => updateDraft(prev => ({
+                      ...prev,
+                      sections: prev.sections.map(s => {
+                        if (s.id !== section.id) return s;
+                        return { ...s, items: s.items.map(i => i.id === itemId ? { ...i, ...patch } as any : i) };
+                      })
+                    }))}
+                    onRemoveItem={(itemId) => updateDraft(prev => ({
+                      ...prev,
+                      sections: prev.sections.map(s => {
+                        if (s.id !== section.id) return s;
+                        return { ...s, items: s.items.filter(i => i.id !== itemId).map((i, idx) => ({ ...i, orderIndex: idx })) };
+                      })
+                    }))}
+                    onReorderItem={(from, to) => updateDraft(prev => ({
+                      ...prev,
+                      sections: prev.sections.map(s => {
+                        if (s.id !== section.id) return s;
+                        const arr = [...s.items];
+                        const [moved] = arr.splice(from, 1);
+                        arr.splice(to, 0, moved);
+                        return { ...s, items: arr.map((i, idx) => ({ ...i, orderIndex: idx })) };
+                      })
+                    }))}
                   />
                 </div>
               ))}
@@ -159,7 +235,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                 <button
                   type="button"
                   onClick={() => {
-                    window.dispatchEvent(new CustomEvent('use-procedure-in-new-work-order', { detail: { procedureId: procedure.id } }));
+                    window.dispatchEvent(new CustomEvent('use-procedure-in-new-work-order', { detail: { procedureId: draft.id } }));
                   }}
                   className="w-full relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
                 >
@@ -173,14 +249,23 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         title="Delete Procedure"
-        message={`Are you sure you want to delete "${procedure.name}"? This action cannot be undone.`}
+        message={`Are you sure you want to delete "${draft.name}"? This action cannot be undone.`}
         confirmLabel="Delete"
         variant="danger"
         onConfirm={() => {
-          onDelete?.(procedure.id);
+          onDelete?.(draft.id);
           setIsDeleteModalOpen(false);
         }}
         onCancel={() => setIsDeleteModalOpen(false)}
+      />
+      <ConfirmationModal
+        isOpen={isSaveSuccessModalOpen}
+        title="Procedure Saved"
+        message={`"${draft.name}" has been saved successfully to the library.`}
+        confirmLabel="OK"
+        showCancel={false}
+        onConfirm={() => setIsSaveSuccessModalOpen(false)}
+        onCancel={() => setIsSaveSuccessModalOpen(false)}
       />
     </div>
   );

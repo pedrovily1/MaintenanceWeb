@@ -89,6 +89,18 @@
 
 @layer base {
   :root {
+    --bg:#0B0F14;
+    --panel:#111826;
+    --panel-2:#0E1522;
+    --text:#E6EAF2;
+    --muted:#9AA4B2;
+    --border:rgba(255,255,255,0.08);
+    --accent:#2F6BFF;
+    --accent-2:#00D4FF;
+    --status-active:#2FE58C;
+    --status-offline:#FF4D6D;
+    --status-warning:#FFB020;
+
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 
@@ -160,8 +172,71 @@
     @apply border-border;
   }
 
+  html, body, #app {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+  }
+
+  p, span, div, label, li, td, th {
+    color: inherit;
+  }
+
+  .text-black,
+  .text-gray-800,
+  .text-gray-900,
+  .text-slate-800,
+  .text-slate-900,
+  .text-neutral-800 {
+    color: var(--text) !important;
+  }
+
+  .text-gray-500,
+  .text-gray-600,
+  .text-muted {
+    color: var(--muted) !important;
+  }
+
+  input, textarea, select, button {
+    color: var(--text);
+  }
+
+  ::placeholder {
+    color: var(--muted);
+  }
+
+  /* default “panel” look for existing cards/sections */
+  .card, .panel, .sidebar, .toolbar, header, nav, section, aside, [class*="shadow-[rgba(242,242,242,0.6)"], .border-zinc-200 {
+    border-color: var(--border) !important;
+  }
+
+  .omp-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .omp-panel-secondary {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  /* neutralized backgrounds */
+  .bg-white {
+    background-color: var(--panel) !important;
+  }
+  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100 {
+    background-color: var(--panel-2) !important;
+  }
+
+  .shadow-lg, .shadow-md, .shadow-sm, [class*="shadow-[rgba(242,242,242,0.6)"] {
+    shadow: none !important;
+    box-shadow: none !important;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background: var(--bg) !important;
+    color: var(--text) !important;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

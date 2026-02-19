@@ -257,10 +257,16 @@ function useProcedureStore() {
     notify();
   }, []);
 
+  const saveProcedure = useCallback((procedure: Procedure) => {
+    globalProcedures = globalProcedures.map(p => p.id === procedure.id ? { ...procedure, updatedAt: new Date().toISOString() } : p);
+    notify();
+  }, []);
+
   return {
     procedures: sortedProcedures,
     addProcedure,
     updateProcedure,
+    saveProcedure,
     deleteProcedure,
     getProcedureById,
     addSection,

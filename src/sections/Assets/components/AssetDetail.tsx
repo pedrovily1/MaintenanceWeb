@@ -3,6 +3,7 @@ import { useAssetStore } from '@/store/useAssetStore';
 import { AssetAttachments } from './AssetAttachments';
 import { AssetEditorPanel } from './AssetEditorPanel';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
+import { useMeterStore } from '@/store/useMeterStore';
 import type { Asset } from '@/types/asset';
 
 type AssetDetailProps = {
@@ -12,10 +13,16 @@ type AssetDetailProps = {
 export const AssetDetail = ({ assetId }: AssetDetailProps) => {
   const { assets, getAssetById, updateAsset, deleteAsset } = useAssetStore();
   const { workOrders } = useWorkOrderStore();
+  const { meters } = useMeterStore();
   const [showEditor, setShowEditor] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const asset = assetId ? getAssetById(assetId) : undefined;
+
+  const linkedMeters = useMemo(() => {
+    if (!asset) return [];
+    return (meters || []).filter(m => m.assetId === asset.id);
+  }, [meters, asset]);
 
   const relatedWOs = useMemo(() => {
     if (!asset) return [] as any[];
@@ -26,8 +33,8 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
   if (!assetId) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+        <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full overflow-hidden border-solid">
+          <div className="flex items-center justify-center w-full h-full text-[var(--muted)]">
             Select an asset to view details
           </div>
         </div>
@@ -39,8 +46,8 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
   if (!asset) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-red-500">
+        <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full overflow-hidden border-solid">
+          <div className="flex items-center justify-center w-full h-full text-[var(--status-offline)]">
             Error loading asset
           </div>
         </div>
@@ -48,17 +55,18 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
     );
   }
 
+
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+      <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full overflow-hidden border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <header className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
+          <header className="bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                 <div className="box-border caret-transparent">
                   <div className="box-border caret-transparent gap-x-1 flex gap-y-1">
-                    <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
+                    <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7 text-[var(--text)]">
                       {asset.name}
                     </h3>
                     <button
@@ -104,16 +112,16 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
             </div>
 
             {/* Tabs */}
-            <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
+            <div className="bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
               <button
                 type="button"
-                className="text-blue-500 font-semibold bg-transparent border-b-blue-500 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b"
+                className="text-[var(--accent)] border-b-[var(--accent)] border-l-transparent border-r-transparent border-t-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all"
               >
                 Details
               </button>
               <button
                 type="button"
-                className="text-gray-600 bg-transparent border-b-zinc-200 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50"
+                className="text-[var(--muted)] border-b-transparent border-l-transparent border-r-transparent border-t-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all"
               >
                 History
               </button>
@@ -133,7 +141,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                   See More
                 </button>
               </div>
-              <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 flex-wrap h-10 justify-between min-h-[22px] w-full border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+              <div className="relative items-center bg-[var(--panel-2)] box-border caret-transparent flex shrink-0 flex-wrap h-10 justify-between min-h-[22px] w-full border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                 <div className="relative items-center box-border caret-transparent flex basis-[0%] grow flex-wrap overflow-hidden px-2 py-0.5">
                   <div className="text-sm content-start items-center box-border caret-transparent flex shrink-0 justify-start leading-[15.12px] text-nowrap">
                     <div className="box-border caret-transparent shrink-0 text-nowrap mr-2">
@@ -202,6 +210,25 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 </div>
                 <div className="text-sm">{asset.locationName || '-'}</div>
               </div>
+            </div>
+
+            <div className="border-b border-zinc-200 my-4"></div>
+
+            {/* Linked Meters */}
+            <div className="box-border caret-transparent shrink-0 mb-6">
+              <h2 className="text-base font-semibold mb-3">Meters ({linkedMeters.length})</h2>
+              {linkedMeters.length === 0 ? (
+                <div className="text-gray-500 text-sm">No meters linked. Create one from the Meters tab.</div>
+              ) : (
+                <div className="space-y-2">
+                  {linkedMeters.map(m => (
+                    <button key={m.id} onClick={() => { window.location.hash = '#meters'; setTimeout(() => window.dispatchEvent(new CustomEvent('select-meter', { detail: { id: m.id } })), 0); }} className="w-full text-left p-3 border border-zinc-200 rounded hover:bg-gray-50">
+                      <div className="text-sm font-medium">{m.name}</div>
+                      <div className="text-xs text-gray-500">{typeof m.lastReading === 'number' ? `${m.lastReading}${m.unit ? ` ${m.unit}` : ''}` : 'No readings'}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="border-b border-zinc-200 my-4"></div>

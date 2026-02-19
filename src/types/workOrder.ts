@@ -48,8 +48,10 @@ export interface WorkOrderField {
   required?: boolean;
   options?: string[]; // For select or multi-checkbox
   unit?: string;      // For meter
+  meterId?: string;   // When a meter is selected for this field
+  allowedMeterIds?: string[]; // Restrict selectable meters
   placeholder?: string;
-  value?: any;        // Current value
+  value?: any;        // Current value (for meter: number or { meterId, value })
   attachments?: Attachment[];
 }
 

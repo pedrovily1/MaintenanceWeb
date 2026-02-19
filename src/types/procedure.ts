@@ -112,6 +112,7 @@ export interface SignatureItem extends ProcedureItemBase {
 export interface MeterReadingItem extends ProcedureItemBase {
   kind: 'MeterReading';
   meterId?: string; // optional selected meter id (for later linking)
+  allowedMeterIds?: string[]; // optional restriction list
   unit?: string; // derived from meter typically
 }
 

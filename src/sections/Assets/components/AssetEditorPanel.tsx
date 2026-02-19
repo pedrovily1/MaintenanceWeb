@@ -41,6 +41,8 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
     setValue(base);
   }, [base]);
 
+  if (!open) return null;
+
   const set = (patch: Partial<AssetEditorValue>) => setValue(v => ({ ...v, ...patch }));
 
   const validate = () => {
@@ -55,8 +57,6 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
     if (!validate()) return;
     onSubmit({ ...value });
   };
-
-  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-end" onClick={onClose}>

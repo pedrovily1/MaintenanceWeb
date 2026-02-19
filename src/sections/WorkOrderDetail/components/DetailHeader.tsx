@@ -56,9 +56,6 @@ export const DetailHeader = () => {
         <div className="hidden md:block">
           <ActionButtons
             variant=""
-            primaryButtonHref="https://app.getmaintainx.com/workorders/84658821/comments"
-            primaryButtonIcon="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-38.svg"
-            primaryButtonText="Comments"
             secondaryButtonHref="https://app.getmaintainx.com/workorders/84658821/edit"
             secondaryButtonIcon="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-39.svg"
             secondaryButtonText="Edit"

@@ -142,8 +142,8 @@ export const Reporting = () => {
   }, [filteredData, dateRange]);
 
   return (
-    <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      <div className="bg-white box-border caret-transparent shrink-0 px-4 py-5">
+    <div className="relative bg-[var(--bg)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-5 mb-4">
         <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
           <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
             <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
@@ -179,12 +179,6 @@ export const Reporting = () => {
             </div>
             <button
               type="button"
-              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-            >
-              Organizations
-            </button>
-            <button
-              type="button"
               className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
             >
               Export
@@ -199,46 +193,46 @@ export const Reporting = () => {
         </div>
       </div>
 
-      <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent flex shrink-0 flex-wrap px-4">
         <button
           type="button"
           onClick={() => setActiveTab('work-orders')}
-          className={`${activeTab === 'work-orders' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'work-orders' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Work Orders
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('asset-health')}
-          className={`${activeTab === 'asset-health' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'asset-health' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Asset Health
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('details')}
-          className={`${activeTab === 'details' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'details' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Reporting Details
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('activity')}
-          className={`${activeTab === 'activity' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'activity' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Recent Activity
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('export')}
-          className={`${activeTab === 'export' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'export' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Export Data
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('dashboards')}
-          className={`${activeTab === 'dashboards' ? 'text-blue-500 font-semibold border-b-blue-500' : 'text-gray-600 border-b-zinc-200'} bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+          className={`${activeTab === 'dashboards' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
         >
           Custom Dashboards
         </button>
@@ -251,38 +245,38 @@ export const Reporting = () => {
               <div className="box-border caret-transparent flex basis-[0%] grow gap-x-2">
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Assigned To
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Due Date
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Location
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Priority
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Add Filter
                 </button>
               </div>
               <button
                 type="button"
-                className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300 ml-2"
+                className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300 ml-2"
               >
                 My Filters
               </button>
@@ -302,17 +296,17 @@ export const Reporting = () => {
                 </div>
               </div>
 
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-4">
+          <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
               <button
                 type="button"
-                className="text-blue-500 font-medium text-lg hover:text-blue-400"
+                className="text-[var(--accent)] font-medium text-lg hover:text-[var(--accent-2)] transition-colors"
               >
                 Created vs. Completed
               </button>
               <button
                 type="button"
-                className="text-blue-500 font-medium text-sm hover:text-blue-400"
+                className="text-[var(--accent)] font-medium text-sm hover:text-[var(--accent-2)] transition-colors"
               >
                 Add to Dashboard
               </button>
@@ -320,29 +314,29 @@ export const Reporting = () => {
             <div className="flex items-start gap-8 mb-6">
               <div className="flex gap-4">
                 <div className="text-center">
-                  <div className="text-5xl font-bold mb-2">{metrics.created}</div>
-                  <div className="text-blue-500 border border-blue-500 px-3 py-1 rounded text-sm">
+                  <div className="text-5xl font-bold mb-2 text-[var(--text)]">{metrics.created}</div>
+                  <div className="text-[var(--accent)] border border-[var(--accent)] px-3 py-1 rounded text-sm">
                     Created
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-5xl font-bold mb-2">{metrics.completed}</div>
-                  <div className="text-teal-500 border border-teal-500 px-3 py-1 rounded text-sm">
+                  <div className="text-5xl font-bold mb-2 text-[var(--status-active)]">{metrics.completed}</div>
+                  <div className="text-[var(--status-active)] border border-[var(--status-active)] px-3 py-1 rounded text-sm">
                     Completed
                   </div>
                 </div>
               </div>
               <div className="flex-1 text-center">
-                <div className="text-5xl font-bold">
+                <div className="text-5xl font-bold text-[var(--text)]">
                   {metrics.completionRate.toFixed(1)}<span className="text-2xl">%</span>
                 </div>
-                <div className="text-gray-600 mt-2">Percent Completed</div>
-                <div className="text-gray-500 text-xs mt-1">
+                <div className="text-[var(--muted)] mt-2">Percent Completed</div>
+                <div className="text-[var(--muted)] text-xs mt-1">
                   {metrics.completed > metrics.created ? "*More Work Orders were completed than created during this time period" : ""}
                 </div>
               </div>
             </div>
-            <div className="h-64 bg-gray-50 rounded flex flex-col items-center justify-center text-gray-400">
+            <div className="h-64 bg-[var(--panel-2)] border border-[var(--border)] rounded flex flex-col items-center justify-center text-[var(--muted)]">
               <div className="text-sm mb-2">Completion Trend (Sample Data)</div>
               <div className="flex items-end gap-2 h-32">
                  {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
@@ -353,7 +347,7 @@ export const Reporting = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
@@ -410,7 +404,7 @@ export const Reporting = () => {
               </div>
             </div>
 
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
@@ -459,7 +453,7 @@ export const Reporting = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-lg">Status</h4>
                 <button
@@ -491,7 +485,7 @@ export const Reporting = () => {
               </div>
             </div>
 
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-lg">Priority</h4>
                 <button

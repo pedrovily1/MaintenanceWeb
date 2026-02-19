@@ -58,13 +58,17 @@ export const ConversationList = ({ conversations, selectedConversationId, onSele
               >
                 <div className="box-border caret-transparent shrink-0 mr-3">
                   <div
-                    className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-14 justify-center w-14 bg-center rounded-full"
-                    style={{
-                      backgroundImage: conversation.avatarUrl 
-                        ? `url('${conversation.avatarUrl}')`
-                        : "url('https://app.getmaintainx.com/img/93eafef8-3c18-48b5-a95a-2a8d545d9ac5_Chenega-Logo-Simplified-4C.png?w=512&h=512')"
-                    }}
+                      className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-14 justify-center w-14 bg-center rounded-full"
+                      style={{
+                        backgroundImage: conversation.avatarUrl
+                            ? `url(${conversation.avatarUrl})`
+                            : "url(/logo.svg)",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "contain",
+                      }}
                   ></div>
+
                 </div>
 
                 <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center min-w-0">

@@ -8,31 +8,24 @@ type AssetListProps = {
 
 export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListProps) => {
   return (
-    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
-      {/* Sort Controls */}
-      <div className="relative items-center border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 h-12 justify-between z-[1] border-b">
+    <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 mr-4 rounded-tl rounded-tr border-solid">
+      {/* Header / Sort Controls */}
+      <div className="relative items-center bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent flex shrink-0 h-12 justify-between z-[1] border-b">
         <div className="box-border caret-transparent flex basis-[0%] grow p-3">
           <div className="relative text-[12.6px] box-border caret-transparent flex basis-[0%] grow leading-[15.12px]">
             <div className="box-border caret-transparent basis-[0%] grow">
               <button
                 type="button"
-                className="text-gray-600 text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center"
+                className="text-[var(--text)] text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center"
               >
                 Sort By:
-                <div className="text-blue-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-blue-500">
-                  <span className="box-border caret-transparent block basis-[0%] grow stroke-blue-500 text-ellipsis text-nowrap overflow-hidden ml-1">
-                    <span className="font-semibold box-border caret-transparent shrink-0 stroke-blue-500 text-nowrap">
+                <div className="text-[var(--accent)] items-center box-border caret-transparent flex basis-[0%] grow stroke-[var(--accent)]">
+                  <span className="box-border caret-transparent block basis-[0%] grow text-ellipsis text-nowrap overflow-hidden ml-1">
+                    <span className="font-semibold box-border caret-transparent shrink-0 text-nowrap">
                       Name
                     </span>
                     : Ascending Order
                   </span>
-                  <div className="box-border caret-transparent shrink-0 stroke-blue-500 ml-1 mb-1">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-27.svg"
-                      alt="Icon"
-                      className="box-border caret-transparent shrink-0 h-[5px] w-2 -scale-100"
-                    />
-                  </div>
                 </div>
               </button>
             </div>
@@ -41,9 +34,9 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
       </div>
 
       {/* Asset List */}
-      <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr">
+      <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br">
         {assets.length === 0 ? (
-          <div className="text-center text-gray-500 py-8 px-4">
+          <div className="text-center text-[var(--muted)] py-8 px-4">
             <p className="text-sm">No assets found</p>
           </div>
         ) : (
@@ -52,8 +45,8 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
               <div
                 key={asset.id}
                 onClick={() => onSelectAsset(asset.id)}
-                className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-gray-50 px-4 py-3 ${
-                  selectedAssetId === asset.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+                className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] px-4 py-3 transition-colors ${
+                  selectedAssetId === asset.id ? "bg-[var(--panel-2)] border-l-4 border-l-[var(--accent)]" : ""
                 }`}
               >
                 <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg">

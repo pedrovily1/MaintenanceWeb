@@ -1,5 +1,4 @@
 import { FilterButtons } from "@/sections/FilterBar/components/FilterButtons";
-import { MyFiltersButton } from "@/sections/FilterBar/components/MyFiltersButton";
 
 export const FilterBar = () => {
   return (
@@ -8,7 +7,6 @@ export const FilterBar = () => {
         <div className="box-border caret-transparent flex basis-[0%] grow">
           <FilterButtons />
         </div>
-        <MyFiltersButton />
       </div>
     </div>
   );

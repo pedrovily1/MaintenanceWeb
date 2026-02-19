@@ -1,8 +1,8 @@
 export const Settings = () => {
   return (
-    <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-[var(--bg)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       {/* Header */}
-      <div className="bg-white box-border caret-transparent shrink-0 px-4 py-5">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-5 mb-6">
         <h1 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
           General
         </h1>
@@ -15,9 +15,14 @@ export const Settings = () => {
           <div className="flex items-start gap-6">
             <div className="box-border caret-transparent shrink-0">
               <div
-                className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-[104px] justify-center w-[104px] bg-center rounded-lg border border-zinc-200"
-                style={{ backgroundImage: "url('https://app.getmaintainx.com/img/93eafef8-3c18-48b5-a95a-2a8d545d9ac5_Chenega-Logo-Simplified-4C.png?w=512&h=512')" }}
-              ></div>
+                  className="items-center bg-white flex h-[104px] w-[104px] justify-center bg-center rounded-lg border border-zinc-200"
+                  style={{
+                    backgroundImage: "url(/logo.svg)",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "contain",
+                  }}
+              />
+
             </div>
             <div className="box-border caret-transparent flex flex-col grow">
               <h2 className="text-2xl font-semibold mb-2 text-ellipsis overflow-hidden">
@@ -45,7 +50,7 @@ export const Settings = () => {
         </section>
 
         {/* Preferences */}
-        <section className="bg-white box-border caret-transparent shrink-0 border border-zinc-200 rounded-lg p-6 mb-4">
+        <section className="omp-panel shadow-none box-border caret-transparent shrink-0 p-6 mb-4">
           <h2 className="text-2xl font-semibold mb-6">Preferences</h2>
           
           <div className="space-y-6">
@@ -128,7 +133,7 @@ export const Settings = () => {
         </section>
 
         {/* Export Data */}
-        <section className="bg-white box-border caret-transparent shrink-0 border border-zinc-200 rounded-lg p-6 mb-4">
+        <section className="omp-panel shadow-none box-border caret-transparent shrink-0 p-6 mb-4">
           <h2 className="text-2xl font-semibold mb-6">Export Data</h2>
           
           <div className="grid grid-cols-3 gap-4">

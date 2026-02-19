@@ -29,7 +29,7 @@ export const PageHeader = () => {
         <div className="relative box-border caret-transparent flex shrink-0">
           <button
             type="button"
-            className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 lg:px-4 rounded-bl rounded-tl border-solid hover:bg-blue-400 hover:border-blue-400"
+            className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 lg:px-4 rounded-md border-solid hover:bg-blue-400 hover:border-blue-400"
             onClick={() => window.dispatchEvent(new CustomEvent('trigger-new-work-order'))}
           >
             <img
@@ -39,19 +39,6 @@ export const PageHeader = () => {
             />
             <span className="hidden sm:flex box-border caret-transparent shrink-0 text-nowrap">
               New Work Order
-            </span>
-          </button>
-          <button
-            aria-label="New Work Order menu"
-            type="button"
-            className="relative text-white font-bold items-center aspect-square bg-blue-500 border-b-blue-500 border-l-zinc-200 border-r-blue-500 border-t-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border overflow-hidden p-2 rounded-br rounded-tr border-solid hover:bg-blue-400 hover:border-b-blue-400 hover:border-r-blue-400 hover:border-t-blue-400"
-          >
-            <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-              <img
-                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-23.svg"
-                alt="Icon"
-                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-              />
             </span>
           </button>
         </div>

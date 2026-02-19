@@ -59,10 +59,10 @@ export const App = () => {
   }, []);
 
   return (
-    <div className="text-neutral-800 text-sm not-italic normal-nums font-normal accent-auto box-border caret-transparent block shrink-0 h-full tracking-[normal] leading-[16.8px] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible w-full border-separate font-system_ui">
+    <div className="bg-[var(--bg)] text-[var(--text)] text-sm not-italic normal-nums font-normal accent-auto box-border caret-transparent block shrink-0 h-full tracking-[normal] leading-[16.8px] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible w-full border-separate font-system_ui">
       <div className="box-border caret-transparent shrink-0 h-full">
         <div className="box-border caret-transparent shrink-0"></div>
-        <div className="bg-white box-border caret-transparent flex flex-col shrink-0 h-full">
+        <div className="bg-[var(--bg)] box-border caret-transparent flex flex-col shrink-0 h-full">
         <div className="box-border caret-transparent flex basis-[0%] grow">
           <Sidebar currentView={currentView} />
           {currentView === 'reporting' ? (

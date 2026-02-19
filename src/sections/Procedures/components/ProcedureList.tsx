@@ -54,125 +54,142 @@ export const ProcedureList = ({ procedures, selectedProcedureId, onSelectProcedu
       {/* Procedure List */}
       <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br">
         {/* My Templates Section */}
-        <div className="text-gray-600 text-sm font-semibold box-border caret-transparent shrink-0 px-4 py-3 border-b border-zinc-200">
-          My Templates
-        </div>
-        {myTemplates.map((procedure) => (
-          <div
-            key={procedure.id}
-            onClick={() => onSelectProcedure(procedure.id)}
-            className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
-              selectedProcedureId === procedure.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-            }`}
-          >
-            <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-              <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
-                <img
-                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
-                  alt="Icon"
-                  className="text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-                />
-              </div>
+        {myTemplates.length > 0 ? (
+          <>
+            <div className="text-gray-600 text-sm font-semibold box-border caret-transparent shrink-0 px-4 py-3 border-b border-zinc-200 bg-gray-50">
+              My Templates ({myTemplates.length})
             </div>
+            {myTemplates.map((procedure) => (
+              <div
+                key={procedure.id}
+                onClick={() => onSelectProcedure(procedure.id)}
+                className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
+                  selectedProcedureId === procedure.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+                }`}
+              >
+                <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
+                  <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
+                      alt="Icon"
+                      className="text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                    />
+                  </div>
+                </div>
 
-            <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
-              <div className="items-center box-border caret-transparent flex shrink-0 my-px">
-                <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
-                  <div
-                    title={procedure.name}
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
-                  >
-                    {procedure.name}
+                <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
+                  <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                    <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
+                      <div
+                        title={procedure.name}
+                        className={`box-border caret-transparent text-ellipsis text-nowrap overflow-hidden ${procedure.isFeatured ? 'font-semibold' : ''}`}
+                      >
+                        {procedure.name}
+                      </div>
+                    </div>
+                    {procedure.isFeatured && (
+                      <div className="bg-blue-500 h-1.5 w-1.5 rounded-full ml-1"></div>
+                    )}
+                  </div>
+                  <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
+                    <div className="text-gray-600 text-[12.6px] box-border caret-transparent flex items-center gap-2">
+                      {procedure.category && (
+                        <span className="items-center bg-gray-50 inline-flex px-2 py-1 rounded border border-gray-50 text-xs">
+                          <img
+                            src="https://c.animaapp.com/mkof8zon8iICvl/assets/image-1.svg"
+                            className="h-2.5 w-2.5 mr-1 rounded-full"
+                            alt="Category"
+                          />
+                          {procedure.category}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
+                      {procedure.fieldCount}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent flex items-center gap-2">
-                  {procedure.category && (
-                    <span className="items-center bg-gray-50 inline-flex px-2 py-1 rounded border border-gray-50 text-xs">
-                      <img
-                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/image-1.svg"
-                        className="h-2.5 w-2.5 mr-1 rounded-full"
-                        alt="Category"
-                      />
-                      {procedure.category}
-                    </span>
-                  )}
-                </div>
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
-                  {procedure.fieldCount}
-                </div>
-              </div>
-            </div>
+            ))}
+          </>
+        ) : (
+          <div className="text-gray-400 text-xs italic px-4 py-3 border-b border-zinc-100">
+            No templates created yet.
           </div>
-        ))}
+        )}
 
         {/* All Procedures Section */}
-        <div className="text-gray-600 text-sm font-semibold box-border caret-transparent shrink-0 px-4 py-3 border-b border-zinc-200 mt-4">
-          All Procedures
-        </div>
-        {allProcedures.map((procedure) => (
-          <div
-            key={procedure.id}
-            onClick={() => onSelectProcedure(procedure.id)}
-            className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
-              selectedProcedureId === procedure.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-            }`}
-          >
-            <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-              <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
-                <img
-                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
-                  alt="Icon"
-                  className="text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-                />
-              </div>
+        {allProcedures.length > 0 && (
+          <>
+            <div className="text-gray-600 text-sm font-semibold box-border caret-transparent shrink-0 px-4 py-3 border-b border-zinc-200 mt-4 bg-gray-50">
+              All Procedures ({allProcedures.length})
             </div>
-
-            <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
-              <div className="items-center box-border caret-transparent flex shrink-0 my-px">
-                <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
-                  <div
-                    title={procedure.name}
-                    className={`box-border caret-transparent text-ellipsis text-nowrap overflow-hidden ${procedure.isFeatured ? 'font-semibold' : ''}`}
-                  >
-                    {procedure.name}
+            {allProcedures.map((procedure) => (
+              <div
+                key={procedure.id}
+                onClick={() => onSelectProcedure(procedure.id)}
+                className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
+                  selectedProcedureId === procedure.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
+                }`}
+              >
+                <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
+                  <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
+                      alt="Icon"
+                      className="text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                    />
                   </div>
                 </div>
-                {procedure.isFeatured && (
-                  <div className="bg-blue-500 h-1.5 w-1.5 rounded-full ml-1"></div>
-                )}
-              </div>
-              <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent flex items-center gap-2">
-                  {procedure.isGlobal && (
-                    <span className="items-center inline-flex px-2 py-1 rounded border border-zinc-200 text-xs">
-                      <img
-                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
-                        className="h-3 w-3 mr-1"
-                        alt="Global"
-                      />
-                      Global Procedure
-                    </span>
-                  )}
-                  {procedure.category && (
-                    <span className="items-center bg-gray-50 inline-flex px-2 py-1 rounded border border-gray-50 text-xs">
-                      <img
-                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/image-1.svg"
-                        className="h-2.5 w-2.5 mr-1 rounded-full"
-                        alt="Category"
-                      />
-                      {procedure.category}
-                    </span>
-                  )}
+
+                <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
+                  <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                    <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
+                      <div
+                        title={procedure.name}
+                        className={`box-border caret-transparent text-ellipsis text-nowrap overflow-hidden ${procedure.isFeatured ? 'font-semibold' : ''}`}
+                      >
+                        {procedure.name}
+                      </div>
+                    </div>
+                    {procedure.isFeatured && (
+                      <div className="bg-blue-500 h-1.5 w-1.5 rounded-full ml-1"></div>
+                    )}
+                  </div>
+                  <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
+                    <div className="text-gray-600 text-[12.6px] box-border caret-transparent flex items-center gap-2">
+                      {procedure.category && (
+                        <span className="items-center bg-gray-50 inline-flex px-2 py-1 rounded border border-gray-50 text-xs">
+                          <img
+                            src="https://c.animaapp.com/mkof8zon8iICvl/assets/image-1.svg"
+                            className="h-2.5 w-2.5 mr-1 rounded-full"
+                            alt="Category"
+                          />
+                          {procedure.category}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
+                      {procedure.fieldCount}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
-                  {procedure.fieldCount}
-                </div>
               </div>
-            </div>
+            ))}
+          </>
+        )}
+
+        {procedures.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+            <img
+              src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
+              alt="No procedures"
+              className="h-12 w-12 mb-4 opacity-20"
+            />
+            <p className="text-sm font-medium">No procedures found</p>
+            <p className="text-xs">Create a new template to get started</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

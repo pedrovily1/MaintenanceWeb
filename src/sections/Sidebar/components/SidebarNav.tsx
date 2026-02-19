@@ -19,7 +19,7 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = '';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'workorders' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'workorders' ? 'text-[var(--accent)] bg-[var(--panel)]' : 'hover:bg-[var(--panel)]'
           }`}
         >
           <img

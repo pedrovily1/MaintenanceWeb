@@ -103,6 +103,9 @@ const mapItemToField = (item: ProcedureItem): WorkOrderField | null => {
         type: 'meter',
         required: item.required,
         unit: (item as any).unit,
+        meterId: (item as any).meterId,
+        allowedMeterIds: (item as any).allowedMeterIds,
+        value: (item as any).meterId ? { meterId: (item as any).meterId } : undefined,
       };
     case 'Heading':
     case 'TextBlock':

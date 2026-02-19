@@ -34,7 +34,7 @@ export const Messages = () => {
       name: "All Team",
       lastMessage: "Admin joined CWS - Slovakia",
       lastMessageDate: "12/02/2025",
-      avatarUrl: "https://app.getmaintainx.com/img/93eafef8-3c18-48b5-a95a-2a8d545d9ac5_Chenega-Logo-Simplified-4C.png?w=512&h=512"
+      avatarUrl: "logo.svg"
     }
   ];
 

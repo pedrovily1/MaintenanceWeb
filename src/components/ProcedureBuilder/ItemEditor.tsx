@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProcedureItem, ProcedureItemKind, MultipleChoiceItem, NumberInputItem, TextInputItem, MeterReadingItem } from '@/types/procedure';
+import { useMeterStore } from '@/store/useMeterStore';
 
 interface ItemEditorProps {
   item: ProcedureItem;
@@ -34,6 +35,8 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
       </div>
     </div>
   );
+
+  const { meters } = useMeterStore();
 
   const renderBody = () => {
     switch (item.kind as ProcedureItemKind) {
@@ -110,10 +113,45 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
         return <div className="text-xs text-gray-500 mt-2">No additional options</div>;
       case 'MeterReading': {
         const it = item as MeterReadingItem;
+        const activeMeters = (meters || []).filter(m => m?.active !== false);
         return (
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <input className="border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Meter ID (optional)" value={it.meterId || ''} onChange={(e) => onChange({ meterId: e.target.value })} />
-            <input className="border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Units (e.g., kWh)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
+          <div className="mt-2 space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Default Meter</label>
+                <select
+                  className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                  value={it.meterId || ''}
+                  onChange={(e) => onChange({ meterId: e.target.value || undefined })}
+                >
+                  <option value="">None</option>
+                  {activeMeters.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Units</label>
+                <input className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Units (e.g., kWh)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Allowed Meters (optional)</label>
+              <select
+                multiple
+                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm min-h-[80px]"
+                value={it.allowedMeterIds || []}
+                onChange={(e) => {
+                  const opts = Array.from(e.target.selectedOptions).map(o => o.value);
+                  onChange({ allowedMeterIds: opts });
+                }}
+              >
+                {activeMeters.map(m => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+              <div className="text-xs text-gray-500 mt-1">If empty, all active meters will be available when this procedure is used.</div>
+            </div>
           </div>
         );
       }

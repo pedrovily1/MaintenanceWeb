@@ -24,16 +24,16 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
 
   return (
     <div className="box-border caret-transparent shrink-0 mb-4 mx-4">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex basis-[0%] grow items-center justify-between border border-zinc-200 p-3 rounded-lg">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="omp-panel shadow-none box-border caret-transparent flex basis-[0%] grow items-center justify-between p-3 rounded-lg overflow-x-auto">
+        <div className="flex items-center gap-2">
           {/* Search */}
-          <div className="box-border caret-transparent flex basis-[320px] max-w-[420px] grow">
+          <div className="box-border caret-transparent flex w-[300px]">
             <input
               type="search"
-              placeholder="Search name, tag, manufacturer, model, serial"
+              placeholder="Search..."
               value={value.search}
               onChange={(e) => set({ search: e.target.value })}
-              className="bg-gray-50 box-border caret-transparent leading-5 min-h-10 -outline-offset-2 w-full border border-gray-200 pl-3 pr-2 py-2 rounded-md"
+              className="bg-gray-50 box-border caret-transparent leading-5 h-10 -outline-offset-2 w-full border border-gray-200 px-3 rounded-md text-sm"
             />
           </div>
 
@@ -41,7 +41,7 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
           <select
             value={value.status}
             onChange={(e) => set({ status: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white min-w-[120px]"
           >
             <option value="All">All Statuses</option>
             <option value="Active">Active</option>
@@ -53,7 +53,7 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
           <select
             value={value.location}
             onChange={(e) => set({ location: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white min-w-[120px]"
           >
             <option value="All">All Locations</option>
             {locations.map((l) => (
@@ -65,7 +65,7 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
           <select
             value={value.category}
             onChange={(e) => set({ category: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white min-w-[120px]"
           >
             <option value="All">All Categories</option>
             {categories.map((c) => (
@@ -77,7 +77,7 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
           <select
             value={value.criticality}
             onChange={(e) => set({ criticality: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white min-w-[120px]"
           >
             <option value="All">All Criticalities</option>
             <option value="Low">Low</option>
@@ -87,12 +87,12 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
         </div>
 
         {/* Sort */}
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-gray-500">Sort</label>
+        <div className="flex items-center gap-2 ml-4 shrink-0">
+          <label className="text-xs text-gray-500 font-medium">Sort:</label>
           <select
             value={value.sortBy}
             onChange={(e) => set({ sortBy: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white"
           >
             <option value="name">Name</option>
             <option value="updatedAt">Updated</option>
@@ -101,7 +101,7 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
           <select
             value={value.sortDir}
             onChange={(e) => set({ sortDir: e.target.value as any })}
-            className="border border-zinc-200 rounded px-2 py-2 text-sm"
+            className="border border-zinc-200 rounded px-2 h-10 text-sm bg-white"
           >
             <option value="asc">Asc</option>
             <option value="desc">Desc</option>

@@ -2,6 +2,7 @@ import React from 'react';
 import { WorkOrderField, Attachment } from '../../types/workOrder';
 import { attachmentService } from '../../services/attachmentService';
 import { Trash2, Paperclip, Camera, Clock } from 'lucide-react';
+import { useMeterStore } from '@/store/useMeterStore';
 
 interface FieldRendererProps {
   field: WorkOrderField;
@@ -25,6 +26,8 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
     onUpdate({ attachments: (field.attachments || []).filter(a => a.id !== id) });
   };
 
+  const { getMeterById } = useMeterStore();
+
   const renderField = () => {
     switch (field.type) {
       case 'checkbox':
@@ -44,7 +47,6 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
         );
 
       case 'text':
-      case 'meter':
         return (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -52,17 +54,64 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
             </label>
             <div className="flex items-center space-x-2">
               <input
-                type={field.type === 'meter' ? 'number' : 'text'}
+                type='text'
                 value={field.value || ''}
                 onChange={(e) => onUpdate({ value: e.target.value })}
                 placeholder={field.placeholder}
                 disabled={disabled}
                 className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
-              {field.unit && <span className="text-sm text-gray-500 font-medium">{field.unit}</span>}
             </div>
           </div>
         );
+
+      case 'meter': {
+        const meter = field.meterId ? getMeterById(field.meterId) : undefined;
+        const value = typeof field.value === 'object' ? field.value.value : field.value;
+        const unit = field.unit || meter?.unit || '';
+        return (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {field.label} {field.required && '*'}
+              </label>
+              {meter && (
+                <div className="text-xs text-gray-500">
+                  <span className="font-semibold">{meter.name}</span>
+                  {unit ? <span> • {unit}</span> : null}
+                </div>
+              )}
+            </div>
+            {meter ? (
+              <div className="text-xs text-gray-500">
+                Last: {typeof meter.lastReading === 'number' ? `${meter.lastReading}${unit ? ` ${unit}` : ''}` : '—'}
+                {meter.lastReadingAt ? ` • ${new Date(meter.lastReadingAt).toLocaleString()}` : ''}
+              </div>
+            ) : (
+              <div className="text-xs text-amber-600">No meter selected</div>
+            )}
+            <div className="flex items-center space-x-2">
+              <input
+                type='number'
+                value={value ?? ''}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  const num = v === '' ? '' : Number(v);
+                  if (field.meterId) {
+                    onUpdate({ value: { meterId: field.meterId, value: num } });
+                  } else {
+                    onUpdate({ value: num });
+                  }
+                }}
+                placeholder={unit ? `Enter ${unit}` : 'Enter value'}
+                disabled={disabled}
+                className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              />
+              {unit && <span className="text-sm text-gray-500 font-medium">{unit}</span>}
+            </div>
+          </div>
+        );
+      }
 
       case 'textarea':
         return (
