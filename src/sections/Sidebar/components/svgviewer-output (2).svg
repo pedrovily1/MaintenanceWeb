@@ -1,0 +1,84 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 240"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <defs>
+    <!-- Ring gradient -->
+    <linearGradient id="ringMain" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6fd1ff"/>
+      <stop offset="50%" stop-color="#2e8bff"/>
+      <stop offset="100%" stop-color="#1b4fa3"/>
+    </linearGradient>
+
+    <!-- Highlight -->
+    <linearGradient id="ringHighlight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Glow -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- Outer glow ring -->
+  <circle
+    cx="120"
+    cy="120"
+    r="70"
+    fill="none"
+    stroke="#4db8ff"
+    stroke-width="18"
+    opacity="0.25"
+    filter="url(#softGlow)"
+  />
+
+  <!-- Main ring -->
+  <circle
+    cx="120"
+    cy="120"
+    r="62"
+    fill="none"
+    stroke="url(#ringMain)"
+    stroke-width="14"
+  />
+
+  <!-- Highlight arc -->
+  <path
+    d="M120 58 A62 62 0 0 1 175 95"
+    fill="none"
+    stroke="url(#ringHighlight)"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+
+  <!-- Inner cut -->
+  <circle cx="120" cy="120" r="36" fill="#0a0d12"/>
+
+  <!-- Text -->
+  <text
+    x="230"
+    y="120"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="72"
+    font-weight="700"
+    fill="#ffffff"
+    dominant-baseline="middle"
+    letter-spacing="2"
+  >
+    OMP
+  </text>
+
+  <text
+    x="230"
+    y="165"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="28"
+    fill="#cfd6df"
+    letter-spacing="3"
+  >
+    ONLINE MAINTENANCE PORTAL
+  </text>
+</svg>
