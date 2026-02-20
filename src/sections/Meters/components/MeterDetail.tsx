@@ -88,8 +88,8 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
   if (!meterId) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
+        <div className="bg-[var(--panel)] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-[var(--muted)] bg-[var(--panel-2)]">
             Select a meter to view details
           </div>
         </div>
@@ -100,8 +100,8 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
   if (!meter) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-red-500 bg-[var(--panel-2)]">
+        <div className="bg-[var(--panel)] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-red-400 bg-[var(--panel-2)]">
             Meter not found
           </div>
         </div>
@@ -131,7 +131,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
 
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+      <div className="bg-[var(--panel)] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
           <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
@@ -262,7 +262,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                       className={`px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded ${
                         activeTimeframe === timeframe
                           ? 'bg-blue-500 text-white'
-                          : 'bg-transparent text-gray-500 hover:bg-gray-100'
+                          : 'bg-transparent text-[var(--muted)] hover:bg-[var(--panel-2)]'
                       }`}
                     >
                       {timeframe}
@@ -272,34 +272,48 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
 
               {/* Chart Section */}
-              <div className="h-48 bg-white rounded border border-[var(--border)] mb-4 p-4">
+              <div className="h-48 bg-[var(--panel)] rounded border border-[var(--border)] mb-4 p-4">
                 {chartData.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-gray-500 text-[10px] uppercase tracking-widest">
+                  <div className="flex items-center justify-center h-full text-[var(--muted)] text-[10px] uppercase tracking-widest">
                     No data
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
-                      <XAxis 
-                        dataKey="name" 
-                        fontSize={9} 
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.08)" />
+                      <XAxis
+                        dataKey="name"
+                        fontSize={9}
                         tickMargin={10}
                         stroke="var(--muted)"
+                        tick={{ fill: 'var(--muted)', fontSize: 9 }}
                       />
-                      <YAxis fontSize={9} stroke="var(--muted)" />
-                      <Tooltip 
-                        contentStyle={{ fontSize: '10px', borderRadius: '4px', border: '1px solid var(--border)', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-                        labelStyle={{ fontWeight: 'bold' }}
+                      <YAxis
+                        fontSize={9}
+                        stroke="var(--muted)"
+                        tick={{ fill: 'var(--muted)', fontSize: 9 }}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          fontSize: '10px',
+                          borderRadius: '4px',
+                          border: '1px solid var(--border)',
+                          background: 'var(--panel)',
+                          color: 'var(--text)',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                        }}
+                        labelStyle={{ fontWeight: 'bold', color: 'var(--muted)' }}
+                        itemStyle={{ color: 'var(--text)' }}
+                        cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1 }}
                         labelFormatter={(label, payload) => payload?.[0]?.payload?.fullDate || label}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="var(--accent)" 
-                        strokeWidth={1.5} 
-                        dot={{ r: 2, fill: 'var(--accent)' }} 
-                        activeDot={{ r: 4, strokeWidth: 0 }} 
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="var(--accent)"
+                        strokeWidth={1.5}
+                        dot={{ r: 2, fill: 'var(--accent)' }}
+                        activeDot={{ r: 4, strokeWidth: 0 }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -320,12 +334,12 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
 
               {/* History List */}
-              <div className="bg-white border border-[var(--border)] rounded">
+              <div className="bg-[var(--panel)] border border-[var(--border)] rounded">
                 <div className="px-3 py-2 border-b border-[var(--border)] text-sm font-medium">History</div>
                 {readings.length === 0 ? (
-                  <div className="px-3 py-3 text-sm text-gray-500">No readings to display</div>
+                  <div className="px-3 py-3 text-sm text-[var(--muted)]">No readings to display</div>
                 ) : (
-                  <ul className="divide-y divide-zinc-200 max-h-80 overflow-auto">
+                  <ul className="divide-y divide-[var(--border)] max-h-80 overflow-auto">
                     {readings.slice(0, 50).map(r => (
                       <li key={r.id} className="px-3 py-2 text-sm group">
                         {editingReadingId === r.id ? (
@@ -368,32 +382,32 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                               <div className="text-xs text-gray-500">{new Date(r.recordedAt || r.createdAt).toLocaleString()} • {r.source || '—'}</div>
                             </div>
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
-                              <button 
+                              <button
                                 onClick={() => startEditReading(r)}
-                                className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded"
+                                className="p-1.5 text-[var(--muted)] hover:text-blue-400 hover:bg-[rgba(47,107,255,0.1)] rounded"
                                 title="Edit reading"
                               >
                                 <Edit2 size={14} />
                               </button>
                               {deletingReadingId === r.id ? (
-                                <div className="flex items-center bg-red-50 rounded border border-red-100">
-                                  <button 
+                                <div className="flex items-center bg-[var(--panel-2)] rounded border border-[rgba(255,77,109,0.2)]">
+                                  <button
                                     onClick={() => { deleteReading(r.id); setDeletingReadingId(null); }}
-                                    className="px-2 py-1 text-[10px] text-red-600 font-bold hover:bg-red-100"
+                                    className="px-2 py-1 text-[10px] text-red-400 font-bold hover:bg-[rgba(255,77,109,0.15)]"
                                   >
                                     Confirm
                                   </button>
-                                  <button 
+                                  <button
                                     onClick={() => setDeletingReadingId(null)}
-                                    className="px-2 py-1 text-[10px] text-gray-500 hover:bg-gray-100 border-l border-red-100"
+                                    className="px-2 py-1 text-[10px] text-[var(--muted)] hover:bg-[var(--panel)] border-l border-[rgba(255,77,109,0.2)]"
                                   >
                                     Cancel
                                   </button>
                                 </div>
                               ) : (
-                                <button 
+                                <button
                                   onClick={() => setDeletingReadingId(r.id)}
-                                  className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded"
+                                  className="p-1.5 text-[var(--muted)] hover:text-red-400 hover:bg-[rgba(255,77,109,0.1)] rounded"
                                   title="Delete reading"
                                 >
                                   <Trash2 size={14} />

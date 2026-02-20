@@ -89,28 +89,15 @@
 
 @layer base {
   :root {
-    --bg:#0B0F14;
-    --panel:#111826;
-    --panel-2:#0E1522;
-    --text:#E6EAF2;
-    --muted:#9AA4B2;
-    --border:rgba(255,255,255,0.08);
-    --accent:#2F6BFF;
-    --accent-2:#00D4FF;
-    --status-active:#2FE58C;
-    --status-offline:#FF4D6D;
-    --status-warning:#FFB020;
-
+    /* shadcn base tokens (defined first so ops-console vars below take precedence) */
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
 
-    --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
 
     --card: transparent;
@@ -122,7 +109,6 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 100% 50%;
@@ -131,6 +117,19 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+
+    /* OPS-CONSOLE dark theme — must come AFTER shadcn tokens to win cascade */
+    --bg: #0B0F14;
+    --panel: #111826;
+    --panel-2: #0E1522;
+    --text: #E6EAF2;
+    --muted: #9AA4B2;
+    --border: rgba(255,255,255,0.08);
+    --accent: #2F6BFF;
+    --accent-2: #00D4FF;
+    --status-active: #2FE58C;
+    --status-offline: #FF4D6D;
+    --status-warning: #FFB020;
   }
 
   .dark {
