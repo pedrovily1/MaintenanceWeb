@@ -4,6 +4,7 @@ import { AssetAttachments } from './AssetAttachments';
 import { AssetEditorPanel } from './AssetEditorPanel';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useMeterStore } from '@/store/useMeterStore';
+import { usePartStore } from '@/store/usePartStore';
 import type { Asset } from '@/types/asset';
 
 type AssetDetailProps = {
@@ -14,6 +15,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
   const { assets, getAssetById, updateAsset, deleteAsset } = useAssetStore();
   const { workOrders } = useWorkOrderStore();
   const { meters } = useMeterStore();
+  const { parts } = usePartStore();
   const [showEditor, setShowEditor] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -29,6 +31,29 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
     const list = workOrders.filter((wo: any) => (wo.assetId && wo.assetId === asset.id) || (!wo.assetId && wo.asset === asset.name));
     return list.sort((a: any,b: any) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime()).slice(0,10);
   }, [workOrders, asset]);
+
+  /** Parts compatible with this asset (linked via compatibleAssetIds or asset.compatiblePartIds) */
+  const compatibleParts = useMemo(() => {
+    if (!asset) return [];
+    return parts.filter(p => p.compatibleAssetIds.includes(asset.id));
+  }, [parts, asset]);
+
+  /** Parts historically used on this asset (consumed in any completed WO tied to this asset) */
+  const partsUsed = useMemo(() => {
+    if (!asset) return [] as { partId: string; partName: string; count: number }[];
+    const usageMap = new Map<string, { partId: string; partName: string; count: number }>();
+    relatedWOs.forEach((wo: any) => {
+      (wo.parts || []).filter((p: any) => p.consumed).forEach((p: any) => {
+        const existing = usageMap.get(p.partId);
+        if (existing) {
+          existing.count += p.quantityUsed;
+        } else {
+          usageMap.set(p.partId, { partId: p.partId, partName: p.partName, count: p.quantityUsed });
+        }
+      });
+    });
+    return Array.from(usageMap.values());
+  }, [relatedWOs]);
 
   if (!assetId) {
     return (
@@ -272,17 +297,50 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
 
             {/* Parts */}
             <div className="box-border caret-transparent shrink-0 mb-4">
-              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Parts (1)</h2>
-              <div className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer transition-colors group">
-                <div className="bg-sky-100 border border-blue-300 h-7 w-7 flex items-center justify-center rounded-lg mr-3">
-                  <img
-                    src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
-                    alt="Icon"
-                    className="h-4 w-4"
-                  />
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
+                Compatible Parts ({compatibleParts.length})
+              </h2>
+              {compatibleParts.length === 0 ? (
+                <div className="text-xs text-[var(--muted)] italic">No compatible parts linked.</div>
+              ) : (
+                <div className="space-y-1">
+                  {compatibleParts.map(p => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        window.location.hash = '#parts';
+                        setTimeout(() => window.dispatchEvent(new CustomEvent('select-part', { detail: { id: p.id } })), 100);
+                      }}
+                      className="w-full items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer transition-colors group text-left"
+                    >
+                      <div className="bg-sky-100 border border-blue-300 h-7 w-7 flex items-center justify-center rounded-lg mr-3">
+                        <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg" alt="Icon" className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{p.name}</div>
+                        <div className="text-xs text-[var(--muted)]">{p.inventory.reduce((s, i) => s + i.quantity, 0)} in stock</div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
-                <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">PSN50W036T2</div>
-              </div>
+              )}
+
+              {partsUsed.length > 0 && (
+                <div className="mt-3">
+                  <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
+                    Parts Used ({partsUsed.length})
+                  </h2>
+                  <div className="space-y-1">
+                    {partsUsed.map(pu => (
+                      <div key={pu.partId} className="text-xs border border-[var(--border)] rounded p-2 flex justify-between items-center">
+                        <span className="font-medium">{pu.partName}</span>
+                        <span className="text-[var(--muted)]">{pu.count} consumed</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="border-b border-[var(--border)] my-3"></div>

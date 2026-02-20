@@ -1,11 +1,4 @@
-type Part = {
-  id: string;
-  name: string;
-  quantity: string;
-  location: string;
-  assetName: string;
-  imageUrl?: string;
-};
+import { Part, getTotalStock, needsRestock } from '@/types/part';
 
 type PartListProps = {
   parts: Part[];
@@ -49,63 +42,84 @@ export const PartList = ({ parts, selectedPartId, onSelectPart }: PartListProps)
 
       {/* Part List */}
       <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr">
-        {parts.map((part) => (
-          <div
-            key={part.id}
-            onClick={() => onSelectPart(part.id)}
-            className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
-              selectedPartId === part.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
-            } group`}
-          >
-            <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3 rounded-lg">
-              <div
-                title={part.name}
-                className={`text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid transition-opacity ${selectedPartId === part.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
-              >
-                {part.imageUrl ? (
-                  <figure
-                    className="bg-cover box-border caret-transparent shrink-0 h-12 w-12 bg-center"
-                    style={{ backgroundImage: `url('${part.imageUrl}')` }}
-                  ></figure>
-                ) : (
-                  <span className="text-blue-500 box-border caret-transparent flex shrink-0">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
-                      alt="Icon"
-                      className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-                    />
-                  </span>
-                )}
-              </div>
-            </div>
+        {parts.length === 0 && (
+          <div className="flex items-center justify-center h-32 text-[var(--muted)] text-sm italic">
+            No parts found.
+          </div>
+        )}
+        {parts.map((part) => {
+          const total = getTotalStock(part);
+          const restock = needsRestock(part);
+          const primaryLocation = part.inventory[0]?.locationName ?? '—';
 
-            <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3">
-              <div className="items-center box-border caret-transparent flex shrink-0 my-px">
-                <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
-                  <div
-                    title={part.name}
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
-                  >
-                    {part.name}
+          return (
+            <div
+              key={part.id}
+              onClick={() => onSelectPart(part.id)}
+              className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
+                selectedPartId === part.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+              } group`}
+            >
+              <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3 rounded-lg">
+                <div
+                  title={part.name}
+                  className={`text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid transition-opacity ${selectedPartId === part.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                >
+                  {part.imageUrl ? (
+                    <figure
+                      className="bg-cover box-border caret-transparent shrink-0 h-12 w-12 bg-center"
+                      style={{ backgroundImage: `url('${part.imageUrl}')` }}
+                    ></figure>
+                  ) : (
+                    <span className="text-blue-500 box-border caret-transparent flex shrink-0">
+                      <img
+                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
+                        alt="Icon"
+                        className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                      />
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3">
+                <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                  <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
+                    <div
+                      title={part.name}
+                      className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
+                    >
+                      {part.name}
+                    </div>
+                  </div>
+                  <div className="box-border caret-transparent shrink-0 flex items-center gap-1">
+                    <span className={`text-sm font-medium ${restock ? 'text-amber-600' : 'text-gray-600'}`}>
+                      {total} {part.unit || 'unit'}{total !== 1 ? 's' : ''}
+                    </span>
+                    {restock && (
+                      <span className="bg-amber-100 text-amber-700 text-[9px] font-bold uppercase tracking-wide px-1 py-0.5 rounded">
+                        Low
+                      </span>
+                    )}
                   </div>
                 </div>
-                <div className="box-border caret-transparent shrink-0">
-                  <span className="text-gray-600 text-sm">{part.quantity}</span>
+                <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
+                  <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
+                    At {primaryLocation}
+                    {part.inventory.length > 1 && (
+                      <span className="text-blue-500 ml-1">+{part.inventory.length - 1} more</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
-                  At {part.location}
-                </div>
-              </div>
-              <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-px">
-                <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
-                  For {part.assetName}
+                <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-px">
+                  <div className="text-gray-500 text-[11px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
+                    {part.partType}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
