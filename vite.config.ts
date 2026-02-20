@@ -8,7 +8,8 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
-  base: "/MaintenanceWeb/",
+  // 🔥 IMPORTANT: root-relative base for Vercel
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
