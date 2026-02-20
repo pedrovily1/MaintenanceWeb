@@ -7,7 +7,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   publicDir: "./static",
-  base: "./",
+  base: "/MaintenanceWeb/",
   css: {
     postcss: {
       plugins: [tailwind()],
