@@ -120,7 +120,7 @@ export const WorkOrderCard = ({
               <div className="mr-1.5 flex items-center">
                 {status === 'Open' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" alt="Open" className="h-3 w-3 opacity-100" />}
                 {status === 'On Hold' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" alt="On Hold" className="h-3 w-3 opacity-100" />}
-                {status === 'In Progress' && <img src="/src/public/inprogress.svg" alt="In Progress" className="h-3 w-3 opacity-100" />}
+                {status === 'In Progress' && <img src="/public/inprogress.svg" alt="In Progress" className="h-3 w-3 opacity-100" />}
                 {status === 'Done' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg" alt="Done" className="h-3 w-3 opacity-100" />}
               </div>
               {status}

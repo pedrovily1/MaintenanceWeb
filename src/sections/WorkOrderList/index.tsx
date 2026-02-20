@@ -487,7 +487,7 @@ export const WorkOrderList = () => {
                                       src={
                                         status === 'Open' ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" :
                                         status === 'On Hold' ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" :
-                                        status === 'In Progress' ? "/src/public/inprogress.svg" :
+                                        status === 'In Progress' ? "/public/inprogress.svg" :
                                         "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg"
                                       }
                                       alt={status}
