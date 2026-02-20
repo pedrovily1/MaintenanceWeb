@@ -74,27 +74,6 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
           </span>
         </a>
       </li>
-      <li title="Messages" className="box-border caret-transparent shrink-0">
-        <a
-          href="/messages"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.hash = 'messages';
-          }}
-          className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'messages' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
-          }`}
-        >
-          <img
-            src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-8.svg"
-            alt="Icon"
-            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'messages' ? 'opacity-100' : ''}`}
-          />
-          <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
-            Messages
-          </span>
-        </a>
-      </li>
       <li className="box-border caret-transparent shrink-0">
         <hr className="text-zinc-500 bg-zinc-200 caret-transparent shrink-0 h-px w-full" />
       </li>
