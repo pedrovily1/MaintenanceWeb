@@ -379,32 +379,40 @@ export const WorkOrderList = () => {
                                 </span>
                               </button>
                             </div>
-                            <div className="items-center box-border caret-transparent gap-x-1 flex h-[18px] gap-y-1">
-                              <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
-                                <img
-                                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-36.svg"
-                                  alt="Icon"
-                                  className="text-blue-500 box-border caret-transparent h-3.5 w-3.5"
-                                />
-                                <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
-                                  {selectedWorkOrder.workType}
-                                </span>
-                              </div>
-                              {selectedWorkOrder.startDate && (
+                              <div className="items-center box-border caret-transparent gap-x-1 flex h-[18px] gap-y-1">
                                 <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
+                                  <img
+                                    src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-36.svg"
+                                    alt="Icon"
+                                    className="text-blue-500 box-border caret-transparent h-3.5 w-3.5"
+                                  />
                                   <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
-                                    - Start {new Date(selectedWorkOrder.startDate).toLocaleDateString()}
+                                    {selectedWorkOrder.workType}
                                   </span>
                                 </div>
-                              )}
-                              <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
-                                <span className="box-border caret-transparent flex mr-px">
-                                  <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
-                                    {selectedWorkOrder.startDate ? ' • ' : ' - '}Due {new Date(selectedWorkOrder.dueDate).toLocaleDateString()}
+                                {selectedWorkOrder.startDate && (
+                                  <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
+                                    <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
+                                      - Start {new Date(selectedWorkOrder.startDate).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                )}
+                                <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1">
+                                  <span className="box-border caret-transparent flex mr-px">
+                                    <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
+                                      {selectedWorkOrder.startDate ? ' • ' : ' - '}Due {new Date(selectedWorkOrder.dueDate).toLocaleDateString()}
+                                    </span>
                                   </span>
-                                </span>
+                                </div>
+                                {selectedWorkOrder.status !== 'Done' && new Date(selectedWorkOrder.dueDate) < new Date(new Date().toISOString().split('T')[0]) && (
+                                  <div className="items-center box-border caret-transparent gap-x-1 flex gap-y-1 ml-1">
+                                    <span className="text-red-600 text-[11.9994px] font-medium box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px] flex items-center">
+                                      <span className="mr-1">•</span>
+                                      Overdue
+                                    </span>
+                                  </div>
+                                )}
                               </div>
-                            </div>
                           </div>
                         </div>
                         <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
