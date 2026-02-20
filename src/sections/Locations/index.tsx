@@ -1,50 +1,59 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { LocationList } from "./components/LocationList";
 import { LocationDetail } from "./components/LocationDetail";
+import { useLocationStore } from "@/store/useLocationStore";
+import { useAssetStore } from "@/store/useAssetStore";
+import { LocationEditorModal } from "./components/LocationEditorModal";
 
 export const Locations = () => {
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>("2687779");
+  const [search, setSearch] = useState('');
+  const [showCreate, setShowCreate] = useState(false);
+  const [createParentId, setCreateParentId] = useState<string | null>(null);
+  const { locations, addLocation } = useLocationStore();
+  const { assets } = useAssetStore();
 
-  const locations = [
-    {
-      id: "2687779",
-      name: "General",
-      description: "This is the default location for CWS - Slovakia. When you create assets without assigning a location they will be placed here.",
-      address: "",
-      subLocationsCount: 0,
-      assetsCount: 2,
-      assets: [
-        {
-          id: "14205013",
-          name: "1.02 Arm and Disarm Keypad",
-          imageUrl: "https://app.getmaintainx.com/img/27b59f77-afb8-45c7-83db-bc27b3c91b8a_MR-DT.webp?w=64&h=64&rmode=crop"
-        },
-        {
-          id: "14205014",
-          name: "1.09 Arm and Disarm Keypad",
-          imageUrl: "https://app.getmaintainx.com/img/27b59f77-afb8-45c7-83db-bc27b3c91b8a_MR-DT.webp?w=64&h=64&rmode=crop"
-        }
-      ]
-    },
-    {
-      id: "3368477",
-      name: "General Storage",
-      description: "",
-      address: "",
-      subLocationsCount: 0,
-      assetsCount: 0,
-      assets: []
-    },
-    {
-      id: "2698783",
-      name: "Slovakia",
-      description: "",
-      address: "Airbase CSA 1, Sliac, 96231, Slovakia",
-      subLocationsCount: 3,
-      assetsCount: 0,
-      assets: []
-    }
-  ];
+  // Listen for sub-location creation requests from LocationDetail
+  useEffect(() => {
+    const handler = (e: any) => {
+      const parentId = e.detail?.parentLocationId;
+      if (parentId) {
+        setCreateParentId(parentId);
+        setShowCreate(true);
+      }
+    };
+    window.addEventListener('create-sub-location', handler as EventListener);
+    return () => window.removeEventListener('create-sub-location', handler as EventListener);
+  }, []);
+
+  // Build enriched location list for the list view
+  const enrichedLocations = useMemo(() => {
+    return locations.map(loc => {
+      const subLocationsCount = locations.filter(l => l.parentLocationId === loc.id).length;
+      const locAssets = assets.filter(a => a.locationId === loc.id);
+      return {
+        id: loc.id,
+        name: loc.name,
+        description: loc.description || '',
+        address: loc.address || '',
+        parentLocationId: loc.parentLocationId || null,
+        subLocationsCount,
+        assetsCount: locAssets.length,
+        assets: locAssets.map(a => ({
+          id: a.id,
+          name: a.name,
+          imageUrl: '',
+        })),
+      };
+    });
+  }, [locations, assets]);
+
+  // Filter by search
+  const filteredLocations = useMemo(() => {
+    if (!search.trim()) return enrichedLocations;
+    const term = search.toLowerCase();
+    return enrichedLocations.filter(l => l.name.toLowerCase().includes(term) || (l.address || '').toLowerCase().includes(term));
+  }, [enrichedLocations, search]);
 
   return (
     <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -58,16 +67,19 @@ export const Locations = () => {
           </div>
           <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow justify-end gap-y-4">
             <div className="box-border caret-transparent flex basis-[0%] grow max-w-[400px]">
-              <form className="box-border caret-transparent basis-[0%] grow">
+              <form className="box-border caret-transparent basis-[0%] grow" onSubmit={e => e.preventDefault()}>
                 <input
                   type="search"
                   placeholder="Search Locations"
-                  className="bg-[var(--panel-2)] bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="bg-[var(--panel-2)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] pl-3 pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                 />
               </form>
             </div>
             <button
               type="button"
+              onClick={() => setShowCreate(true)}
               className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
@@ -89,12 +101,26 @@ export const Locations = () => {
       {/* Main Content */}
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">
         <LocationList
-          locations={locations}
+          locations={filteredLocations}
           selectedLocationId={selectedLocationId}
           onSelectLocation={setSelectedLocationId}
         />
-        <LocationDetail locationId={selectedLocationId} locations={locations} />
+        <LocationDetail locationId={selectedLocationId} />
       </div>
+
+      {/* Create Modal */}
+      {showCreate && (
+        <LocationEditorModal
+          initial={createParentId ? { parentLocationId: createParentId } : undefined}
+          onClose={() => { setShowCreate(false); setCreateParentId(null); }}
+          onSubmit={(data) => {
+            const created = addLocation(data);
+            setShowCreate(false);
+            setCreateParentId(null);
+            setSelectedLocationId(created.id);
+          }}
+        />
+      )}
     </div>
   );
 };

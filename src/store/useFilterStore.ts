@@ -4,6 +4,7 @@ interface FilterState {
   search: string;
   assignedTo: string;
   location: string;
+  locationId: string;
   priority: string;
   dueDate: string;
 }
@@ -12,6 +13,7 @@ let globalFilters: FilterState = {
   search: '',
   assignedTo: '',
   location: '',
+  locationId: '',
   priority: '',
   dueDate: '',
 };
@@ -46,6 +48,7 @@ export const useFilterStore = () => {
       search: '',
       assignedTo: '',
       location: '',
+      locationId: '',
       priority: '',
       dueDate: '',
     };

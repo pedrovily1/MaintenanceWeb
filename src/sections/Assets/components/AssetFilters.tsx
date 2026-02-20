@@ -1,10 +1,12 @@
 import React from 'react';
 import type { AssetStatus, AssetCriticality } from '@/types/asset';
+import { useLocationStore, getDescendantLocationIds } from '@/store/useLocationStore';
 
 export type AssetFiltersState = {
   search: string;
   status: AssetStatus | 'All';
   location: string | 'All';
+  locationId: string | 'All';
   category: string | 'All';
   criticality: AssetCriticality | 'All';
   sortBy: 'name' | 'updatedAt' | 'criticality';
@@ -14,12 +16,11 @@ export type AssetFiltersState = {
 type Props = {
   value: AssetFiltersState;
   onChange: (next: AssetFiltersState) => void;
-  // optional data sets to build filter dropdowns
-  locations?: string[];
   categories?: string[];
 };
 
-export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [], categories = [] }) => {
+export const AssetFilters: React.FC<Props> = ({ value, onChange, categories = [] }) => {
+  const { locations } = useLocationStore();
   const set = (patch: Partial<AssetFiltersState>) => onChange({ ...value, ...patch });
 
   return (
@@ -49,15 +50,21 @@ export const AssetFilters: React.FC<Props> = ({ value, onChange, locations = [],
             <option value="Out of Service">Out of Service</option>
           </select>
 
-          {/* Location */}
+          {/* Location - now uses locationId from the store */}
           <select
-            value={value.location}
-            onChange={(e) => set({ location: e.target.value as any })}
+            value={value.locationId}
+            onChange={(e) => {
+              const locId = e.target.value;
+              const loc = locations.find(l => l.id === locId);
+              set({ locationId: locId as any, location: loc?.name || 'All' });
+            }}
             className="border border-[var(--border)] rounded px-2 h-10 text-sm bg-white min-w-[120px]"
           >
             <option value="All">All Locations</option>
             {locations.map((l) => (
-              <option key={l} value={l}>{l}</option>
+              <option key={l.id} value={l.id}>
+                {l.parentLocationId ? '\u00A0\u00A0\u2514 ' : ''}{l.name}
+              </option>
             ))}
           </select>
 

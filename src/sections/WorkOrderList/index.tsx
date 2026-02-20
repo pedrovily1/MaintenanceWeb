@@ -16,13 +16,14 @@ import { WorkOrderSection, ProcedureInstance } from "@/types/workOrder";
 import { ProcedureSelector } from "@/components/WorkOrder/ProcedureSelector";
 import { WorkOrderEditorPanel } from "./components/WorkOrderEditorPanel";
 import { Plus, Trash2, ClipboardList, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
+import { getDescendantLocationIds } from "@/store/useLocationStore";
 
 export const WorkOrderList = () => {
   const [activeTab, setActiveTab] = useState<'todo' | 'done'>('todo');
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string | null>(null);
   const { workOrders, addWorkOrder, updateWorkOrder, deleteWorkOrder } = useWorkOrderStore();
   const { getUserById } = useUserStore();
-  const { assignedTo, search: filterSearch } = useFilterStore();
+  const { assignedTo, search: filterSearch, locationId: filterLocationId } = useFilterStore();
   const { getCategoryById } = useCategoryStore();
   const [panelMode, setPanelMode] = useState<'view' | 'create'>('view');
   const [draft, setDraft] = useState<DraftWorkOrder | null>(null);
@@ -75,14 +76,21 @@ export const WorkOrderList = () => {
 
     if (filterSearch) {
       const term = filterSearch.toLowerCase();
-      list = list.filter(wo => 
-        wo.title.toLowerCase().includes(term) || 
+      list = list.filter(wo =>
+        wo.title.toLowerCase().includes(term) ||
         wo.workOrderNumber.toLowerCase().includes(term)
       );
     }
 
+    // Filter by location (including child locations)
+    if (filterLocationId) {
+      const descendantIds = getDescendantLocationIds(filterLocationId);
+      const matchIds = new Set([filterLocationId, ...descendantIds]);
+      list = list.filter(wo => wo.locationId && matchIds.has(wo.locationId));
+    }
+
     return list;
-  }, [workOrders, activeTab, assignedTo, filterSearch]);
+  }, [workOrders, activeTab, assignedTo, filterSearch, filterLocationId]);
 
   const selectedWorkOrder = useMemo(() => {
     try {
@@ -234,6 +242,24 @@ export const WorkOrderList = () => {
     };
     window.addEventListener('use-procedure-in-new-work-order', handler as EventListener);
     return () => window.removeEventListener('use-procedure-in-new-work-order', handler as EventListener);
+  }, []);
+
+  // Listen to Location -> Use in New Work Order
+  useEffect(() => {
+    const handler = (e: any) => {
+      const { locationId, locationName } = e.detail || {};
+      if (locationId) {
+        // Create draft with location pre-filled
+        setDraft(prev => ({
+          ...(prev ?? buildDefaultDraft()),
+          locationId,
+          location: locationName || '',
+        }));
+        setPanelMode('create');
+      }
+    };
+    window.addEventListener('use-location-in-new-work-order', handler as EventListener);
+    return () => window.removeEventListener('use-location-in-new-work-order', handler as EventListener);
   }, []);
 
   useEffect(() => { setConfirmDelete(false); }, [selectedWorkOrderId, panelMode]);

@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { WorkOrder, WorkOrderStatus, WorkOrderPriority } from '@/types/workOrder';
 import { useAssetStore } from '@/store/useAssetStore';
+import { LocationTreeSelector } from '@/components/LocationTreeSelector';
+import { getLocationSync } from '@/store/useLocationStore';
 
 export type WorkOrderEditorValue = Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'>;
 
@@ -19,6 +21,7 @@ const empty: WorkOrderEditorValue = {
   dueDate: new Date().toISOString().split('T')[0],
   assignedTo: 'Admin',
   asset: '',
+  locationId: null,
   location: '',
   categories: [],
   workType: 'Other',
@@ -40,6 +43,8 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
 
   const set = (patch: Partial<WorkOrderEditorValue>) => setValue(v => ({ ...v, ...patch }));
 
+  const hasAssetSelected = Boolean(value.assetId);
+
   const validate = () => {
     const e: { title?: string } = {};
     if (!value.title?.trim()) e.title = 'Title is required';
@@ -52,13 +57,30 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
     onSubmit({ ...value });
   };
 
+  const handleAssetChange = (assetId: string) => {
+    const selectedAsset = assets.find(a => a.id === assetId);
+    if (selectedAsset) {
+      // Auto-sync location from asset
+      const loc = selectedAsset.locationId ? getLocationSync(selectedAsset.locationId) : undefined;
+      set({
+        assetId: selectedAsset.id,
+        asset: selectedAsset.name,
+        locationId: selectedAsset.locationId || null,
+        location: loc?.name || selectedAsset.locationName || '',
+      });
+    } else {
+      // Asset cleared - location becomes editable again
+      set({ assetId: undefined, asset: '' });
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] bg-black/30 flex items-center justify-end" onClick={onClose}>
       <div className="bg-[var(--panel)] w-full max-w-xl h-full overflow-auto border-l border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="px-4 py-3 border-b border-[var(--border)] bg-[var(--panel-2)] flex items-center justify-between">
           <div className="text-lg font-semibold">{initial?.id ? 'Edit Work Order' : 'New Work Order'}</div>
-          <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>✕</button>
+          <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>&#x2715;</button>
         </div>
 
         {/* Body */}
@@ -66,19 +88,19 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="block text-xs text-gray-500 mb-1">Title<span className="text-red-500">*</span></label>
-              <input 
-                value={value.title} 
-                onChange={(e) => set({ title: e.target.value })} 
-                className={`w-full border rounded px-2 py-1 text-sm ${errors.title ? 'border-red-400' : 'border-[var(--border)]'}`} 
+              <input
+                value={value.title}
+                onChange={(e) => set({ title: e.target.value })}
+                className={`w-full border rounded px-2 py-1 text-sm ${errors.title ? 'border-red-400' : 'border-[var(--border)]'}`}
               />
               {errors.title && <div className="text-xs text-red-500 mt-1">{errors.title}</div>}
             </div>
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Status</label>
-              <select 
-                value={value.status} 
-                onChange={(e) => set({ status: e.target.value as WorkOrderStatus })} 
+              <select
+                value={value.status}
+                onChange={(e) => set({ status: e.target.value as WorkOrderStatus })}
                 className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="Open">Open</option>
@@ -90,9 +112,9 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Priority</label>
-              <select 
-                value={value.priority} 
-                onChange={(e) => set({ priority: e.target.value as WorkOrderPriority })} 
+              <select
+                value={value.priority}
+                onChange={(e) => set({ priority: e.target.value as WorkOrderPriority })}
                 className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="Low">Low</option>
@@ -103,22 +125,19 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Due Date</label>
-              <input 
-                type="date" 
-                value={value.dueDate} 
-                onChange={(e) => set({ dueDate: e.target.value })} 
-                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" 
+              <input
+                type="date"
+                value={value.dueDate}
+                onChange={(e) => set({ dueDate: e.target.value })}
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               />
             </div>
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Asset</label>
-              <select 
-                value={assets.find(a => a.name === value.asset)?.id || ''} 
-                onChange={(e) => {
-                  const asset = assets.find(a => a.id === e.target.value);
-                  set({ asset: asset?.name || '', assetId: asset?.id || '', location: asset?.locationName || '' });
-                }} 
+              <select
+                value={value.assetId || ''}
+                onChange={(e) => handleAssetChange(e.target.value)}
                 className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="">No Asset</option>
@@ -128,12 +147,24 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
               </select>
             </div>
 
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">
+                Location
+                {hasAssetSelected && <span className="text-gray-400 ml-1">(synced from asset)</span>}
+              </label>
+              <LocationTreeSelector
+                value={value.locationId || null}
+                disabled={hasAssetSelected}
+                onChange={(locationId, locationName) => set({ locationId, location: locationName })}
+              />
+            </div>
+
             <div className="col-span-2">
               <label className="block text-xs text-gray-500 mb-1">Description</label>
-              <textarea 
-                value={value.description} 
-                onChange={(e) => set({ description: e.target.value })} 
-                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[100px]" 
+              <textarea
+                value={value.description}
+                onChange={(e) => set({ description: e.target.value })}
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[100px]"
               />
             </div>
           </div>

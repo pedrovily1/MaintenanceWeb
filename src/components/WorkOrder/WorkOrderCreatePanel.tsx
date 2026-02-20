@@ -3,6 +3,9 @@ import { DEFAULT_SECTIONS } from "@/utils/defaultSections";
 import { WorkOrder } from "@/types/workOrder";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import { useVendorStore } from "@/store/useVendorStore";
+import { useAssetStore } from "@/store/useAssetStore";
+import { LocationTreeSelector } from "@/components/LocationTreeSelector";
+import { getLocationSync } from "@/store/useLocationStore";
 
 // Draft work order type used before persisting to the store
 export type DraftWorkOrder = Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'>;
@@ -19,6 +22,9 @@ interface WorkOrderCreatePanelProps {
 export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: WorkOrderCreatePanelProps) => {
   const { activeCategories, getCategoryById } = useCategoryStore();
   const { activeVendors } = useVendorStore();
+  const { assets } = useAssetStore();
+
+  const hasAssetSelected = Boolean(value.assetId);
 
   const isValid = useMemo(() => {
     // Minimal inline validation: Title and Due Date are required to create
@@ -176,11 +182,31 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                     <div className="box-border caret-transparent shrink-0 pb-2">
                       <strong className="font-semibold box-border caret-transparent shrink-0">Asset</strong>
                     </div>
-                    <input
+                    <select
                       className="w-full border border-[var(--border)] rounded p-2 text-sm"
-                      value={value.asset}
-                      onChange={(e) => update('asset', e.target.value)}
-                    />
+                      value={value.assetId || ''}
+                      onChange={(e) => {
+                        const selectedAsset = assets.find(a => a.id === e.target.value);
+                        if (selectedAsset) {
+                          // Auto-sync location from asset
+                          const loc = selectedAsset.locationId ? getLocationSync(selectedAsset.locationId) : undefined;
+                          onChange({
+                            assetId: selectedAsset.id,
+                            asset: selectedAsset.name,
+                            locationId: selectedAsset.locationId || null,
+                            location: loc?.name || selectedAsset.locationName || '',
+                          });
+                        } else {
+                          // Asset cleared - location becomes editable
+                          onChange({ assetId: undefined, asset: '' });
+                        }
+                      }}
+                    >
+                      <option value="">No Asset</option>
+                      {assets.map(a => (
+                        <option key={a.id} value={a.id}>{a.name}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -189,11 +215,16 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   <div>
                     <div className="box-border caret-transparent shrink-0 pb-2">
                       <strong className="font-semibold box-border caret-transparent shrink-0">Location</strong>
+                      {hasAssetSelected && (
+                        <span className="text-xs text-gray-400 ml-2">(synced from asset)</span>
+                      )}
                     </div>
-                    <input
-                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
-                      value={value.location}
-                      onChange={(e) => update('location', e.target.value)}
+                    <LocationTreeSelector
+                      value={value.locationId || null}
+                      disabled={hasAssetSelected}
+                      onChange={(locationId, locationName) => {
+                        onChange({ locationId, location: locationName });
+                      }}
                     />
                   </div>
                   <div>
@@ -328,8 +359,9 @@ export const buildDefaultDraft = (): DraftWorkOrder => ({
   dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
   assignedTo: 'Admin',
   assignedUsers: [{ name: 'Admin', imageUrl: 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png' }],
-  asset: 'GENERAL PURPOSE',
-  location: 'Site',
+  asset: '',
+  locationId: null,
+  location: '',
   categories: ['Maintenance'],
   workType: 'Corrective',
   sections: [], // No longer pre-filled
