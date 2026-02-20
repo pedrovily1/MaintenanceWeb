@@ -1,41 +1,265 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts */
 @font-face {
-  font-family: "Poppins";
-  src: url("/fonts/poppins-latin-400.woff2") format("woff2");
+  font-family: 'Poppins';
+  src: url("/static/poppins-devanagari-400-normal-DXhQFdtL.woff2") format("woff2"), url("/static/poppins-all-400-normal-CB-AqMbQ.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Poppins";
-  src: url("/fonts/poppins-latin-500.woff2") format("woff2");
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-ext-400-normal-CZnfsGfc.woff2") format("woff2"), url("/static/poppins-all-400-normal-CB-AqMbQ.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-400-normal-cpxAROuN.woff2") format("woff2"), url("/static/poppins-all-400-normal-CB-AqMbQ.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-devanagari-500-normal-CedCftIp.woff2") format("woff2"), url("/static/poppins-all-500-normal-CmrflhRp.woff") format("woff");
   font-weight: 500;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Poppins";
-  src: url("/fonts/poppins-latin-600.woff2") format("woff2");
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-ext-500-normal-CkbSfFoM.woff2") format("woff2"), url("/static/poppins-all-500-normal-CmrflhRp.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-500-normal-C8OXljZJ.woff2") format("woff2"), url("/static/poppins-all-500-normal-CmrflhRp.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-devanagari-600-normal-B64POISR.woff2") format("woff2"), url("/static/poppins-all-600-normal-DMv3R6c2.woff") format("woff");
   font-weight: 600;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Poppins";
-  src: url("/fonts/poppins-latin-700.woff2") format("woff2");
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-ext-600-normal-CjZjQJk3.woff2") format("woff2"), url("/static/poppins-all-600-normal-DMv3R6c2.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-600-normal-zEkxB9Mr.woff2") format("woff2"), url("/static/poppins-all-600-normal-DMv3R6c2.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-devanagari-700-normal-x1FzP7sX.woff2") format("woff2"), url("/static/poppins-all-700-normal-lTRW1ewp.woff") format("woff");
   font-weight: 700;
   font-style: normal;
 }
 
-/* Your CSS variables & overrides AFTER Tailwind */
-:root {
-  --bg: #0b0f14;
-  --panel: #111826;
-  --panel-2: #0e1522;
-  --text: #e6eaf2;
-  --muted: #9aa4b2;
-  --border: rgba(255,255,255,0.08);
-  --accent: #2f6bff;
-  --radius: 0.5rem;
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-ext-700-normal-j1no4XVB.woff2") format("woff2"), url("/static/poppins-all-700-normal-lTRW1ewp.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("/static/poppins-latin-700-normal-Qrb0O0WB.woff2") format("woff2"), url("/static/poppins-all-700-normal-lTRW1ewp.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@tailwind base;
+
+@layer base {
+  :root {
+    /* shadcn base tokens (defined first so ops-console vars below take precedence) */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --input: 214.3 31.8% 91.4%;
+
+    --card: transparent;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+
+    /* OPS-CONSOLE dark theme — must come AFTER shadcn tokens to win cascade */
+    --bg: #0B0F14;
+    --panel: #111826;
+    --panel-2: #0E1522;
+    --text: #E6EAF2;
+    --muted: #9AA4B2;
+    --border: rgba(255,255,255,0.08);
+    --accent: #2F6BFF;
+    --accent-2: #00D4FF;
+    --status-active: #2FE58C;
+    --status-offline: #FF4D6D;
+    --status-warning: #FFB020;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: transparent;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #app {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+  }
+
+  p, span, div, label, li, td, th {
+    color: inherit;
+  }
+
+  .text-black,
+  .text-gray-800,
+  .text-gray-900,
+  .text-slate-800,
+  .text-slate-900,
+  .text-neutral-800 {
+    color: var(--text) !important;
+  }
+
+  .text-gray-500,
+  .text-gray-600,
+  .text-muted {
+    color: var(--muted) !important;
+  }
+
+  input, textarea, select {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text);
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent) !important;
+    background: rgba(255,255,255,0.06) !important;
+    outline: none;
+  }
+
+  img, svg {
+    opacity: 0.8;
+  }
+
+  .opacity-100 {
+    opacity: 1 !important;
+  }
+
+  .bg-radial-gradient {
+    background: radial-gradient(800px 300px at 50% 0, rgba(255,255,255,0.03), transparent 70%);
+  }
+
+  button {
+    color: var(--text);
+  }
+
+  ::placeholder {
+    color: var(--muted);
+  }
+
+  /* default “panel” look for existing cards/sections */
+  .card, .panel, .sidebar, .toolbar, header, nav, section, aside, [class*="shadow-[rgba(242,242,242,0.6)"], .border-zinc-200, .border-zinc-100, .border-gray-100, .border-gray-200, .border-slate-200, .border-neutral-200 {
+    border-color: var(--border) !important;
+  }
+
+  .omp-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .omp-panel-secondary {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  /* neutralized backgrounds */
+  .bg-white, .bg-zinc-50, .bg-neutral-50 {
+    background-color: var(--panel) !important;
+  }
+  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100, .bg-zinc-100, .bg-gray-100 {
+    background-color: var(--panel-2) !important;
+  }
+
+  .shadow-lg, .shadow-md, .shadow-sm, [class*="shadow-[rgba(242,242,242,0.6)"] {
+    shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
