@@ -2,7 +2,6 @@ import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
 import { Reporting } from "@/sections/Reporting";
 import { Assets } from "@/sections/Assets";
-import { Messages } from "@/sections/Messages";
 import { Categories } from "@/sections/Categories";
 import { useState, useEffect } from "react";
 import { Parts } from "@/sections/Parts";
@@ -16,7 +15,7 @@ import { Settings } from "@/sections/Settings";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 
 export const App = () => {
-  const [currentView, setCurrentView] = useState<'workorders' | 'reporting' | 'assets' | 'messages' | 'categories' | 'parts' | 'procedures' | 'meters' | 'locations' | 'users' | 'vendors' | 'settings'>('workorders');
+  const [currentView, setCurrentView] = useState<'workorders' | 'reporting' | 'assets' | 'categories' | 'parts' | 'procedures' | 'meters' | 'locations' | 'users' | 'vendors' | 'settings'>('workorders');
   const { ensureActiveRecurringInstances } = useWorkOrderStore();
 
   useEffect(() => {
@@ -30,8 +29,6 @@ export const App = () => {
         setCurrentView('reporting');
       } else if (window.location.hash === '#assets') {
         setCurrentView('assets');
-      } else if (window.location.hash === '#messages') {
-        setCurrentView('messages');
       } else if (window.location.hash === '#categories') {
         setCurrentView('categories');
       } else if (window.location.hash === '#parts') {
@@ -70,8 +67,6 @@ export const App = () => {
               <Reporting />
             ) : currentView === 'assets' ? (
               <Assets />
-            ) : currentView === 'messages' ? (
-              <Messages />
             ) : currentView === 'categories' ? (
               <Categories />
             ) : currentView === 'parts' ? (
