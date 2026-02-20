@@ -262,6 +262,40 @@ export const WorkOrderList = () => {
     return () => window.removeEventListener('use-location-in-new-work-order', handler as EventListener);
   }, []);
 
+  // Listen to Part -> Use in New Work Order
+  useEffect(() => {
+    const handler = (e: any) => {
+      const { partId, partName } = e.detail || {};
+      if (partId) {
+        const preAttachedPart = {
+          partId,
+          partName: partName || '',
+          locationId: '',
+          locationName: '',
+          quantityUsed: 1,
+          consumed: false,
+        };
+        setDraft(prev => ({
+          ...(prev ?? buildDefaultDraft()),
+          parts: [preAttachedPart],
+        }));
+        setPanelMode('create');
+      }
+    };
+    window.addEventListener('use-part-in-new-work-order', handler as EventListener);
+    return () => window.removeEventListener('use-part-in-new-work-order', handler as EventListener);
+  }, []);
+
+  // Listen for parts inventory error (stock too low to complete WO)
+  useEffect(() => {
+    const handler = (e: any) => {
+      const { reason } = e.detail || {};
+      if (reason) setStatusError(reason);
+    };
+    window.addEventListener('work-order-parts-error', handler as EventListener);
+    return () => window.removeEventListener('work-order-parts-error', handler as EventListener);
+  }, []);
+
   useEffect(() => { setConfirmDelete(false); }, [selectedWorkOrderId, panelMode]);
 
   const todoCount = useMemo(() => {
@@ -549,6 +583,43 @@ export const WorkOrderList = () => {
                           <div className="box-border caret-transparent shrink-0 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
                             {selectedWorkOrder.description || 'No description provided.'}
                           </div>
+
+                          {/* Parts Summary */}
+                          {(selectedWorkOrder.parts || []).length > 0 && (
+                            <div className="mt-6">
+                              <strong className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold block mb-2">
+                                Parts ({selectedWorkOrder.parts!.length})
+                              </strong>
+                              <div className="border border-[var(--border)] rounded overflow-hidden">
+                                <table className="w-full text-xs">
+                                  <thead className="bg-[var(--panel-2)] border-b border-[var(--border)]">
+                                    <tr>
+                                      <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Part</th>
+                                      <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Location</th>
+                                      <th className="text-center px-2 py-1 font-medium text-[var(--muted)] uppercase">Qty</th>
+                                      <th className="text-center px-2 py-1 font-medium text-[var(--muted)] uppercase">Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {selectedWorkOrder.parts!.map(wop => (
+                                      <tr key={`${wop.partId}-${wop.locationId}`} className="border-b border-[var(--border)] last:border-0">
+                                        <td className="px-2 py-1.5 font-medium">{wop.partName}</td>
+                                        <td className="px-2 py-1.5 text-gray-500">{wop.locationName}</td>
+                                        <td className="px-2 py-1.5 text-center">{wop.quantityUsed}</td>
+                                        <td className="px-2 py-1.5 text-center">
+                                          {wop.consumed ? (
+                                            <span className="bg-green-50 text-green-700 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded">Consumed</span>
+                                          ) : (
+                                            <span className="bg-gray-50 text-gray-500 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded">Pending</span>
+                                          )}
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          )}
 
                           <div className="box-border caret-transparent shrink-0 mt-6 pb-2 flex items-center justify-between border-b border-[var(--border)] mb-4">
                             <strong className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">

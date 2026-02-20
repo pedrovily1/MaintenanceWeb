@@ -1,60 +1,77 @@
-import { useState } from "react";
-import { PartList } from "./components/PartList";
-import { PartDetail } from "./components/PartDetail";
+import { useState, useMemo, useEffect } from 'react';
+import { PartList } from './components/PartList';
+import { PartDetail } from './components/PartDetail';
+import { PartEditorPanel } from './components/PartEditorPanel';
+import { usePartStore } from '@/store/usePartStore';
+import { useLocationStore } from '@/store/useLocationStore';
+import { needsRestock } from '@/types/part';
+import type { PartType } from '@/types/part';
+
+const PART_TYPES: PartType[] = ['Spare Part', 'Consumable', 'Tool', 'Safety Equipment', 'Other'];
 
 export const Parts = () => {
-  const [selectedPartId, setSelectedPartId] = useState<string | null>("11131762");
+  const { parts, addPart } = usePartStore();
+  const { locations } = useLocationStore();
 
-  const parts = [
-    {
-      id: "11131762",
-      name: "CANIMEX INC Counterbalance Assembly",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "Overhead Sliding door",
-      imageUrl: undefined
-    },
-    {
-      id: "13650391",
-      name: "Filter, HVAC",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "HVAC",
-      imageUrl: "https://app.getmaintainx.com/img/9f9fdbd5-f2d1-4812-a1dc-3ef3a1a82e64_75198044-FBEF-4161-90A6-76667875E21D.HEIC?w=96&h=96&rmode=crop"
-    },
-    {
-      id: "11131767",
-      name: "FSTRONIC IRC-F1-4A Model 074 Control Panel",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "Horizontal Sliding Door",
-      imageUrl: undefined
-    },
-    {
-      id: "10078392",
-      name: "Generator Annual Service Kit",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "Generator",
-      imageUrl: undefined
-    },
-    {
-      id: "11131761",
-      name: "GfA ELEKTROMATEN TS 970 Motor",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "Overhead Sliding door",
-      imageUrl: undefined
-    },
-    {
-      id: "12901637",
-      name: "PSN50W036T2",
-      quantity: "1 unit",
-      location: "General Storage",
-      assetName: "0-GENERAL PURPOSE",
-      imageUrl: undefined
+  const [selectedPartId, setSelectedPartId] = useState<string | null>(null);
+  const [showNewEditor, setShowNewEditor] = useState(false);
+  const [search, setSearch] = useState('');
+  const [filterRestock, setFilterRestock] = useState(false);
+  const [filterPartType, setFilterPartType] = useState<PartType | ''>('');
+  const [filterLocationId, setFilterLocationId] = useState('');
+  const [showTypeMenu, setShowTypeMenu] = useState(false);
+  const [showLocationMenu, setShowLocationMenu] = useState(false);
+
+  // Default-select first part on mount / when parts load
+  useEffect(() => {
+    if (!selectedPartId && parts.length > 0) {
+      setSelectedPartId(parts[0].id);
     }
-  ];
+  }, [parts, selectedPartId]);
+
+  // Listen for part-deleted event to deselect
+  useEffect(() => {
+    const handler = (e: any) => {
+      if (e.detail?.id === selectedPartId) setSelectedPartId(null);
+    };
+    window.addEventListener('part-deleted', handler);
+    return () => window.removeEventListener('part-deleted', handler);
+  }, [selectedPartId]);
+
+  // Deep-link: select a part from another view (e.g., AssetDetail)
+  useEffect(() => {
+    const handler = (e: any) => {
+      const id = e.detail?.id;
+      if (id) setSelectedPartId(id);
+    };
+    window.addEventListener('select-part', handler);
+    return () => window.removeEventListener('select-part', handler);
+  }, []);
+
+  const filteredParts = useMemo(() => {
+    let list = [...parts];
+
+    if (filterRestock) {
+      list = list.filter(p => needsRestock(p));
+    }
+
+    if (filterPartType) {
+      list = list.filter(p => p.partType === filterPartType);
+    }
+
+    if (filterLocationId) {
+      list = list.filter(p => p.inventory.some(i => i.locationId === filterLocationId));
+    }
+
+    if (search.trim()) {
+      const term = search.trim().toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(term));
+    }
+
+    return list.sort((a, b) => a.name.localeCompare(b.name));
+  }, [parts, filterRestock, filterPartType, filterLocationId, search]);
+
+  const restockCount = useMemo(() => parts.filter(p => needsRestock(p)).length, [parts]);
 
   return (
     <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -68,10 +85,12 @@ export const Parts = () => {
           </div>
           <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow justify-end gap-y-4">
             <div className="box-border caret-transparent flex basis-[0%] grow max-w-[400px]">
-              <form className="box-border caret-transparent basis-[0%] grow">
+              <form className="box-border caret-transparent basis-[0%] grow" onSubmit={e => e.preventDefault()}>
                 <input
                   type="search"
                   placeholder="Search Parts"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
                   className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                 />
               </form>
@@ -79,6 +98,7 @@ export const Parts = () => {
             <div className="relative box-border caret-transparent flex shrink-0">
               <button
                 type="button"
+                onClick={() => setShowNewEditor(true)}
                 className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-md border-solid hover:bg-blue-400 hover:border-blue-400"
               >
                 <img
@@ -100,10 +120,17 @@ export const Parts = () => {
         <div className="items-center box-border caret-transparent flex shrink-0">
           <div className="box-border caret-transparent flex basis-[0%] grow">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 gap-y-2">
+
+              {/* Needs Restock toggle */}
               <div className="items-center box-border caret-transparent flex shrink-0">
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  onClick={() => setFilterRestock(v => !v)}
+                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
+                    filterRestock
+                      ? 'bg-amber-50 border-amber-400 text-amber-700'
+                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
+                  }`}
                 >
                   <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
                     <img
@@ -112,18 +139,27 @@ export const Parts = () => {
                       className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
-                  <div
-                    title="Needs Restock"
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1"
-                  >
+                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
                     Needs Restock
+                    {restockCount > 0 && (
+                      <span className="ml-1 bg-amber-100 text-amber-700 text-[9px] font-bold px-1 py-0.5 rounded">
+                        {restockCount}
+                      </span>
+                    )}
                   </div>
                 </button>
               </div>
-              <div className="items-center box-border caret-transparent flex shrink-0">
+
+              {/* Part Types dropdown */}
+              <div className="relative items-center box-border caret-transparent flex shrink-0">
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  onClick={() => { setShowTypeMenu(v => !v); setShowLocationMenu(false); }}
+                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
+                    filterPartType
+                      ? 'bg-blue-50 border-blue-400 text-blue-700'
+                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
+                  }`}
                 >
                   <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
                     <img
@@ -132,18 +168,43 @@ export const Parts = () => {
                       className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
-                  <div
-                    title="Part Types"
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1"
-                  >
-                    Part Types
+                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
+                    {filterPartType || 'Part Types'}
                   </div>
                 </button>
+                {showTypeMenu && (
+                  <div className="absolute top-9 left-0 z-20 bg-white border border-[var(--border)] rounded shadow-lg min-w-[160px]">
+                    <button
+                      type="button"
+                      className="block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50"
+                      onClick={() => { setFilterPartType(''); setShowTypeMenu(false); }}
+                    >
+                      All Types
+                    </button>
+                    {PART_TYPES.map(t => (
+                      <button
+                        key={t}
+                        type="button"
+                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterPartType === t ? 'font-semibold text-blue-600' : ''}`}
+                        onClick={() => { setFilterPartType(t); setShowTypeMenu(false); }}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="items-center box-border caret-transparent flex shrink-0">
+
+              {/* Location dropdown */}
+              <div className="relative items-center box-border caret-transparent flex shrink-0">
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  onClick={() => { setShowLocationMenu(v => !v); setShowTypeMenu(false); }}
+                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
+                    filterLocationId
+                      ? 'bg-blue-50 border-blue-400 text-blue-700'
+                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
+                  }`}
                 >
                   <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
                     <img
@@ -152,75 +213,73 @@ export const Parts = () => {
                       className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
-                  <div
-                    title="Location"
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1"
-                  >
-                    Location
+                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
+                    {filterLocationId ? (locations.find(l => l.id === filterLocationId)?.name ?? 'Location') : 'Location'}
                   </div>
                 </button>
+                {showLocationMenu && (
+                  <div className="absolute top-9 left-0 z-20 bg-white border border-[var(--border)] rounded shadow-lg min-w-[180px] max-h-48 overflow-y-auto">
+                    <button
+                      type="button"
+                      className="block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50"
+                      onClick={() => { setFilterLocationId(''); setShowLocationMenu(false); }}
+                    >
+                      All Locations
+                    </button>
+                    {locations.map(loc => (
+                      <button
+                        key={loc.id}
+                        type="button"
+                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterLocationId === loc.id ? 'font-semibold text-blue-600' : ''}`}
+                        onClick={() => { setFilterLocationId(loc.id); setShowLocationMenu(false); }}
+                      >
+                        {loc.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="items-center box-border caret-transparent flex shrink-0">
+
+              {/* Clear Filters */}
+              {(filterRestock || filterPartType || filterLocationId || search) && (
                 <button
                   type="button"
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  onClick={() => {
+                    setFilterRestock(false);
+                    setFilterPartType('');
+                    setFilterLocationId('');
+                    setSearch('');
+                  }}
+                  className="text-xs text-blue-500 hover:text-blue-400 px-1"
                 >
-                  <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
-                      alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
-                    />
-                  </div>
-                  <div
-                    title="Add Filter"
-                    className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1"
-                  >
-                    Add Filter
-                  </div>
+                  Clear filters
                 </button>
-              </div>
+              )}
             </div>
-            <div className="items-center box-border caret-transparent flex shrink-0 ml-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--border)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[var(--border)] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                <span className="ml-2 text-sm">Show per Location</span>
-              </label>
-            </div>
-          </div>
-          <div className="box-border caret-transparent flex shrink-0 max-w-[134px] overflow-hidden ml-2">
-            <button
-              type="button"
-              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-            >
-              <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
-                <img
-                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-26.svg"
-                  alt="Icon"
-                  className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
-                />
-              </div>
-              <div
-                title="My Filters"
-                className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1"
-              >
-                My Filters
-              </div>
-            </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">
+      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4" onClick={() => { setShowTypeMenu(false); setShowLocationMenu(false); }}>
         <PartList
-          parts={parts}
+          parts={filteredParts}
           selectedPartId={selectedPartId}
           onSelectPart={setSelectedPartId}
         />
         <PartDetail partId={selectedPartId} />
       </div>
+
+      {/* New Part Editor */}
+      <PartEditorPanel
+        open={showNewEditor}
+        onClose={() => setShowNewEditor(false)}
+        onSubmit={(data) => {
+          const newPart = addPart(data);
+          setSelectedPartId(newPart.id);
+          setShowNewEditor(false);
+        }}
+      />
     </div>
   );
 };

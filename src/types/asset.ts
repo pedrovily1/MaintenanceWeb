@@ -29,6 +29,8 @@ export interface Asset {
   warrantyEnd?: string; // ISO
   notes?: string;
   meters?: AssetMeter[];
+  /** IDs of Parts compatible with or assigned to this asset */
+  compatiblePartIds?: string[];
   attachments?: Attachment[];
   createdAt: string; // ISO
   updatedAt: string; // ISO

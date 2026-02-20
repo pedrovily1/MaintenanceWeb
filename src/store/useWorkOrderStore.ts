@@ -4,6 +4,7 @@ import { DEFAULT_SECTIONS } from '../utils/defaultSections';
 import { useUserStore } from './useUserStore';
 import { expandOccurrences, instantiateFromTemplate } from '../utils/scheduleUtils';
 import { meterStoreHelpers } from '@/store/useMeterStore';
+import { consumePartsFromInventory } from '@/store/usePartStore';
 
 const STORAGE_KEY = 'workorders_v3';
 
@@ -142,7 +143,7 @@ export const useWorkOrderStore = () => {
     globalWorkOrders = globalWorkOrders.map(wo => {
       if (wo.id === id) {
         const prevStatus = wo.status;
-        const updated = {
+        let updated = {
           ...wo,
           ...updates,
           updatedAt: new Date().toISOString()
@@ -190,6 +191,25 @@ export const useWorkOrderStore = () => {
             records.forEach(r => meterStoreHelpers.addReadingFromWO(r.meterId, r.value, r.unit, updated.id, activeUserId || undefined));
           } catch (e) {
             console.warn('Failed to record meter readings on completion', e);
+          }
+
+          // PARTS: Deduct inventory on WO completion
+          const unconsumedParts = (updated.parts || []).filter(p => !p.consumed);
+          if (unconsumedParts.length > 0) {
+            const result = consumePartsFromInventory(unconsumedParts);
+            if (!result.ok) {
+              // Dispatch error event so the UI can display the message
+              try {
+                window.dispatchEvent(new CustomEvent('work-order-parts-error', { detail: { reason: result.reason } }));
+              } catch {}
+              // Rollback: return WO unchanged (status NOT set to Done)
+              return { ...wo, updatedAt: new Date().toISOString() };
+            }
+            // Mark all parts as consumed so they are not deducted again
+            updated = {
+              ...updated,
+              parts: (updated.parts || []).map(p => ({ ...p, consumed: true })),
+            };
           }
         }
 

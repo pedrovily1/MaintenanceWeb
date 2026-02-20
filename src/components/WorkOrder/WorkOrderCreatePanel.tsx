@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DEFAULT_SECTIONS } from "@/utils/defaultSections";
 import { WorkOrder } from "@/types/workOrder";
 import { useCategoryStore } from "@/store/useCategoryStore";
@@ -6,6 +6,9 @@ import { useVendorStore } from "@/store/useVendorStore";
 import { useAssetStore } from "@/store/useAssetStore";
 import { LocationTreeSelector } from "@/components/LocationTreeSelector";
 import { getLocationSync } from "@/store/useLocationStore";
+import { usePartStore } from "@/store/usePartStore";
+import { getTotalStock } from "@/types/part";
+import type { WorkOrderPart } from "@/types/part";
 
 // Draft work order type used before persisting to the store
 export type DraftWorkOrder = Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber'>;
@@ -23,6 +26,57 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
   const { activeCategories, getCategoryById } = useCategoryStore();
   const { activeVendors } = useVendorStore();
   const { assets } = useAssetStore();
+  const { parts } = usePartStore();
+
+  // Parts section state
+  const [newPartId, setNewPartId] = useState('');
+  const [newPartLocId, setNewPartLocId] = useState('');
+  const [newPartQty, setNewPartQty] = useState(1);
+  const [partAddError, setPartAddError] = useState<string | null>(null);
+
+  const selectedPart = parts.find(p => p.id === newPartId);
+  const availableLocations = selectedPart ? selectedPart.inventory : [];
+
+  const addPart = () => {
+    if (!newPartId) { setPartAddError('Select a part.'); return; }
+    if (!newPartLocId) { setPartAddError('Select a location.'); return; }
+    if (newPartQty <= 0) { setPartAddError('Quantity must be > 0.'); return; }
+
+    const part = parts.find(p => p.id === newPartId);
+    if (!part) return;
+    const inv = part.inventory.find(i => i.locationId === newPartLocId);
+    if (!inv) { setPartAddError('Part not stocked at this location.'); return; }
+    if (inv.quantity < newPartQty) {
+      setPartAddError(`Only ${inv.quantity} ${part.unit || 'unit(s)'} available at this location.`);
+      return;
+    }
+
+    const wop: WorkOrderPart = {
+      partId: part.id,
+      partName: part.name,
+      locationId: inv.locationId,
+      locationName: inv.locationName,
+      quantityUsed: newPartQty,
+      consumed: false,
+    };
+
+    const existing = (value.parts || []);
+    // Prevent duplicate part+location
+    if (existing.some(p => p.partId === wop.partId && p.locationId === wop.locationId)) {
+      setPartAddError('This part from this location is already added.');
+      return;
+    }
+
+    onChange({ parts: [...existing, wop] });
+    setNewPartId('');
+    setNewPartLocId('');
+    setNewPartQty(1);
+    setPartAddError(null);
+  };
+
+  const removeWoPart = (partId: string, locationId: string) => {
+    onChange({ parts: (value.parts || []).filter(p => !(p.partId === partId && p.locationId === locationId)) });
+  };
 
   const hasAssetSelected = Boolean(value.assetId);
 
@@ -264,6 +318,124 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   </select>
                 </div>
 
+                {/* Parts Section */}
+                <div className="mt-6">
+                  <div className="flex items-center justify-between pb-2">
+                    <strong className="font-semibold box-border caret-transparent shrink-0">Parts</strong>
+                    <span className="text-xs text-gray-500">Inventory will be deducted on completion</span>
+                  </div>
+
+                  {/* Added parts table */}
+                  {(value.parts || []).length > 0 && (
+                    <div className="border border-[var(--border)] rounded overflow-hidden mb-3">
+                      <table className="w-full text-xs">
+                        <thead className="bg-[var(--panel-2)] border-b border-[var(--border)]">
+                          <tr>
+                            <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Part</th>
+                            <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Location</th>
+                            <th className="text-center px-2 py-1 font-medium text-[var(--muted)] uppercase">Qty</th>
+                            <th className="px-2 py-1"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(value.parts || []).map(wop => {
+                            const p = parts.find(pt => pt.id === wop.partId);
+                            const inv = p?.inventory.find(i => i.locationId === wop.locationId);
+                            const insufficient = inv ? inv.quantity < wop.quantityUsed : false;
+                            return (
+                              <tr key={`${wop.partId}-${wop.locationId}`} className={`border-b border-[var(--border)] last:border-0 ${insufficient ? 'bg-red-50' : ''}`}>
+                                <td className="px-2 py-1.5 font-medium">{wop.partName}</td>
+                                <td className="px-2 py-1.5 text-gray-500">{wop.locationName}</td>
+                                <td className="px-2 py-1.5 text-center">
+                                  {insufficient ? (
+                                    <span className="text-red-600 font-bold">{wop.quantityUsed} ⚠</span>
+                                  ) : wop.quantityUsed}
+                                </td>
+                                <td className="px-2 py-1.5 text-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => removeWoPart(wop.partId, wop.locationId)}
+                                    className="text-red-400 hover:text-red-600 text-xs"
+                                  >
+                                    ✕
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {/* Add part row */}
+                  <div className="border border-dashed border-[var(--border)] rounded p-3 space-y-2">
+                    <div className="text-[10px] text-[var(--muted)] uppercase font-semibold">Add Part</div>
+                    <select
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
+                      value={newPartId}
+                      onChange={e => { setNewPartId(e.target.value); setNewPartLocId(''); setPartAddError(null); }}
+                    >
+                      <option value="">Select a part…</option>
+                      {parts.map(p => {
+                        const total = getTotalStock(p);
+                        return (
+                          <option key={p.id} value={p.id}>
+                            {p.name} ({total} {p.unit || 'unit'}{total !== 1 ? 's' : ''} available)
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    {selectedPart && (
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[10px] text-[var(--muted)] block mb-0.5">Location</label>
+                          <select
+                            className="w-full border border-[var(--border)] rounded p-1.5 text-sm"
+                            value={newPartLocId}
+                            onChange={e => setNewPartLocId(e.target.value)}
+                          >
+                            <option value="">Select location…</option>
+                            {availableLocations.map(inv => (
+                              <option key={inv.locationId} value={inv.locationId}>
+                                {inv.locationName} ({inv.quantity} in stock)
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-[var(--muted)] block mb-0.5">Quantity</label>
+                          <input
+                            type="number"
+                            min={1}
+                            max={newPartLocId ? (availableLocations.find(i => i.locationId === newPartLocId)?.quantity ?? 999) : 999}
+                            className="w-full border border-[var(--border)] rounded p-1.5 text-sm"
+                            value={newPartQty}
+                            onChange={e => setNewPartQty(Math.max(1, Number(e.target.value)))}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {partAddError && (
+                      <div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded px-2 py-1">
+                        {partAddError}
+                      </div>
+                    )}
+
+                    {selectedPart && (
+                      <button
+                        type="button"
+                        onClick={addPart}
+                        className="text-blue-500 text-xs font-bold uppercase tracking-widest hover:text-blue-400"
+                      >
+                        + Add Part
+                      </button>
+                    )}
+                  </div>
+                </div>
+
                 {/* Legacy Categories (tags) */}
                 <div className="mt-6">
                   <div className="box-border caret-transparent shrink-0 pb-2">
@@ -350,7 +522,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
 };
 
 // Helper to build a default draft matching previous implicit defaults used by prompt-based flow
-export const buildDefaultDraft = (): DraftWorkOrder => ({
+export const buildDefaultDraft = (overrides?: Partial<DraftWorkOrder>): DraftWorkOrder => ({
   title: "",
   description: "",
   status: 'Open',
@@ -368,4 +540,6 @@ export const buildDefaultDraft = (): DraftWorkOrder => ({
   attachments: [],
   isRepeating: false,
   procedureInstances: [],
+  parts: [],
+  ...overrides,
 });
