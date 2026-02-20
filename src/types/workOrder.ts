@@ -91,6 +91,7 @@ export interface WorkOrder {
   assetId?: string;
   asset: string;
   assetImageUrl?: string;
+  locationId?: string | null;
   location: string;
   categories: string[];
   categoryId?: string | null; // Reference to Category entity

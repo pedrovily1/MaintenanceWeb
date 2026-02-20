@@ -4,6 +4,7 @@ import { AssetList } from "./components/AssetList";
 import { AssetDetail } from "./components/AssetDetail";
 import { AssetFilters, AssetFiltersState } from "./components/AssetFilters";
 import { AssetEditorPanel } from "./components/AssetEditorPanel";
+import { getDescendantLocationIds } from "@/store/useLocationStore";
 
 export const Assets = () => {
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
@@ -12,6 +13,7 @@ export const Assets = () => {
     search: '',
     status: 'All',
     location: 'All',
+    locationId: 'All',
     category: 'All',
     criticality: 'All',
     sortBy: 'name',
@@ -27,14 +29,18 @@ export const Assets = () => {
     return () => window.removeEventListener('asset-deleted', onDeleted as EventListener);
   }, [selectedAssetId]);
 
-  const locations = useMemo(() => Array.from(new Set((assets || []).map(a => a.locationName).filter(Boolean))) as string[], [assets]);
   const categories = useMemo(() => Array.from(new Set((assets || []).map(a => a.category).filter(Boolean))) as string[], [assets]);
 
   const filteredAssets = useMemo(() => {
     const q = filters.search.trim().toLowerCase();
     const byText = (a: any) => !q || [a.name, a.assetTag, a.manufacturer, a.model, a.serialNumber].some((f: any) => (f || '').toLowerCase().includes(q));
     const byStatus = (a: any) => filters.status === 'All' || a.status === filters.status;
-    const byLocation = (a: any) => filters.location === 'All' || a.locationName === filters.location;
+    const byLocation = (a: any) => {
+      if (filters.locationId === 'All') return true;
+      const descendantIds = getDescendantLocationIds(filters.locationId);
+      const matchIds = new Set([filters.locationId, ...descendantIds]);
+      return a.locationId && matchIds.has(a.locationId);
+    };
     const byCategory = (a: any) => filters.category === 'All' || a.category === filters.category;
     const byCriticality = (a: any) => filters.criticality === 'All' || a.criticality === filters.criticality;
     const list = (assets || []).filter(a => byText(a) && byStatus(a) && byLocation(a) && byCategory(a) && byCriticality(a));
@@ -82,7 +88,7 @@ export const Assets = () => {
       </div>
 
       {/* Filter Bar */}
-      <AssetFilters value={filters} onChange={setFilters} locations={locations} categories={categories} />
+      <AssetFilters value={filters} onChange={setFilters} categories={categories} />
 
       {/* Main Content */}
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">

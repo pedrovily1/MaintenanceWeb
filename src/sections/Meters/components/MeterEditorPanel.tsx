@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import type { Meter } from '@/types/meter';
 import { useAssetStore } from '@/store/useAssetStore';
+import { LocationTreeSelector } from '@/components/LocationTreeSelector';
+import { getLocationSync } from '@/store/useLocationStore';
 
 export type MeterEditorValue = Omit<Meter, 'id' | 'createdAt' | 'updatedAt'>;
 
@@ -33,6 +35,8 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
   const set = (patch: Partial<MeterEditorValue>) => setValue(v => ({ ...v, ...patch }));
 
+  const hasAssetSelected = Boolean(value.assetId);
+
   const validate = () => {
     const e: { name?: string } = {};
     if (!value.name?.trim()) e.name = 'Name is required';
@@ -42,7 +46,28 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
   const handleSubmit = () => {
     if (!validate()) return;
-    onSubmit({ ...value, assetId: value.assetId || undefined, locationId: value.locationId || undefined, locationName: value.locationName?.trim() || undefined });
+    onSubmit({
+      ...value,
+      assetId: value.assetId || undefined,
+      locationId: value.locationId || undefined,
+      locationName: value.locationName?.trim() || undefined,
+    });
+  };
+
+  const handleAssetChange = (assetId: string) => {
+    const selectedAsset = assets.find(a => a.id === assetId);
+    if (selectedAsset) {
+      // Inherit location from asset
+      const loc = selectedAsset.locationId ? getLocationSync(selectedAsset.locationId) : undefined;
+      set({
+        assetId: selectedAsset.id,
+        locationId: selectedAsset.locationId || undefined,
+        locationName: loc?.name || selectedAsset.locationName || '',
+      });
+    } else {
+      // Standalone meter - user must select location manually
+      set({ assetId: undefined });
+    }
   };
 
   if (!open) return null;
@@ -53,7 +78,7 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
         {/* Header */}
         <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
           <div className="text-lg font-semibold">{initial?.id ? 'Edit Meter' : 'New Meter'}</div>
-          <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>✕</button>
+          <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>&#x2715;</button>
         </div>
 
         {/* Body */}
@@ -82,8 +107,12 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Linked Asset</label>
-              <select value={value.assetId || ''} onChange={(e) => set({ assetId: e.target.value || undefined })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm">
-                <option value="">None (Global Meter)</option>
+              <select
+                value={value.assetId || ''}
+                onChange={(e) => handleAssetChange(e.target.value)}
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
+              >
+                <option value="">None (Standalone Meter)</option>
                 {assets.map(a => (
                   <option key={a.id} value={a.id}>{a.name}</option>
                 ))}
@@ -91,8 +120,17 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Linked Location (optional)</label>
-              <input value={value.locationName || ''} onChange={(e) => set({ locationName: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Location name" />
+              <label className="block text-xs text-gray-500 mb-1">
+                Location
+                {hasAssetSelected && <span className="text-gray-400 ml-1">(from asset)</span>}
+              </label>
+              <LocationTreeSelector
+                value={value.locationId || null}
+                disabled={hasAssetSelected}
+                onChange={(locationId, locationName) => {
+                  set({ locationId: locationId || undefined, locationName });
+                }}
+              />
             </div>
           </div>
         </div>

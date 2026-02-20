@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import type { Asset, AssetStatus, AssetCriticality } from '@/types/asset';
 import { AssetAttachments } from './AssetAttachments';
 import type { Attachment } from '@/types/workOrder';
+import { LocationTreeSelector } from '@/components/LocationTreeSelector';
 
 export type AssetEditorValue = Omit<Asset, 'id' | 'createdAt' | 'updatedAt'>;
 
@@ -102,8 +103,11 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
               <input value={value.category || ''} onChange={(e) => set({ category: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Location</label>
-              <input value={value.locationName || ''} onChange={(e) => set({ locationName: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" />
+              <LocationTreeSelector
+                label="Location"
+                value={value.locationId || null}
+                onChange={(locationId, locationName) => set({ locationId: locationId || '', locationName })}
+              />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Parent Asset ID</label>

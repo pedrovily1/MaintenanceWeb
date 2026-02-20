@@ -1,25 +1,22 @@
-type LocationAsset = {
-  id: string;
-  name: string;
-  imageUrl: string;
-};
-
-type LocationType = {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  subLocationsCount: number;
-  assetsCount: number;
-  assets: LocationAsset[];
-};
+import { useState, useMemo } from 'react';
+import { useLocationStore } from '@/store/useLocationStore';
+import { useAssetStore } from '@/store/useAssetStore';
+import { useWorkOrderStore } from '@/store/useWorkOrderStore';
+import { getDescendantLocationIds } from '@/store/useLocationStore';
+import { LocationEditorModal } from './LocationEditorModal';
 
 type LocationDetailProps = {
   locationId: string | null;
-  locations: LocationType[];
 };
 
-export const LocationDetail = ({ locationId, locations }: LocationDetailProps) => {
+export const LocationDetail = ({ locationId }: LocationDetailProps) => {
+  const { locations, getLocationById, getChildLocations, deleteLocation } = useLocationStore();
+  const { assets } = useAssetStore();
+  const { workOrders } = useWorkOrderStore();
+  const [showEdit, setShowEdit] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const { updateLocation } = useLocationStore();
+
   if (!locationId) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
@@ -32,7 +29,7 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
     );
   }
 
-  const location = locations.find(l => l.id === locationId);
+  const location = getLocationById(locationId);
 
   if (!location) {
     return (
@@ -46,10 +43,49 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
     );
   }
 
+  const childLocations = getChildLocations(locationId);
+  const locationAssets = assets.filter(a => a.locationId === locationId);
+  const locationWorkOrders = workOrders.filter(wo => wo.locationId === locationId);
+
+  const handleUseInNewWorkOrder = () => {
+    // Dispatch custom event with location data for WorkOrderList to pick up
+    window.dispatchEvent(new CustomEvent('use-location-in-new-work-order', {
+      detail: { locationId: location.id, locationName: location.name }
+    }));
+    // Navigate to work orders view
+    window.location.hash = '#workorders';
+  };
+
+  const handleDelete = () => {
+    setDeleteError(null);
+    // Check for assets
+    if (locationAssets.length > 0) {
+      setDeleteError(`Cannot delete: ${locationAssets.length} asset(s) are assigned to this location. Reassign them first.`);
+      return;
+    }
+    // Check for work orders
+    if (locationWorkOrders.length > 0) {
+      setDeleteError(`Cannot delete: ${locationWorkOrders.length} work order(s) reference this location. Reassign them first.`);
+      return;
+    }
+    // deleteLocation checks for sub-locations internally
+    const result = deleteLocation(locationId);
+    if (!result.ok) {
+      setDeleteError(result.reason || 'Cannot delete this location.');
+    }
+  };
+
+  const handleCreateSubLocation = () => {
+    // Dispatch event for the parent to open create modal with parentLocationId pre-filled
+    window.dispatchEvent(new CustomEvent('create-sub-location', {
+      detail: { parentLocationId: location.id }
+    }));
+  };
+
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
       <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-        <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
+        <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full relative">
           {/* Header */}
           <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-0">
@@ -74,6 +110,7 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
               <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
                 <button
                   type="button"
+                  onClick={() => setShowEdit(true)}
                   className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
@@ -82,18 +119,21 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
                 </button>
                 <button
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                  onClick={handleDelete}
+                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-red-500"
+                  title="Delete Location"
                 >
-                  <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-40.svg"
-                      alt="Icon"
-                      className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-                    />
+                  <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                   </span>
                 </button>
               </div>
             </div>
+            {deleteError && (
+              <div className="mt-2 text-xs font-bold text-red-600 bg-red-50 border border-red-100 rounded px-3 py-2">
+                {deleteError}
+              </div>
+            )}
           </div>
 
           {/* Content */}
@@ -111,30 +151,57 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
               </>
             )}
 
+            {/* Address */}
+            {location.address && (
+              <>
+                <div className="box-border caret-transparent shrink-0 mb-4">
+                  <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Address</h2>
+                  <div className="box-border caret-transparent text-sm leading-relaxed text-gray-700">
+                    {location.address}
+                  </div>
+                </div>
+                <div className="border-b border-[var(--border)] my-3"></div>
+              </>
+            )}
+
             {/* Sub-Locations */}
             <div className="box-border caret-transparent shrink-0 mb-4">
               <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
-                Sub-Locations ({location.subLocationsCount})
+                Sub-Locations ({childLocations.length})
               </h2>
-              {location.subLocationsCount === 0 ? (
+              {childLocations.length === 0 ? (
                 <div className="flex flex-col gap-2">
                   <p className="text-xs text-[var(--muted)] italic">
                     Add sub elements inside this Location
                   </p>
-                  <a
-                    href={`/locations/${location.id}/create`}
-                    className="text-blue-500 text-xs font-bold uppercase tracking-wider hover:text-blue-400"
+                  <button
+                    type="button"
+                    onClick={handleCreateSubLocation}
+                    className="text-blue-500 text-xs font-bold uppercase tracking-wider hover:text-blue-400 text-left"
                   >
                     + Create Sub-Location
-                  </a>
+                  </button>
                 </div>
               ) : (
-                <a
-                  href={`/locations/${location.id}/subs`}
-                  className="text-blue-500 text-sm font-medium hover:underline"
-                >
-                  View {location.subLocationsCount} Sub-Locations →
-                </a>
+                <div className="space-y-1">
+                  {childLocations.map((child) => (
+                    <div
+                      key={child.id}
+                      className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
+                    >
+                      <div className="box-border caret-transparent shrink-0 mr-3">
+                        <div className="items-center bg-blue-50 box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-blue-200 overflow-hidden rounded border-solid">
+                          <img
+                            src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                            alt="Location"
+                            className="box-border caret-transparent shrink-0 h-3 w-3"
+                          />
+                        </div>
+                      </div>
+                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{child.name}</div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 
@@ -143,29 +210,61 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
             {/* Assets */}
             <div className="box-border caret-transparent shrink-0 mb-4">
               <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
-                Assets ({location.assetsCount})
+                Assets ({locationAssets.length})
               </h2>
-              {(!location.assets || location.assets.length === 0) ? (
+              {locationAssets.length === 0 ? (
                 <div className="text-[var(--muted)] text-xs italic">No assets at this location</div>
               ) : (
                 <div className="space-y-1">
-                  {location.assets.map((asset) => (
-                    <a
+                  {locationAssets.map((asset) => (
+                    <div
                       key={asset.id}
-                      href={`/assets/${asset.id}`}
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
                       <div className="box-border caret-transparent shrink-0 mr-3">
-                        <div className="items-center box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-[var(--border)] overflow-hidden rounded border-solid">
-                          <figure
-                            className="bg-cover box-border caret-transparent shrink-0 h-full w-full bg-center"
-                            style={{ backgroundImage: `url('${asset.imageUrl}')` }}
-                          ></figure>
+                        <div className="items-center box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-[var(--border)] overflow-hidden rounded border-solid bg-gray-100">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         </div>
                       </div>
                       <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{asset.name}</div>
-                    </a>
+                    </div>
                   ))}
+                </div>
+              )}
+            </div>
+
+            <div className="border-b border-[var(--border)] my-3"></div>
+
+            {/* Work Orders */}
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
+                Work Orders ({locationWorkOrders.length})
+              </h2>
+              {locationWorkOrders.length === 0 ? (
+                <div className="text-[var(--muted)] text-xs italic">No work orders at this location</div>
+              ) : (
+                <div className="space-y-1">
+                  {locationWorkOrders.slice(0, 5).map((wo) => (
+                    <div
+                      key={wo.id}
+                      className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
+                    >
+                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors flex items-center gap-2">
+                        <span className="text-[10px] text-gray-400">{wo.workOrderNumber}</span>
+                        {wo.title}
+                      </div>
+                      <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded ${
+                        wo.status === 'Done' ? 'bg-green-50 text-green-600' :
+                        wo.status === 'In Progress' ? 'bg-blue-50 text-blue-600' :
+                        'bg-gray-50 text-gray-500'
+                      }`}>{wo.status}</span>
+                    </div>
+                  ))}
+                  {locationWorkOrders.length > 5 && (
+                    <div className="text-xs text-gray-400 italic">
+                      and {locationWorkOrders.length - 5} more...
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -174,19 +273,16 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
 
             {/* Metadata */}
             <div className="text-[10px] text-[var(--muted)] space-y-1 mb-4 italic">
-              <div className="flex items-center gap-2">
-                Created By 
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture15.png')] bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"></div>
-                <a href="#" className="text-blue-500 hover:underline">Victor Garcia</a>
-                <span>on 24/12/2024, 00:56</span>
-              </div>
+              <div>Created on {new Date(location.createdAt).toLocaleString()}</div>
+              <div>Last updated on {new Date(location.updatedAt).toLocaleString()}</div>
             </div>
           </div>
 
-          {/* Floating Button */}
+          {/* Floating Button: Use in New Work Order */}
           <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
             <button
               type="button"
+              onClick={handleUseInNewWorkOrder}
               className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
             >
               <img
@@ -201,6 +297,18 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {showEdit && (
+        <LocationEditorModal
+          initial={location}
+          onClose={() => setShowEdit(false)}
+          onSubmit={(data) => {
+            updateLocation(locationId, data);
+            setShowEdit(false);
+          }}
+        />
+      )}
     </div>
   );
 };
