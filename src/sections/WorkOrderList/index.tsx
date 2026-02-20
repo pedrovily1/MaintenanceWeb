@@ -484,14 +484,19 @@ export const WorkOrderList = () => {
                                     } text-[11.2px] items-center caret-transparent flex flex-col shrink-0 h-[50px] justify-center leading-[13.44px] text-center w-[71.25px] border mr-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid md:h-[60px] md:w-[90px] hover:bg-[var(--panel-2)] hover:opacity-100 transition-all`}
                                   >
                                     <img
-                                      src={
-                                        status === 'Open' ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" :
-                                        status === 'On Hold' ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" :
-                                        status === 'In Progress' ? "/public/inprogress.svg" :
-                                        "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg"
-                                      }
-                                      alt={status}
-                                      className={`box-border caret-transparent shrink-0 h-4 w-4 md:h-6 md:w-6 ${selectedWorkOrder.status === status ? 'opacity-100' : 'opacity-65'}`}
+                                        src={
+                                          status === "Open"
+                                              ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg"
+                                              : status === "On Hold"
+                                                  ? "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg"
+                                                  : status === "In Progress"
+                                                      ? "/inprogress.svg"
+                                                      : "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg"
+                                        }
+                                        alt={status}
+                                        className={`box-border caret-transparent shrink-0 h-4 w-4 md:h-6 md:w-6 ${
+                                            selectedWorkOrder.status === status ? "opacity-100" : "opacity-65"
+                                        }`}
                                     />
                                     <div className={`text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] text-nowrap mt-1`}>
                                       {status}
