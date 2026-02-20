@@ -7,7 +7,7 @@ import React from 'react';
 
     export const TabButtons = ({ activeTab, onTabChange }: TabButtonsProps) => {
       return (
-        <div className="flex shrink-0 border-b border-zinc-200 bg-white">
+        <div className="flex shrink-0 border-b border-[var(--border)] bg-white">
           <button
             type="button"
             onClick={() => onTabChange('todo')}

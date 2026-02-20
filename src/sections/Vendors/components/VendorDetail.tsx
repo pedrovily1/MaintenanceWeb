@@ -21,9 +21,9 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
 
   if (!vendorId) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a vendor to view details
           </div>
         </div>
@@ -34,9 +34,9 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
   const vendor = getVendorById(vendorId);
   if (!vendor) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Vendor not found
           </div>
         </div>
@@ -63,17 +63,17 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
   };
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <div className="box-border caret-transparent shrink-0 px-4 py-4">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
+          <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
+            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-0">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
-                <h3 className="text-xl font-medium box-border caret-transparent tracking-[-0.2px]">
+                <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
                   {vendor.name}
                   {!vendor.isActive && (
-                    <span className="ml-2 text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded">Archived</span>
+                    <span className="ml-2 text-[10px] uppercase font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded tracking-wider">Archived</span>
                   )}
                 </h3>
               </div>
@@ -108,12 +108,13 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
           </div>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6">
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 pt-6">
             {/* Vendor Info */}
             {vendor.trade && (
               <div className="box-border caret-transparent shrink-0 mb-4">
                 <div className="text-sm text-gray-600">
-                  <span className="font-semibold">Trade:</span> {vendor.trade}
+                  <span className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mr-2">Trade:</span> 
+                  <span className="font-medium text-[var(--text)]">{vendor.trade}</span>
                 </div>
               </div>
             )}
@@ -121,78 +122,80 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
             {(vendor.contactName || vendor.phone || vendor.email || vendor.address) && (
               <>
                 <div className="box-border caret-transparent shrink-0 mb-4">
-                  <h2 className="text-base font-semibold mb-3">Contact Information</h2>
-                  <div className="space-y-2 text-sm">
+                  <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Contact Information</h2>
+                  <div className="space-y-1.5 text-sm">
                     {vendor.contactName && (
                       <div className="text-gray-700">
-                        <span className="font-medium">Contact:</span> {vendor.contactName}
+                        <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Contact:</span> 
+                        <span className="font-medium">{vendor.contactName}</span>
                       </div>
                     )}
                     {vendor.phone && (
                       <div className="text-gray-700">
-                        <span className="font-medium">Phone:</span>{' '}
-                        <a href={`tel:${vendor.phone}`} className="text-blue-500 hover:text-blue-400">
+                        <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Phone:</span>{' '}
+                        <a href={`tel:${vendor.phone}`} className="text-blue-500 hover:underline font-medium">
                           {vendor.phone}
                         </a>
                       </div>
                     )}
                     {vendor.email && (
                       <div className="text-gray-700">
-                        <span className="font-medium">Email:</span>{' '}
-                        <a href={`mailto:${vendor.email}`} className="text-blue-500 hover:text-blue-400">
+                        <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Email:</span>{' '}
+                        <a href={`mailto:${vendor.email}`} className="text-blue-500 hover:underline font-medium">
                           {vendor.email}
                         </a>
                       </div>
                     )}
                     {vendor.address && (
                       <div className="text-gray-700">
-                        <span className="font-medium">Address:</span> {vendor.address}
+                        <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Address:</span> 
+                        <span className="font-medium">{vendor.address}</span>
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="border-b border-zinc-200 my-4"></div>
+                <div className="border-b border-[var(--border)] my-3"></div>
               </>
             )}
 
             {vendor.notes && (
               <>
                 <div className="box-border caret-transparent shrink-0 mb-4">
-                  <h2 className="text-base font-semibold mb-3">Notes</h2>
-                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Notes</h2>
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap italic bg-[var(--panel-2)] p-3 rounded border border-[var(--border)]">
                     {vendor.notes}
                   </div>
                 </div>
-                <div className="border-b border-zinc-200 my-4"></div>
+                <div className="border-b border-[var(--border)] my-3"></div>
               </>
             )}
 
             {/* Metadata */}
-            <div className="text-sm text-gray-600 space-y-2 mb-4">
+            <div className="text-[10px] text-[var(--muted)] space-y-1 mb-4 italic">
               <div>
                 <span className="font-medium">Created by:</span> {createdByUser?.fullName || 'Unknown'} on{' '}
-                {new Date(vendor.createdAt).toLocaleDateString()} at {new Date(vendor.createdAt).toLocaleTimeString()}
+                {new Date(vendor.createdAt).toLocaleDateString()}
               </div>
               {vendor.updatedAt !== vendor.createdAt && (
                 <div>
                   <span className="font-medium">Last updated by:</span> {updatedByUser?.fullName || 'Unknown'} on{' '}
-                  {new Date(vendor.updatedAt).toLocaleDateString()} at {new Date(vendor.updatedAt).toLocaleTimeString()}
+                  {new Date(vendor.updatedAt).toLocaleDateString()}
                 </div>
               )}
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Work Order History */}
             <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-4">Work Order History ({workOrders.length})</h2>
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-3">Work Order History ({workOrders.length})</h2>
 
               {workOrders.length === 0 ? (
-                <div className="text-center text-gray-500 py-8 bg-gray-50 rounded border border-zinc-200">
-                  <p className="text-sm">No work orders for this vendor</p>
+                <div className="text-center text-[var(--muted)] py-6 bg-[var(--panel-2)] rounded border border-[var(--border)]">
+                  <p className="text-xs uppercase tracking-widest">No history</p>
                 </div>
               ) : (
-                <div className="space-y-0">
+                <div className="space-y-1">
                   {workOrders.map((wo) => {
                     const category = wo.categoryId ? getCategoryById(wo.categoryId) : null;
                     const statusColor = wo.status === 'Done' ? 'text-teal-500' : wo.status === 'In Progress' ? 'text-blue-500' : 'text-gray-500';
@@ -201,56 +204,56 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                     return (
                       <div
                         key={wo.id}
-                        className="relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-gray-50 py-3"
+                        className="relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 py-2 group transition-colors"
                       >
                         {wo.assetImageUrl && (
-                          <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg">
-                            <div className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid">
+                          <div className="relative box-border caret-transparent shrink-0 mr-3 rounded">
+                            <div className="font-semibold items-center box-border caret-transparent flex shrink-0 h-10 justify-center w-10 border border-[var(--border)] overflow-hidden rounded border-solid">
                               <img
                                 src={wo.assetImageUrl}
                                 alt={wo.asset}
-                                className="h-12 w-12 object-cover"
+                                className="h-10 w-10 object-cover"
                               />
                             </div>
                           </div>
                         )}
 
                         <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center">
-                          <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                          <div className="items-center box-border caret-transparent flex shrink-0 mb-0.5">
                             <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
                               <div
                                 title={wo.title}
-                                className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium"
+                                className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-blue-500 transition-colors"
                               >
                                 {wo.title}
                               </div>
                             </div>
                             {category && (
                               <div className="box-border caret-transparent shrink-0">
-                                <span className="text-blue-500 text-xs bg-sky-100 px-2 py-1 rounded">
+                                <span className="text-blue-500 text-[9px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100">
                                   {category.name}
                                 </span>
                               </div>
                             )}
                           </div>
-                          <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                            <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
-                              {wo.status === 'Done' && wo.completedAt ? `Completed on ${new Date(wo.completedAt).toLocaleDateString()}` : `Requested by ${wo.assignedTo || 'Unknown'}`}
+                          <div className="items-center box-border caret-transparent flex shrink-0 justify-between mb-1">
+                            <div className="text-gray-500 text-[11px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden italic">
+                              {wo.status === 'Done' && wo.completedAt ? `Done ${new Date(wo.completedAt).toLocaleDateString()}` : `By ${wo.assignedTo || 'Unknown'}`}
                             </div>
-                            <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
-                              {wo.workOrderNumber}
+                            <div className="text-gray-400 text-[10px] font-mono box-border caret-transparent shrink-0">
+                              #{wo.workOrderNumber}
                             </div>
                           </div>
-                          <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-px">
+                          <div className="items-center box-border caret-transparent flex shrink-0 justify-between">
                             <div className="relative box-border caret-transparent shrink-0">
-                              <div className="text-[12.6px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-[15.12px]">
-                                <span className={`${statusColor} box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium`}>
+                              <div className="text-[10px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-none uppercase font-bold tracking-wider">
+                                <span className={`${statusColor} box-border caret-transparent text-ellipsis text-nowrap overflow-hidden`}>
                                   {wo.status}
                                 </span>
                               </div>
                             </div>
-                            <div className="box-border caret-transparent gap-x-1 flex shrink-0 gap-y-1">
-                              <div className={`text-[11.9994px] font-semibold items-center box-border caret-transparent gap-x-1 flex shrink-0 tracking-[-0.2px] leading-[17.9991px] gap-y-1 border border-zinc-200 px-1.5 py-0.5 rounded ${priorityColor}`}>
+                            <div className="box-border caret-transparent flex shrink-0">
+                              <div className={`text-[9px] font-bold items-center box-border caret-transparent flex shrink-0 tracking-widest uppercase leading-none border border-[var(--border)] px-1.5 py-0.5 rounded ${priorityColor}`}>
                                 {wo.priority}
                               </div>
                             </div>

@@ -252,15 +252,15 @@ export const WorkOrderList = () => {
   const todayStr = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="relative bg-transparent box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-2 lg:mx-4 flex-col lg:flex-row gap-4 lg:gap-0">
-        <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-zinc-200 lg:mr-4 rounded-tl rounded-tr border-solid">
+        <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-[var(--border)] lg:mr-4 rounded-tl rounded-tr border-solid bg-[var(--panel)]">
           <TabButtons activeTab={activeTab} onTabChange={setActiveTab} />
           <SortControls />
           <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr">
             {activeTab === 'todo' ? (
               <>
-                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
+                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2 opacity-[0.85]">
                   <span className="text-[var(--text)] box-border caret-transparent shrink-0 pr-1">
                     Assigned to Me ({todoCount})
                   </span>
@@ -282,7 +282,7 @@ export const WorkOrderList = () => {
               </>
             ) : (
               <>
-                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2">
+                <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2 opacity-[0.85]">
                   <span className="text-[var(--text)] box-border caret-transparent shrink-0 pr-1">
                     Completed ({filteredWorkOrders.length})
                   </span>
@@ -301,8 +301,8 @@ export const WorkOrderList = () => {
             )}
           </div>
         </div>
-        <div className="box-border caret-transparent flex flex-col grow shrink-0 w-full lg:basis-[375px] lg:min-w-[200px] lg:pt-2 lg:px-2">
-          <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+        <div className="box-border caret-transparent flex flex-col grow shrink-0 w-full lg:basis-[375px] lg:min-w-[200px] lg:pt-2 lg:px-2 border-l border-[var(--border)] bg-[var(--panel-2)]">
+          <div className="omp-panel shadow-none box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid bg-[var(--panel)]">
             {panelMode === 'create' && draft && (
               <WorkOrderCreatePanel
                 value={draft}
@@ -324,14 +324,14 @@ export const WorkOrderList = () => {
             )}
             <div className={panelMode === 'create' ? 'hidden w-full h-full' : 'block w-full h-full'}>
             {!selectedWorkOrder ? (
-               <div className="flex items-center justify-center w-full h-full text-gray-500">
+               <div className="flex items-center justify-center w-full h-full text-[var(--muted)] bg-[var(--panel-2)]">
                  Select a work order to view details
                </div>
             ) : (
-              <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
+                  <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
                 <div className="relative box-border caret-transparent flex flex-col grow w-full">
                   <div className="box-border caret-transparent shrink-0">
-                    <header className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
+                    <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4">
                       <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
                         <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                           <div className="box-border caret-transparent">
@@ -422,7 +422,7 @@ export const WorkOrderList = () => {
                                 </button>
                                 <button
                                   type="button"
-                                  className="text-gray-600 border border-zinc-200 px-2 py-0.5 rounded hover:border-neutral-300"
+                                  className="text-gray-600 border border-[var(--border)] px-2 py-0.5 rounded hover:border-neutral-300"
                                   onClick={() => setConfirmDelete(false)}
                                 >
                                   Cancel
@@ -435,11 +435,11 @@ export const WorkOrderList = () => {
                     </header>
                   </div>
                   <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4">
-                    <div className="box-border caret-transparent shrink-0 pb-6">
-                      <div className="box-border caret-transparent flex shrink-0 justify-start max-w-[816px] mr-4 mt-3">
-                        <div className="box-border caret-transparent basis-[0%] grow ml-6 my-3">
+                    <div className="box-border caret-transparent shrink-0 pb-6 pt-4">
+                      <div className="box-border caret-transparent flex shrink-0 justify-start max-w-[816px] mr-4">
+                        <div className="box-border caret-transparent basis-[0%] grow ml-6 mb-3">
                           <div className="box-border caret-transparent shrink-0 pb-2">
-                            <strong className="font-semibold box-border caret-transparent shrink-0">
+                            <strong className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">
                               Status
                             </strong>
                           </div>
@@ -453,9 +453,9 @@ export const WorkOrderList = () => {
                                     onClick={() => handleStatusUpdate(status)}
                                     className={`${
                                       selectedWorkOrder.status === status 
-                                      ? 'text-white bg-[var(--accent)] border-[var(--accent)]'
-                                      : 'text-[var(--accent)] bg-transparent border-zinc-200'
-                                    } text-[11.2px] items-center caret-transparent flex flex-col shrink-0 h-[50px] justify-center leading-[13.44px] text-center w-[71.25px] border mr-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid md:h-[60px] md:w-[90px] hover:opacity-80`}
+                                      ? 'bg-[rgba(47,107,255,0.15)] border-[var(--accent)] text-[var(--accent)] opacity-100'
+                                      : 'bg-transparent border-[var(--border)] text-[var(--muted)] opacity-65'
+                                    } text-[11.2px] items-center caret-transparent flex flex-col shrink-0 h-[50px] justify-center leading-[13.44px] text-center w-[71.25px] border mr-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid md:h-[60px] md:w-[90px] hover:bg-[var(--panel-2)] hover:opacity-100 transition-all`}
                                   >
                                     <img
                                       src={
@@ -465,7 +465,7 @@ export const WorkOrderList = () => {
                                         "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg"
                                       }
                                       alt={status}
-                                      className={`box-border caret-transparent shrink-0 h-4 w-4 md:h-6 md:w-6 ${selectedWorkOrder.status === status ? 'invert brightness-0' : ''}`}
+                                      className={`box-border caret-transparent shrink-0 h-4 w-4 md:h-6 md:w-6 ${selectedWorkOrder.status === status ? 'opacity-100' : 'opacity-65'}`}
                                     />
                                     <div className={`text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] text-nowrap mt-1`}>
                                       {status}
@@ -476,20 +476,20 @@ export const WorkOrderList = () => {
                             </div>
                           </div>
                           
-                          <div className="box-border caret-transparent shrink-0 mt-6 pt-6 border-t border-zinc-100 text-xs text-gray-500 space-y-1">
+                          <div className="box-border caret-transparent shrink-0 mt-4 pt-4 border-t border-[var(--border)] text-[13px] text-[var(--muted)] space-y-1 italic opacity-80">
                             <div>Created by {getUserById(selectedWorkOrder.createdByUserId)?.fullName || (selectedWorkOrder.createdByUserId ? 'Deleted User' : 'Admin')} on {new Date(selectedWorkOrder.createdAt).toLocaleString()}</div>
                             {selectedWorkOrder.updatedAt && <div>Last updated on {new Date(selectedWorkOrder.updatedAt).toLocaleString()}</div>}
                             {selectedWorkOrder.categoryId && (
-                              <div className="flex items-center gap-2 mt-2">
-                                <span>Category:</span>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="uppercase font-bold tracking-tighter text-[11px]">Category:</span>
                                 {(() => {
                                   const cat = getCategoryById(selectedWorkOrder.categoryId);
                                   return cat ? (
-                                    <span className={`text-blue-500 text-xs bg-sky-100 px-2 py-1 rounded ${!cat.isActive ? 'opacity-60' : ''}`}>
+                                    <span className={`text-blue-500 text-[11px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100 ${!cat.isActive ? 'opacity-60' : ''}`}>
                                       {cat.name}{!cat.isActive && ' (Archived)'}
                                     </span>
                                   ) : (
-                                    <span className="text-gray-400 text-xs bg-gray-100 px-2 py-1 rounded">Unknown Category</span>
+                                    <span className="text-[var(--muted)] text-[11px] bg-gray-50 px-1 py-0.5 rounded border border-[var(--border)]">Unknown</span>
                                   );
                                 })()}
                               </div>
@@ -497,30 +497,30 @@ export const WorkOrderList = () => {
                           </div>
 
                           {statusError && (
-                            <div className="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+                            <div className="mt-2 text-xs font-bold uppercase tracking-tight text-red-600 bg-red-50 border border-red-100 rounded px-3 py-2">
                               {statusError}
                             </div>
                           )}
                           
-                          <div className="box-border caret-transparent shrink-0 mt-6 pb-2">
-                            <strong className="font-semibold box-border caret-transparent shrink-0">
+                          <div className="box-border caret-transparent shrink-0 mt-6 pb-1">
+                            <strong className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">
                               Description
                             </strong>
                           </div>
-                          <div className="box-border caret-transparent shrink-0 text-sm text-gray-700 whitespace-pre-wrap">
+                          <div className="box-border caret-transparent shrink-0 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
                             {selectedWorkOrder.description || 'No description provided.'}
                           </div>
 
-                          <div className="box-border caret-transparent shrink-0 mt-6 pb-2 flex items-center justify-between">
-                            <strong className="font-semibold box-border caret-transparent shrink-0">
+                          <div className="box-border caret-transparent shrink-0 mt-6 pb-2 flex items-center justify-between border-b border-[var(--border)] mb-4">
+                            <strong className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">
                               Procedures
                             </strong>
                             <button
                               type="button"
                               onClick={() => setShowProcedureSelector(true)}
-                              className="text-blue-500 text-sm font-medium flex items-center gap-1 hover:text-blue-400"
+                              className="text-blue-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:text-blue-400 transition-colors"
                             >
-                              <Plus size={16} /> Add Procedure
+                              <Plus size={14} /> Add Procedure
                             </button>
                           </div>
 
@@ -538,13 +538,13 @@ export const WorkOrderList = () => {
 
                           <div className="box-border caret-transparent shrink-0 space-y-6">
                             {(selectedWorkOrder.procedureInstances || []).length === 0 && (selectedWorkOrder.sections || []).length === 0 && (
-                              <div className="text-gray-400 text-sm italic py-4 border-2 border-dashed border-gray-100 rounded-lg text-center">
+                              <div className="text-gray-400 text-sm italic py-4 border-2 border-dashed border-[var(--border)] rounded-lg text-center">
                                 No procedures attached.
                               </div>
                             )}
 
                             {(selectedWorkOrder.procedureInstances || []).map((pi, index) => (
-                              <div key={pi.id} className="border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                              <div key={pi.id} className="border border-[var(--border)] rounded-lg overflow-hidden bg-white shadow-sm">
                                 <div className="bg-blue-500 px-4 py-3 flex items-center justify-between">
                                   <div className="flex items-center gap-3 text-white">
                                     <div className="flex flex-col gap-0.5 mr-1">

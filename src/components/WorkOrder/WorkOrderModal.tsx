@@ -74,9 +74,9 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-lg shadow-lg border border-zinc-200">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-lg shadow-lg border border-[var(--border)]">
         {/* Header */}
-        <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
           <div>
             <div className="text-lg font-semibold">{wo.title}</div>
             <div className="text-xs text-gray-500">
@@ -92,7 +92,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">Status</label>
-              <select value={wo.status} onChange={(e) => updateMeta({ status: e.target.value as WorkOrder['status'] })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm">
+              <select value={wo.status} onChange={(e) => updateMeta({ status: e.target.value as WorkOrder['status'] })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm">
                 <option value="Open">Open</option>
                 <option value="On Hold">On Hold</option>
                 <option value="In Progress">In Progress</option>
@@ -101,7 +101,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Priority</label>
-              <select value={wo.priority} onChange={(e) => updateMeta({ priority: e.target.value as WorkOrder['priority'] })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm">
+              <select value={wo.priority} onChange={(e) => updateMeta({ priority: e.target.value as WorkOrder['priority'] })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm">
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
@@ -109,22 +109,22 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Assigned To</label>
-              <input value={wo.assignedTo} onChange={(e) => updateMeta({ assignedTo: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
+              <input value={wo.assignedTo} onChange={(e) => updateMeta({ assignedTo: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">Start Date</label>
-              <input type="date" value={wo.startDate || ''} onChange={(e) => updateMeta({ startDate: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
+              <input type="date" value={wo.startDate || ''} onChange={(e) => updateMeta({ startDate: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Due Date</label>
-              <input type="date" value={wo.dueDate} onChange={(e) => updateMeta({ dueDate: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" />
+              <input type="date" value={wo.dueDate} onChange={(e) => updateMeta({ dueDate: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" />
             </div>
           </div>
 
-          <div className="border-t border-zinc-100 pt-3">
+          <div className="border-t border-[var(--border)] pt-3">
             <div className="flex items-center gap-2 mb-2">
               <input
                 id="modalIsRepeating"
@@ -150,7 +150,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
                 <div>
                   <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Frequency</label>
                   <select
-                    className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                    className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
                     value={wo.schedule?.frequency || 'weekly'}
                     onChange={(e) => updateMeta({ schedule: { ...(wo.schedule as any), frequency: e.target.value as any } })}
                   >
@@ -163,7 +163,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
                   <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Schedule Start Date</label>
                   <input
                     type="date"
-                    className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                    className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
                     value={wo.schedule?.startDate || wo.startDate || ''}
                     onChange={(e) => {
                       updateMeta({
@@ -184,7 +184,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
           </div>
 
           {(wo.procedureInstances || []).map((pi) => (
-            <div key={pi.id} className="border border-zinc-200 rounded-lg overflow-hidden">
+            <div key={pi.id} className="border border-[var(--border)] rounded-lg overflow-hidden">
               <div className="px-3 py-2 bg-gray-50 text-sm font-semibold">{pi.procedureNameSnapshot} <span className="text-gray-400">v{pi.procedureVersionSnapshot}</span></div>
               <div className="p-3">
                 {(pi.procedureSchemaSnapshot || []).map(section => (
@@ -206,16 +206,16 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-zinc-200 bg-gray-50 flex items-center justify-end gap-2">
-          <button className="px-3 py-1 rounded border border-zinc-200 text-sm" onClick={onClose}>Close</button>
+        <div className="px-4 py-3 border-t border-[var(--border)] bg-gray-50 flex items-center justify-end gap-2">
+          <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Close</button>
         </div>
       </div>
 
       {/* Procedure selector drawer (simple overlay) */}
       {showSelector && (
         <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center" onClick={() => setShowSelector(false)}>
-          <div className="bg-white w-full max-w-lg max-h-[80vh] overflow-auto rounded-lg shadow-lg border border-zinc-200" onClick={(e) => e.stopPropagation()}>
-            <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+          <div className="bg-white w-full max-w-lg max-h-[80vh] overflow-auto rounded-lg shadow-lg border border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
+            <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
               <div className="text-lg font-semibold">Add Procedure</div>
               <button className="text-gray-600 hover:text-gray-800" onClick={() => setShowSelector(false)}>✕</button>
             </div>

@@ -142,8 +142,8 @@ export const Reporting = () => {
   }, [filteredData, dateRange]);
 
   return (
-    <div className="relative bg-[var(--bg)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-5 mb-4">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4 mb-4">
         <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
           <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
             <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
@@ -245,38 +245,38 @@ export const Reporting = () => {
               <div className="box-border caret-transparent flex basis-[0%] grow gap-x-2">
                 <button
                   type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Assigned To
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Due Date
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Location
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Priority
                 </button>
                 <button
                   type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Add Filter
                 </button>
               </div>
               <button
                 type="button"
-                className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300 ml-2"
+                className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300 ml-2"
               >
                 My Filters
               </button>
@@ -296,7 +296,7 @@ export const Reporting = () => {
                 </div>
               </div>
 
-          <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-4">
+          <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
               <button
                 type="button"
@@ -347,7 +347,7 @@ export const Reporting = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
@@ -378,13 +378,13 @@ export const Reporting = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold text-gray-400">{metrics.byType.Inspection}</div>
-                    <div className="text-gray-400 border border-gray-400 px-2 py-1 rounded text-xs">
+                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
                       Inspection
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold text-gray-400">{metrics.byType.Other}</div>
-                    <div className="text-gray-400 border border-gray-400 px-2 py-1 rounded text-xs">
+                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
                       Other
                     </div>
                   </div>
@@ -404,7 +404,7 @@ export const Reporting = () => {
               </div>
             </div>
 
-            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
@@ -423,13 +423,13 @@ export const Reporting = () => {
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold">{metrics.nonRepeating}</div>
-                    <div className="text-gray-400 border border-gray-400 px-2 py-1 rounded text-xs">
+                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
                       Non-Repeating
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold">{metrics.repeating}</div>
-                    <div className="text-gray-400 border border-gray-400 px-2 py-1 rounded text-xs">
+                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
                       Repeating
                     </div>
                   </div>
@@ -453,7 +453,7 @@ export const Reporting = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-lg">Status</h4>
                 <button
@@ -464,19 +464,19 @@ export const Reporting = () => {
                 </button>
               </div>
               <div className="flex gap-2 flex-wrap mb-4">
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   Open: {metrics.statusDist.Open}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   On Hold: {metrics.statusDist.OnHold}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   In Progress: {metrics.statusDist.InProgress}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   Done: {metrics.statusDist.Done}
                 </div>
-                <div className="text-gray-400 border border-gray-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   Skipped/Canceled: {metrics.statusDist.SkippedCanceled}
                 </div>
               </div>
@@ -485,7 +485,7 @@ export const Reporting = () => {
               </div>
             </div>
 
-            <div className="omp-panel shadow-none box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-lg">Priority</h4>
                 <button
@@ -496,16 +496,16 @@ export const Reporting = () => {
                 </button>
               </div>
               <div className="flex gap-2 flex-wrap mb-4">
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   None: {metrics.priorityDist.None}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   Low: {metrics.priorityDist.Low}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   Medium: {metrics.priorityDist.Medium}
                 </div>
-                <div className="text-gray-600 border border-zinc-200 px-2 py-1 rounded text-xs">
+                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
                   High: {metrics.priorityDist.High}
                 </div>
               </div>
@@ -516,7 +516,7 @@ export const Reporting = () => {
           </div>
 
           {/* New Table: Repeating Work Orders */}
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
+          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
             <h4 className="font-medium text-lg mb-4">Repeating Work Orders</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
@@ -557,7 +557,7 @@ export const Reporting = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <h4 className="font-medium text-lg mb-4">By Asset</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                  {Object.entries(metrics.byAsset).length > 0 ? Object.entries(metrics.byAsset).map(([name, count]) => (
@@ -568,7 +568,7 @@ export const Reporting = () => {
                  )) : <div className="text-gray-400 text-center py-4 italic">No data</div>}
               </div>
             </div>
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
+            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
               <h4 className="font-medium text-lg mb-4">By User</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                  {Object.entries(metrics.byUser).length > 0 ? Object.entries(metrics.byUser).map(([name, count]) => (
@@ -581,7 +581,7 @@ export const Reporting = () => {
             </div>
           </div>
 
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-zinc-200 rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
+          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
             <h4 className="font-medium text-lg mb-4">Inspections Summary</h4>
             <div className="grid grid-cols-3 gap-4">
                <div className="text-center p-4 border rounded bg-green-50">

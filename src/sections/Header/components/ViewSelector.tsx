@@ -50,7 +50,7 @@ export const ViewSelector = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white border border-zinc-200 shadow-lg rounded-md z-50 min-w-[160px] py-1">
+        <div className="absolute top-full left-0 mt-1 bg-white border border-[var(--border)] shadow-lg rounded-md z-50 min-w-[160px] py-1">
           <button
             className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${viewMode === 'list' ? 'text-blue-500 font-semibold' : 'text-gray-700'}`}
             onClick={() => { switchView('list'); setIsOpen(false); }}

@@ -12,12 +12,12 @@ export const UserProfile = () => {
       <div
         onClick={() => setIsPinModalOpen(true)}
         className={`items-center cursor-pointer caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600 text-center w-full mt-2 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-          isActive ? 'bg-sky-100 text-blue-500' : 'bg-transparent hover:bg-gray-100'
+          isActive ? 'bg-[var(--panel)] text-[var(--accent)] opacity-100' : 'bg-transparent hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
         }`}
         title="Switch User"
       >
         <div 
-          className="items-center bg-white bg-cover box-border caret-transparent flex fill-gray-600 shrink-0 h-8 justify-center stroke-gray-600 w-8 bg-center rounded-[50%]"
+          className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex fill-gray-600 shrink-0 h-8 justify-center stroke-gray-600 w-8 bg-center rounded-[50%]"
           style={{ backgroundImage: `url('${activeUser?.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
         ></div>
         
@@ -32,7 +32,7 @@ export const UserProfile = () => {
             <img
               src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-18.svg"
               alt="Icon"
-              className="text-blue-500 box-border caret-transparent shrink-0 h-3.5 w-3.5 mr-1"
+              className={`text-blue-500 box-border caret-transparent shrink-0 h-3.5 w-3.5 mr-1 ${isActive ? 'opacity-100' : ''}`}
             />
             <div className="box-border caret-transparent fill-gray-600 shrink-0 stroke-gray-600">
               Switch User
@@ -44,7 +44,7 @@ export const UserProfile = () => {
         <img
           src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-19.svg"
           alt="Icon"
-          className="hidden lg:block text-blue-500 box-border caret-transparent shrink-0 h-5 w-5"
+          className={`hidden lg:block text-blue-500 box-border caret-transparent shrink-0 h-5 w-5 ${isActive ? 'opacity-100' : ''}`}
         />
       </div>
       <PinModal isOpen={isPinModalOpen} onClose={() => setIsPinModalOpen(false)} />

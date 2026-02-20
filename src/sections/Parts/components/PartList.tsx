@@ -15,7 +15,7 @@ type PartListProps = {
 
 export const PartList = ({ parts, selectedPartId, onSelectPart }: PartListProps) => {
   return (
-    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
+    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-[var(--border)] mr-4 rounded-tl rounded-tr border-solid">
       {/* Sort Controls */}
       <div className="relative items-center border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 h-12 justify-between z-[1] border-b">
         <div className="box-border caret-transparent flex basis-[0%] grow p-3">
@@ -53,14 +53,14 @@ export const PartList = ({ parts, selectedPartId, onSelectPart }: PartListProps)
           <div
             key={part.id}
             onClick={() => onSelectPart(part.id)}
-            className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-gray-50 ${
-              selectedPartId === part.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-            }`}
+            className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
+              selectedPartId === part.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+            } group`}
           >
             <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3 rounded-lg">
               <div
                 title={part.name}
-                className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid"
+                className={`text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid transition-opacity ${selectedPartId === part.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
               >
                 {part.imageUrl ? (
                   <figure

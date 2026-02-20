@@ -13,7 +13,7 @@ type LocationListProps = {
 
 export const LocationList = ({ locations, selectedLocationId, onSelectLocation }: LocationListProps) => {
   return (
-    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
+    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-[var(--border)] mr-4 rounded-tl rounded-tr border-solid">
       {/* Sort Controls */}
       <div className="relative items-center border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 h-12 justify-between z-[1] border-b">
         <div className="box-border caret-transparent flex basis-[0%] grow p-3">
@@ -51,16 +51,16 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
           <div
             key={location.id}
             onClick={() => onSelectLocation(location.id)}
-            className={`relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 ${
-              selectedLocationId === location.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-            }`}
+            className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
+              selectedLocationId === location.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+            } group`}
           >
             <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
               <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                   alt="Icon"
-                  className="text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                  className={`text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedLocationId === location.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                 />
               </div>
             </div>
@@ -78,7 +78,7 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
               </div>
               {location.address && (
                 <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                  <div className="text-gray-600 text-[12.6px] box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
+                  <div className="text-[var(--muted)] text-[13px] box-border caret-transparent text-ellipsis text-nowrap overflow-hidden opacity-80">
                     {location.address}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
                 <div className="items-center box-border caret-transparent flex shrink-0 my-1">
                   <a
                     href={`/locations/${location.id}/subs`}
-                    className="text-blue-500 text-[12.6px] box-border caret-transparent flex items-center gap-1 hover:text-blue-400"
+                    className="text-blue-500 text-[13px] box-border caret-transparent flex items-center gap-1 hover:text-blue-400 opacity-90"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {location.subLocationsCount} Sub-Locations

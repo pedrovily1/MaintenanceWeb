@@ -15,7 +15,7 @@ type ConversationListProps = {
 
 export const ConversationList = ({ conversations, selectedConversationId, onSelectConversation }: ConversationListProps) => {
   return (
-    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-zinc-200 mr-4 rounded-tl rounded-tr border-solid">
+    <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex flex-col shrink-0 max-w-[500px] min-w-[300px] w-2/5 border border-[var(--border)] mr-4 rounded-tl rounded-tr border-solid">
       {/* Tabs */}
       <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b">
         <button
@@ -52,13 +52,13 @@ export const ConversationList = ({ conversations, selectedConversationId, onSele
               <div
                 key={conversation.id}
                 onClick={() => onSelectConversation(conversation.id)}
-                className={`relative items-start border-b border-zinc-200 box-border caret-transparent flex shrink-0 cursor-pointer hover:bg-gray-50 px-4 py-3 ${
-                  selectedConversationId === conversation.id ? "bg-slate-50 border-l-4 border-l-blue-500" : ""
-                }`}
+                className={`relative items-start border-b border-[var(--border)] box-border caret-transparent flex shrink-0 cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] px-4 py-3 border-l-2 transition-colors ${
+                  selectedConversationId === conversation.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+                } group`}
               >
                 <div className="box-border caret-transparent shrink-0 mr-3">
                   <div
-                      className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-14 justify-center w-14 bg-center rounded-full"
+                      className={`items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-14 justify-center w-14 bg-center rounded-full transition-opacity ${selectedConversationId === conversation.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                       style={{
                         backgroundImage: conversation.avatarUrl
                             ? `url(${conversation.avatarUrl})`

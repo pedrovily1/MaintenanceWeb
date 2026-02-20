@@ -36,7 +36,6 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
         fullName,
         role,
         pin,
-        teams: [],
         lastVisit: '',
         isActive: true, // Users are active by default for PIN-based switching
         avatarUrl: `https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture${Math.floor(Math.random() * 30) + 1}.png`
@@ -57,7 +56,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-        <header className="px-6 py-4 border-b border-zinc-200 flex justify-between items-center">
+        <header className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
           <h3 className="text-lg font-semibold">Create New User</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -69,7 +68,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
             <input
               type="text"
               required
-              className="w-full border border-zinc-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. John Doe"
@@ -78,7 +77,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
             <select
-              className="w-full border border-zinc-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
             >
@@ -93,7 +92,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
               type="password"
               pattern="\d{4,6}"
               required
-              className={`w-full border ${error ? 'border-red-500' : 'border-zinc-200'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
+              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
               value={pin}
               onChange={(e) => {
                 setPin(e.target.value.replace(/\D/g, '').slice(0, 6));
@@ -108,7 +107,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
               type="password"
               pattern="\d{4,6}"
               required
-              className={`w-full border ${error ? 'border-red-500' : 'border-zinc-200'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
+              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
               value={confirmPin}
               onChange={(e) => {
                 setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 6));

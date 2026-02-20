@@ -53,7 +53,7 @@ export const DetailContent = () => {
               </h2>
             </div>
             <div className="box-border caret-transparent shrink-0 mb-2">
-              <div className="text-[11.9994px] font-semibold items-center box-border caret-transparent gap-x-1 inline-flex shrink-0 tracking-[-0.2px] leading-[17.9991px] gap-y-1 border border-zinc-200 px-1.5 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+              <div className="text-[11.9994px] font-semibold items-center box-border caret-transparent gap-x-1 inline-flex shrink-0 tracking-[-0.2px] leading-[17.9991px] gap-y-1 border border-[var(--border)] px-1.5 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                 <span className="items-center box-border caret-transparent flex shrink-0 justify-start">
                   <img
                     src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-34.svg"
@@ -87,15 +87,6 @@ export const DetailContent = () => {
                 imageUrl:
                   "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png",
                 profileUrl: "https://app.getmaintainx.com/users/profile/849627",
-                subtitle: "",
-              },
-            ]}
-            assignedTeams={[
-              {
-                name: "Site Maintenance",
-                iconUrl:
-                  "https://c.animaapp.com/mkof8zon8iICvl/assets/icon-46.svg",
-                teamUrl: "https://app.getmaintainx.com/teams/116087",
                 subtitle: "",
               },
             ]}

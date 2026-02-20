@@ -19,13 +19,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = '';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'workorders' ? 'text-[var(--accent)] bg-[var(--panel)]' : 'hover:bg-[var(--panel)]'
+            currentView === 'workorders' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
             alt="Icon"
-            className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'workorders' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Work Orders
@@ -40,13 +40,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'reporting';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'reporting' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'reporting' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-5.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'reporting' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Reporting
@@ -61,13 +61,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'assets';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'assets' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'assets' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'assets' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Assets
@@ -82,13 +82,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'messages';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'messages' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'messages' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-8.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'messages' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Messages
@@ -106,13 +106,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'categories';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'categories' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'categories' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-9.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'categories' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Categories
@@ -127,13 +127,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'parts';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'parts' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'parts' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'parts' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Parts
@@ -148,14 +148,14 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'procedures';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'procedures' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'procedures' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <div className="relative">
             <img
               src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
               alt="Icon"
-              className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+              className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'procedures' ? 'opacity-100' : ''}`}
             />
             <ProceduresNavBadge className="lg:hidden absolute -top-1 -right-1 text-white text-[8px] font-semibold items-center bg-blue-500 box-border caret-transparent flex shrink-0 h-3 w-3 justify-center rounded-full" />
           </div>
@@ -173,13 +173,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'meters';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'meters' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'meters' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-13.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'meters' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Meters
@@ -194,20 +194,20 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'locations';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'locations' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'locations' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-15.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'locations' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Locations
           </span>
         </a>
       </li>
-      <li title="Teams / Users" className="box-border caret-transparent shrink-0">
+      <li title="Users" className="box-border caret-transparent shrink-0">
         <a
           href="/users"
           onClick={(e) => {
@@ -215,16 +215,16 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'users';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'users' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'users' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-16.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'users' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
-            Teams / Users
+            Users
           </span>
         </a>
       </li>
@@ -236,13 +236,13 @@ export const SidebarNav = ({ currentView }: SidebarNavProps) => {
             window.location.hash = 'vendors';
           }}
           className={`relative items-center box-border caret-transparent gap-x-2 flex shrink-0 break-words lg:px-2 py-1.5 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
-            currentView === 'vendors' ? 'text-blue-500 bg-sky-100' : 'hover:bg-gray-100'
+            currentView === 'vendors' ? 'text-[var(--accent)] bg-[var(--panel)] opacity-100' : 'hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
           }`}
         >
           <img
             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-17.svg"
             alt="Icon"
-            className="text-slate-500 box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+            className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] ${currentView === 'vendors' ? 'opacity-100' : ''}`}
           />
           <span className="hidden lg:block box-border caret-transparent basis-[0%] grow tracking-[-0.3px] leading-[19.6px] break-words text-ellipsis text-nowrap overflow-hidden">
             Vendors

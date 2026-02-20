@@ -16,21 +16,21 @@ export const ProcedureSelector: React.FC<ProcedureSelectorProps> = ({ onSelect, 
   }, [search, query]);
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-lg shadow-lg flex flex-col h-[500px] w-full max-w-md overflow-hidden">
-      <div className="p-4 border-b border-zinc-200 flex items-center justify-between bg-gray-50">
+    <div className="bg-white border border-[var(--border)] rounded-lg shadow-lg flex flex-col h-[500px] w-full max-w-md overflow-hidden">
+      <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-gray-50">
         <h3 className="font-semibold text-gray-800">Attach Procedure</h3>
         <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 transition-colors">
           <X size={20} />
         </button>
       </div>
 
-      <div className="p-4 border-b border-zinc-200">
+      <div className="p-4 border-b border-[var(--border)]">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
             type="text"
             placeholder="Search procedures..."
-            className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus

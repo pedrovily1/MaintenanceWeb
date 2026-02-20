@@ -46,9 +46,9 @@ export const Meters = () => {
   const startEdit = (id: string) => { setEditingId(id); setShowEditor(true); };
 
   return (
-    <div className="relative bg-white box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       {/* Header */}
-      <div className="bg-white box-border caret-transparent shrink-0 px-4 py-5">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4">
         <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
           <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
             <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
@@ -63,7 +63,7 @@ export const Meters = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search Meters"
-                  className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-gray-50 bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+                  className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                 />
               </form>
             </div>
@@ -102,7 +102,7 @@ export const Meters = () => {
             </button>
             <button
               type="button"
-              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
             >
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
                 Asset
@@ -110,7 +110,7 @@ export const Meters = () => {
             </button>
             <button
               type="button"
-              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+              className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
             >
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
                 Location

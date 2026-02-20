@@ -38,7 +38,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
   if (!procedureId || !draft) {
     return (
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
           <div className="flex items-center justify-center w-full h-full text-gray-500">
             Select or create a procedure to start building
           </div>
@@ -107,7 +107,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
 
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-hidden w-full">
           {/* Header */}
           <header className="box-border caret-transparent shrink-0 px-4 py-4">
@@ -139,7 +139,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
               </div>
             </div>
             <textarea
-              className="w-full border border-zinc-200 rounded p-2 text-sm min-h-[60px]"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm min-h-[60px]"
               placeholder="Description (optional)"
               value={draft.description || ''}
               onChange={(e) => updateDraft({ description: e.target.value })}

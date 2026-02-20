@@ -48,8 +48,8 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
   };
 
   return (
-    <div className="border border-zinc-200 rounded-lg overflow-hidden mb-4 bg-white">
-      <div className="px-4 py-3 bg-gray-50 flex items-center justify-between border-b border-zinc-200">
+    <div className="border border-[var(--border)] rounded-lg overflow-hidden mb-4 bg-white">
+      <div className="px-4 py-3 bg-gray-50 flex items-center justify-between border-b border-[var(--border)]">
         <div className="flex items-center gap-3 grow">
           <span className="text-[11px] font-bold text-slate-400 tracking-wider whitespace-nowrap bg-slate-200/50 px-1.5 py-0.5 rounded">SECTION {index + 1}</span>
           <input
@@ -98,7 +98,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
                 key={kind}
                 type="button"
                 onClick={() => onAddItem(kind)}
-                className="text-xs border border-zinc-200 rounded px-2 py-1 text-gray-700 hover:border-blue-400 hover:text-blue-500"
+                className="text-xs border border-[var(--border)] rounded px-2 py-1 text-gray-700 hover:border-blue-400 hover:text-blue-500"
               >
                 + {kind}
               </button>

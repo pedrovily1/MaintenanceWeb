@@ -5,9 +5,9 @@ type PartDetailProps = {
 export const PartDetail = ({ partId }: PartDetailProps) => {
   if (!partId) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a part to view details
           </div>
         </div>
@@ -16,11 +16,11 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
   }
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <header className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
+          <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                 <div className="box-border caret-transparent">
@@ -43,7 +43,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                     </button>
                   </div>
                   <div className="items-center box-border caret-transparent gap-x-1 flex h-[18px] gap-y-1">
-                    <span className="text-gray-600 text-sm box-border caret-transparent block">
+                    <span className="text-gray-600 text-sm box-border caret-transparent block italic">
                       1 unit in stock
                     </span>
                   </div>
@@ -82,16 +82,16 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
             </div>
 
             {/* Tabs */}
-            <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
+            <div className="bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent flex shrink-0 flex-wrap border-b px-4">
               <button
                 type="button"
-                className="text-blue-500 font-semibold bg-transparent border-b-blue-500 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b"
+                className="text-[var(--accent)] border-b-[var(--accent)] border-l-transparent border-r-transparent border-t-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all"
               >
                 Details
               </button>
               <button
                 type="button"
-                className="text-gray-600 bg-transparent border-b-zinc-200 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50"
+                className="text-[var(--muted)] border-b-transparent border-l-transparent border-r-transparent border-t-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all"
               >
                 History
               </button>
@@ -99,86 +99,88 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
           </header>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 p-6">
-            {/* Minimum in Stock */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">Minimum in Stock</h2>
-              <span>1 unit</span>
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 p-6 pt-6">
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {/* Minimum in Stock */}
+              <div className="box-border caret-transparent shrink-0">
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-1">Minimum in Stock</h2>
+                <span className="text-sm font-medium">1 unit</span>
+              </div>
+
+              {/* Available Quantity */}
+              <div className="box-border caret-transparent shrink-0">
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-1">Available Quantity</h2>
+                <span className="text-sm font-medium">1 unit</span>
+              </div>
             </div>
 
-            {/* Available Quantity */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">Available Quantity</h2>
-              <span>1 unit</span>
-            </div>
-
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Location Table */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">Location</h2>
-              <div className="border border-zinc-200 rounded-lg overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-zinc-200">
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Location</h2>
+              <div className="border border-[var(--border)] rounded overflow-hidden">
+                <table className="w-full text-xs">
+                  <thead className="bg-[var(--panel-2)] border-b border-[var(--border)]">
                     <tr>
-                      <th className="text-left text-sm font-medium text-gray-600 px-4 py-3">Location</th>
-                      <th className="text-left text-sm font-medium text-gray-600 px-4 py-3">Area</th>
-                      <th className="text-left text-sm font-medium text-gray-600 px-4 py-3">Units in Stock</th>
-                      <th className="text-left text-sm font-medium text-gray-600 px-4 py-3">Minimum in Stock</th>
+                      <th className="text-left font-medium text-[var(--muted)] px-3 py-2 uppercase tracking-tight opacity-[0.85]">Location</th>
+                      <th className="text-left font-medium text-[var(--muted)] px-3 py-2 uppercase tracking-tight opacity-[0.85]">Area</th>
+                      <th className="text-center font-medium text-[var(--muted)] px-3 py-2 uppercase tracking-tight opacity-[0.85]">In Stock</th>
+                      <th className="text-center font-medium text-[var(--muted)] px-3 py-2 uppercase tracking-tight opacity-[0.85]">Min</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-zinc-200 hover:bg-gray-50">
-                      <td className="px-4 py-3">
+                    <tr className="border-b border-[var(--border)] hover:bg-gray-50 transition-colors">
+                      <td className="px-3 py-2">
                         <div className="flex items-center gap-2">
                           <img
                             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                             alt="Icon"
-                            className="h-4 w-4 text-blue-500"
+                            className="h-3 w-3"
                           />
-                          <a href="#" className="text-blue-500 hover:text-blue-400">
+                          <a href="#" className="text-blue-500 hover:underline font-medium">
                             General Storage
                           </a>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-gray-600"></td>
-                      <td className="px-4 py-3">1</td>
-                      <td className="px-4 py-3">1</td>
+                      <td className="px-3 py-2 text-gray-500">—</td>
+                      <td className="px-3 py-2 text-center font-medium">1</td>
+                      <td className="px-3 py-2 text-center text-gray-500">1</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* QR Code/Barcode */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">QR Code/Barcode</h2>
-              <div className="bg-gray-50 border border-zinc-200 rounded p-4 text-center">
-                <p className="text-sm text-gray-600 mb-2">
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">QR Code/Barcode</h2>
+              <div className="bg-[var(--panel-2)] border border-dashed border-[var(--border)] rounded p-4 text-center">
+                <p className="text-xs text-[var(--muted)] mb-2 italic">
                   Attach a code to this Part so you can scan and find it easily
                 </p>
-                <a href="#" className="text-blue-500 text-sm font-medium hover:text-blue-400">
-                  Add QR Code/Barcode
+                <a href="#" className="text-blue-500 text-xs font-bold hover:text-blue-400 uppercase tracking-widest">
+                  + Add QR Code/Barcode
                 </a>
               </div>
             </div>
 
             {/* Assets */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">Assets (1)</h2>
-              <div className="border border-zinc-200 rounded-lg p-3 hover:bg-gray-50 cursor-pointer">
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Assets (1)</h2>
+              <div className="border border-[var(--border)] rounded p-2 hover:bg-gray-50 cursor-pointer transition-colors group">
                 <div className="flex items-center gap-3">
-                  <div className="bg-sky-100 border border-blue-300 h-8 w-8 flex items-center justify-center rounded-lg">
+                  <div className="bg-sky-100 border border-blue-300 h-7 w-7 flex items-center justify-center rounded-lg">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
                       alt="Icon"
-                      className="h-[18px] w-[18px]"
+                      className="h-4 w-4"
                     />
                   </div>
                   <div className="flex-1">
-                    <a href="#" className="text-blue-500 hover:text-blue-400">
+                    <a href="#" className="text-sm font-medium group-hover:text-blue-500 transition-colors">
                       Overhead Sliding door
                     </a>
                   </div>
@@ -186,30 +188,30 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Metadata */}
-            <div className="text-sm text-gray-600 space-y-2 mb-6">
+            <div className="text-[10px] text-[var(--muted)] space-y-1 mb-4 italic">
               <div className="flex items-center gap-2">
                 Created By 
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"></div>
                 <a href="#" className="text-blue-500 hover:underline">Pedro Modesto</a>
                 <span>on 01/08/2025, 09:22</span>
               </div>
               <div className="flex items-center gap-2">
                 Last updated By
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')] bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"></div>
                 <a href="#" className="text-blue-500 hover:underline">Pedro Modesto</a>
                 <span>on 09/12/2025, 11:52</span>
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Work Order History */}
             <div className="box-border caret-transparent shrink-0">
-              <h2 className="text-base font-medium mb-3">Work Order History</h2>
-              <div className="text-gray-500 text-sm">No work order history</div>
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Work Order History</h2>
+              <div className="text-[var(--muted)] text-xs italic">No work order history</div>
             </div>
           </div>
 

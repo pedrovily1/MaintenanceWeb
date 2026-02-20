@@ -11,9 +11,9 @@ interface ExportPreviewModalProps {
 export const ExportPreviewModal: React.FC<ExportPreviewModalProps> = ({ pdfUrl, onClose, onDownload, filename }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 lg:p-8">
-      <div className="bg-white w-full max-w-5xl h-full flex flex-col rounded-xl shadow-2xl overflow-hidden border border-zinc-200">
+      <div className="bg-white w-full max-w-5xl h-full flex flex-col rounded-xl shadow-2xl overflow-hidden border border-[var(--border)]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-zinc-200 flex items-center justify-between bg-white shrink-0">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex items-center justify-between bg-white shrink-0">
           <div>
             <h3 className="text-lg font-bold text-gray-900">PDF Report Preview</h3>
             <p className="text-sm text-gray-500 truncate max-w-[300px] lg:max-w-md">{filename}</p>
@@ -31,7 +31,7 @@ export const ExportPreviewModal: React.FC<ExportPreviewModalProps> = ({ pdfUrl, 
                 const iframe = document.getElementById('pdf-preview-iframe') as HTMLIFrameElement;
                 iframe?.contentWindow?.print();
               }}
-              className="flex items-center gap-2 px-4 py-2 border border-zinc-200 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-[var(--border)] text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50 transition-colors"
             >
               <Printer size={18} />
               Print
@@ -57,10 +57,10 @@ export const ExportPreviewModal: React.FC<ExportPreviewModalProps> = ({ pdfUrl, 
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-zinc-200 bg-gray-50 flex justify-end shrink-0">
+        <div className="px-6 py-4 border-t border-[var(--border)] bg-gray-50 flex justify-end shrink-0">
           <button
             onClick={onClose}
-            className="px-6 py-2 border border-zinc-200 text-gray-700 rounded-lg text-sm font-bold hover:bg-white transition-colors"
+            className="px-6 py-2 border border-[var(--border)] text-gray-700 rounded-lg text-sm font-bold hover:bg-white transition-colors"
           >
             Close Preview
           </button>

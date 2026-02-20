@@ -38,7 +38,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
               checked={!!field.value}
               onChange={(e) => onUpdate({ value: e.target.checked })}
               disabled={disabled}
-              className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              className="h-4 w-4 text-blue-600 rounded border-[var(--border)] focus:ring-blue-500"
             />
             <span className={`text-sm ${field.required && !field.value ? 'text-red-500' : 'text-gray-700'}`}>
               {field.label} {field.required && '*'}
@@ -59,7 +59,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 onChange={(e) => onUpdate({ value: e.target.value })}
                 placeholder={field.placeholder}
                 disabled={disabled}
-                className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 }}
                 placeholder={unit ? `Enter ${unit}` : 'Enter value'}
                 disabled={disabled}
-                className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
               {unit && <span className="text-sm text-gray-500 font-medium">{unit}</span>}
             </div>
@@ -124,7 +124,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
               onChange={(e) => onUpdate({ value: e.target.value })}
               placeholder={field.placeholder}
               disabled={disabled}
-              className="w-full border border-gray-200 rounded px-3 py-2 text-sm min-h-[80px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm min-h-[80px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
         );
@@ -161,7 +161,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
             <div className="flex flex-wrap gap-2">
               {(field.attachments || []).map((att) => (
                 <div key={att.id} className="relative group w-20 h-20">
-                  <img src={att.url} alt={att.name} className="w-full h-full object-cover rounded border border-gray-200" />
+                  <img src={att.url} alt={att.name} className="w-full h-full object-cover rounded border border-[var(--border)]" />
                   {!disabled && (
                     <button
                       onClick={() => removeAttachment(att.id)}
@@ -173,7 +173,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 </div>
               ))}
               {!disabled && (
-                <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors text-gray-400 hover:text-blue-500">
+                <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-[var(--border)] rounded hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors text-gray-400 hover:text-blue-500">
                   <Camera size={20} />
                   <span className="text-[10px] mt-1">Add Photo</span>
                   <input type="file" accept="image/*" multiple onChange={handleFileChange} className="hidden" />
@@ -190,7 +190,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
               {field.label} {field.required && '*'}
             </label>
             {field.value ? (
-              <div className="border border-gray-200 rounded p-4 bg-gray-50 italic text-gray-600 text-center relative group">
+              <div className="border border-[var(--border)] rounded p-4 bg-gray-50 italic text-gray-600 text-center relative group">
                 Signed by: {field.value}
                 {!disabled && (
                    <button onClick={() => onUpdate({ value: '' })} className="absolute top-1 right-1 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -205,7 +205,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                   const name = window.prompt("Type your full name to sign:");
                   if (name) onUpdate({ value: name });
                 }}
-                className="w-full border-2 border-dashed border-gray-300 rounded py-4 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 transition-all"
+                className="w-full border-2 border-dashed border-[var(--border)] rounded py-4 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 transition-all"
               >
                 Click to Sign
               </button>
@@ -219,7 +219,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
             <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
               {field.label} {field.required && '*'}
             </label>
-            <div className="flex items-center text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded border border-gray-200">
+            <div className="flex items-center text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded border border-[var(--border)]">
               <Clock size={14} className="mr-2" />
               {field.value ? new Date(field.value).toLocaleString() : 'Not recorded'}
               {!field.value && !disabled && (
@@ -245,7 +245,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
               disabled={disabled}
               value={field.value ? String(field.value).substring(0,10) : ''}
               onChange={(e) => onUpdate({ value: e.target.value })}
-              className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
           </div>
         );
@@ -264,7 +264,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                   type="button"
                   disabled={disabled}
                   onClick={() => onUpdate({ value: opt })}
-                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-zinc-200 text-gray-700'}`}
+                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-[var(--border)] text-gray-700'}`}
                 >
                   {opt}
                 </button>
@@ -288,7 +288,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                   type="button"
                   disabled={disabled}
                   onClick={() => onUpdate({ value: opt })}
-                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-zinc-200 text-gray-700'}`}
+                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-blue-500 text-white border-blue-500' : 'border-[var(--border)] text-gray-700'}`}
                 >
                   {opt}
                 </button>
@@ -306,7 +306,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
             </label>
             <div className="flex flex-col gap-2">
               {(field.attachments || []).map((att) => (
-                <div key={att.id} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded px-3 py-2">
+                <div key={att.id} className="flex items-center justify-between bg-gray-50 border border-[var(--border)] rounded px-3 py-2">
                   <div className="flex items-center gap-2 text-sm text-gray-700">
                     <Paperclip size={14} />
                     <span className="truncate max-w-[260px]">{att.name}</span>
@@ -317,7 +317,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 </div>
               ))}
               {!disabled && (
-                <label className="w-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded py-3 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 cursor-pointer transition-colors">
+                <label className="w-full flex items-center justify-center border-2 border-dashed border-[var(--border)] rounded py-3 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 cursor-pointer transition-colors">
                   <Paperclip size={16} className="mr-1" /> Add File
                   <input type="file" multiple onChange={handleFileChange} className="hidden" />
                 </label>

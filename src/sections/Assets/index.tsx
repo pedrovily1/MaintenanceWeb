@@ -51,9 +51,9 @@ export const Assets = () => {
 
 
   return (
-    <div className="relative bg-[var(--bg)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       {/* Header */}
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-5 mb-4">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4 mb-4">
         <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
           <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
             <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">

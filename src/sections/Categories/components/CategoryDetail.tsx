@@ -18,9 +18,9 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
 
   if (!category) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a category to view details
           </div>
         </div>
@@ -37,18 +37,18 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
   };
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid relative">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid relative">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <div className="box-border caret-transparent shrink-0 px-4 py-4">
+          <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                 <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
                   {category.name}
                 </h3>
                 {!category.isActive && (
-                  <span className="text-xs text-gray-500 bg-gray-200 px-1.5 py-0.5 rounded">Archived</span>
+                  <span className="text-[10px] uppercase font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded tracking-wider">Archived</span>
                 )}
                 <button
                   title="Copy Link"
@@ -89,7 +89,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                     </span>
                   </button>
                   {showMenu && (
-                    <div className="absolute right-0 top-full mt-1 bg-white border border-zinc-200 rounded shadow-lg z-10 min-w-[150px]">
+                    <div className="absolute right-0 top-full mt-1 bg-white border border-[var(--border)] rounded shadow-lg z-10 min-w-[150px]">
                       {category.isActive && (
                         <button
                           type="button"
@@ -116,20 +116,20 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
           </div>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6">
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 pt-6">
             {/* Description */}
             {category.description && (
-              <div className="text-sm text-gray-600 mb-4 pb-4 border-b border-zinc-200">
+              <div className="text-sm text-gray-700 mb-4 pb-4 border-b border-[var(--border)] leading-relaxed italic">
                 {category.description}
               </div>
             )}
 
             {/* Metadata */}
-            <div className="text-sm text-gray-600 space-y-2 mb-6 pb-6 border-b border-zinc-200">
+            <div className="text-[10px] text-[var(--muted)] space-y-1 mb-4 pb-4 border-b border-[var(--border)] italic">
               <div className="flex items-center gap-2">
                 Created By 
                 <div 
-                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"
                   style={{ backgroundImage: `url('${createdByUser?.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
                 ></div>
                 <span className="text-blue-500 hover:underline cursor-pointer">{createdByUser?.fullName || 'Admin'}</span>
@@ -138,7 +138,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
               <div className="flex items-center gap-2">
                 Last updated By
                 <div 
-                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"
+                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"
                   style={{ backgroundImage: `url('${updatedByUser?.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
                 ></div>
                 <span className="text-blue-500 hover:underline cursor-pointer">{updatedByUser?.fullName || 'Admin'}</span>
@@ -148,63 +148,63 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
 
             {/* Work Order History */}
             <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium">Work Order History</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">Work Order History</h3>
               </div>
 
               {/* Work Order List */}
-              <div className="space-y-0">
+              <div className="space-y-1">
                 {workOrders.length === 0 ? (
-                  <div className="text-gray-400 text-sm italic py-8 text-center border-2 border-dashed border-gray-100 rounded-lg">
-                    No work orders in this category yet.
+                  <div className="text-[var(--muted)] text-xs italic py-6 text-center border border-dashed border-[var(--border)] rounded">
+                    No history.
                   </div>
                 ) : (
                   workOrders.map((workOrder) => (
                     <div
                       key={workOrder.id}
-                      className="relative items-center border-b border-zinc-200 box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-gray-50 py-3"
+                      className="relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-gray-50 py-2 group transition-colors"
                     >
-                      <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg">
+                      <div className="relative box-border caret-transparent shrink-0 mr-3 rounded">
                         <div
                           title={workOrder.title}
-                          className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid"
+                          className="font-semibold items-center box-border caret-transparent flex shrink-0 h-10 justify-center w-10 border border-[var(--border)] overflow-hidden rounded border-solid"
                         >
                           <figure
-                            className="bg-cover box-border caret-transparent shrink-0 h-12 w-12 bg-center bg-gray-100"
+                            className="bg-cover box-border caret-transparent shrink-0 h-full w-full bg-center bg-gray-50"
                             style={{ backgroundImage: workOrder.assetImageUrl ? `url('${workOrder.assetImageUrl}')` : undefined }}
                           ></figure>
                         </div>
                       </div>
 
                       <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center">
-                        <div className="items-center box-border caret-transparent flex shrink-0 my-px">
+                        <div className="items-center box-border caret-transparent flex shrink-0 mb-0.5">
                           <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
                             <div
                               title={workOrder.title}
-                              className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden"
+                              className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-blue-500 transition-colors"
                             >
                               {workOrder.title}
                             </div>
                           </div>
                           <div className="box-border caret-transparent shrink-0">
-                            <span className="text-blue-500 text-xs bg-sky-100 px-2 py-1 rounded">
+                            <span className="text-blue-500 text-[9px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100">
                               {category.name}
                             </span>
                           </div>
                         </div>
-                        <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                          <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
-                            {workOrder.status === 'Done' ? `Completed` : `Requested`} by {workOrder.assignedTo || 'Admin'}
+                        <div className="items-center box-border caret-transparent flex shrink-0 justify-between mb-1">
+                          <div className="text-gray-500 text-[11px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden italic">
+                            {workOrder.status === 'Done' ? `Done` : `By`} {workOrder.assignedTo || 'Admin'}
                           </div>
-                          <div className="text-gray-600 text-[12.6px] box-border caret-transparent shrink-0">
-                            {workOrder.workOrderNumber}
+                          <div className="text-gray-400 text-[10px] font-mono box-border caret-transparent shrink-0">
+                            #{workOrder.workOrderNumber}
                           </div>
                         </div>
-                        <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-px">
+                        <div className="items-center box-border caret-transparent flex shrink-0 justify-between">
                           <div className="relative box-border caret-transparent shrink-0">
-                            <div className="text-[12.6px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-[15.12px]">
+                            <div className="text-[10px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-none uppercase font-bold tracking-wider">
                               <div className="items-center box-border caret-transparent flex shrink-0">
-                                <div className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-blue-500'} box-border caret-transparent shrink-0 h-3 w-3 mr-1`}>
+                                <div className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-blue-500'} box-border caret-transparent shrink-0 h-2.5 w-2.5 mr-1`}>
                                   {workOrder.status === 'Done' ? '✓' : '○'}
                                 </div>
                               </div>
@@ -213,15 +213,8 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                               </span>
                             </div>
                           </div>
-                          <div className="box-border caret-transparent gap-x-1 flex shrink-0 gap-y-1">
-                            <div className="text-[11.9994px] font-semibold items-center box-border caret-transparent gap-x-1 flex shrink-0 tracking-[-0.2px] leading-[17.9991px] gap-y-1 border border-zinc-200 px-1.5 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-                              <span className="items-center box-border caret-transparent flex shrink-0 justify-start">
-                                <img
-                                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-34.svg"
-                                  alt="Icon"
-                                  className={`${workOrder.priority === 'Low' ? 'text-teal-500' : 'text-orange-500'} box-border caret-transparent shrink-0 h-4 w-4`}
-                                />
-                              </span>
+                          <div className="box-border caret-transparent flex shrink-0">
+                            <div className={`text-[9px] font-bold items-center box-border caret-transparent flex shrink-0 tracking-widest uppercase leading-none border border-[var(--border)] px-1.5 py-0.5 rounded ${workOrder.priority === 'High' ? 'text-red-500' : workOrder.priority === 'Medium' ? 'text-orange-500' : 'text-teal-500'}`}>
                               {workOrder.priority}
                             </div>
                           </div>

@@ -29,9 +29,9 @@ export const AssetAttachments: React.FC<Props> = ({ attachments, onChange, disab
         {(attachments || []).map((att) => (
           <div key={att.id} className="relative group">
             {isImage(att) ? (
-              <img src={att.url} alt={att.name} className="w-20 h-20 object-cover rounded border border-gray-200" />
+              <img src={att.url} alt={att.name} className="w-20 h-20 object-cover rounded border border-[var(--border)]" />
             ) : (
-              <div className="w-40 border border-gray-200 rounded px-2 py-1 text-xs flex items-center gap-2">
+              <div className="w-40 border border-[var(--border)] rounded px-2 py-1 text-xs flex items-center gap-2">
                 <span>📎</span>
                 <span className="truncate" title={att.name}>{att.name}</span>
               </div>
@@ -48,7 +48,7 @@ export const AssetAttachments: React.FC<Props> = ({ attachments, onChange, disab
           </div>
         ))}
         {!disabled && (
-          <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors text-gray-400 hover:text-blue-500">
+          <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-[var(--border)] rounded hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors text-gray-400 hover:text-blue-500">
             <span className="text-lg">＋</span>
             <span className="text-[10px] mt-1">Add</span>
             <input type="file" multiple onChange={handleFileChange} className="hidden" />

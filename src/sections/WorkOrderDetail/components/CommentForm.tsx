@@ -5,7 +5,7 @@ export const CommentForm = () => {
         <div className="box-border caret-transparent basis-[0%] grow">
           <div
             role="textbox"
-            className="relative bg-white box-border caret-transparent shrink-0 leading-5 max-h-[478px] min-h-[78px] break-words overflow-x-hidden overflow-y-auto resize-y w-full border border-zinc-200 mt-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+            className="relative bg-white box-border caret-transparent shrink-0 leading-5 max-h-[478px] min-h-[78px] break-words overflow-x-hidden overflow-y-auto resize-y w-full border border-[var(--border)] mt-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
           >
             <p className="box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[20.0004px]">
               <span className="box-border caret-transparent shrink-0">
@@ -43,7 +43,7 @@ export const CommentForm = () => {
         <div className="box-border caret-transparent shrink-0 min-w-[50%] md:min-w-[auto]">
           <button
             type="submit"
-            className="relative text-slate-400 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-zinc-200 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+            className="relative text-slate-400 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-[var(--border)] px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
           >
             <span className="box-border caret-transparent flex shrink-0 text-nowrap">
               Send

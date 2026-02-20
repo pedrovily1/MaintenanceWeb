@@ -12,16 +12,16 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
       {/* Header / Sort Controls */}
       <div className="relative items-center bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent flex shrink-0 h-12 justify-between z-[1] border-b">
         <div className="box-border caret-transparent flex basis-[0%] grow p-3">
-          <div className="relative text-[12.6px] box-border caret-transparent flex basis-[0%] grow leading-[15.12px]">
+          <div className="relative text-[12.6px] box-border caret-transparent flex basis-[0%] grow leading-[15.12px] opacity-[0.85]">
             <div className="box-border caret-transparent basis-[0%] grow">
               <button
                 type="button"
-                className="text-[var(--text)] text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center"
+                className="text-[var(--text)] text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center font-medium"
               >
                 Sort By:
-                <div className="text-[var(--accent)] items-center box-border caret-transparent flex basis-[0%] grow stroke-[var(--accent)]">
+                <div className="text-[var(--accent)] items-center box-border caret-transparent flex basis-[0%] grow stroke-[var(--accent)] font-medium">
                   <span className="box-border caret-transparent block basis-[0%] grow text-ellipsis text-nowrap overflow-hidden ml-1">
-                    <span className="font-semibold box-border caret-transparent shrink-0 text-nowrap">
+                    <span className="font-medium box-border caret-transparent shrink-0 text-nowrap">
                       Name
                     </span>
                     : Ascending Order
@@ -45,20 +45,20 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
               <div
                 key={asset.id}
                 onClick={() => onSelectAsset(asset.id)}
-                className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] px-4 py-3 transition-colors ${
-                  selectedAssetId === asset.id ? "bg-[var(--panel-2)] border-l-4 border-l-[var(--accent)]" : ""
-                }`}
+                className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] px-4 py-3 transition-colors border-l-2 ${
+                  selectedAssetId === asset.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+                } group`}
               >
                 <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg">
                   <div
                     title={asset.name}
-                    className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-zinc-200 overflow-hidden rounded-lg border-solid"
+                    className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid"
                   >
                     <span className="text-blue-500 box-border caret-transparent flex shrink-0">
                       <img
                         src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                         alt="Icon"
-                        className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
+                        className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedAssetId === asset.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                       />
                     </span>
                   </div>
@@ -76,17 +76,17 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
                     </div>
                   </div>
                   <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-1">
-                    <div className="text-gray-600 text-[12.6px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
+                    <div className="text-[var(--muted)] text-[13px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden opacity-80">
                       At Slovakia
                     </div>
                   </div>
                   <div className="items-center box-border caret-transparent flex shrink-0 justify-between my-px">
                     <div className="relative box-border caret-transparent shrink-0">
-                      <div className="text-[12.6px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-[15.12px] border border-zinc-200 px-2 py-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                      <div className="text-[11px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-[15.12px] border border-[var(--border)] px-2 py-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                         <div className="items-center box-border caret-transparent flex shrink-0">
                           <div className="bg-teal-500 box-border caret-transparent shrink-0 h-1.5 w-1.5 rounded-[50%]"></div>
                         </div>
-                        <span className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden ml-1">
+                        <span className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden ml-1 opacity-90">
                           {asset.status}
                         </span>
                       </div>

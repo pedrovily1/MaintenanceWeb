@@ -196,7 +196,31 @@
     color: var(--muted) !important;
   }
 
-  input, textarea, select, button {
+  input, textarea, select {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text);
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent) !important;
+    background: rgba(255,255,255,0.06) !important;
+    outline: none;
+  }
+
+  img, svg {
+    opacity: 0.8;
+  }
+
+  .opacity-100 {
+    opacity: 1 !important;
+  }
+
+  .bg-radial-gradient {
+    background: radial-gradient(800px 300px at 50% 0, rgba(255,255,255,0.03), transparent 70%);
+  }
+
+  button {
     color: var(--text);
   }
 
@@ -205,7 +229,7 @@
   }
 
   /* default “panel” look for existing cards/sections */
-  .card, .panel, .sidebar, .toolbar, header, nav, section, aside, [class*="shadow-[rgba(242,242,242,0.6)"], .border-zinc-200 {
+  .card, .panel, .sidebar, .toolbar, header, nav, section, aside, [class*="shadow-[rgba(242,242,242,0.6)"], .border-zinc-200, .border-zinc-100, .border-gray-100, .border-gray-200, .border-slate-200, .border-neutral-200 {
     border-color: var(--border) !important;
   }
 
@@ -222,10 +246,10 @@
   }
 
   /* neutralized backgrounds */
-  .bg-white {
+  .bg-white, .bg-zinc-50, .bg-neutral-50 {
     background-color: var(--panel) !important;
   }
-  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100 {
+  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100, .bg-zinc-100, .bg-gray-100 {
     background-color: var(--panel-2) !important;
   }
 

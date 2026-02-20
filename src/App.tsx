@@ -65,31 +65,33 @@ export const App = () => {
         <div className="bg-[var(--bg)] box-border caret-transparent flex flex-col shrink-0 h-full">
         <div className="box-border caret-transparent flex basis-[0%] grow">
           <Sidebar currentView={currentView} />
-          {currentView === 'reporting' ? (
-            <Reporting />
-          ) : currentView === 'assets' ? (
-            <Assets />
-          ) : currentView === 'messages' ? (
-            <Messages />
-          ) : currentView === 'categories' ? (
-            <Categories />
-          ) : currentView === 'parts' ? (
-            <Parts />
-          ) : currentView === 'procedures' ? (
-            <Procedures />
-          ) : currentView === 'meters' ? (
-            <Meters />
-          ) : currentView === 'locations' ? (
-            <Locations />
-          ) : currentView === 'users' ? (
-            <Users />
-          ) : currentView === 'vendors' ? (
-            <Vendors />
-          ) : currentView === 'settings' ? (
-            <Settings />
-          ) : (
-            <MainContent />
-          )}
+          <div className="flex basis-[0%] grow pt-3 overflow-hidden bg-[var(--panel-2)] bg-radial-gradient">
+            {currentView === 'reporting' ? (
+              <Reporting />
+            ) : currentView === 'assets' ? (
+              <Assets />
+            ) : currentView === 'messages' ? (
+              <Messages />
+            ) : currentView === 'categories' ? (
+              <Categories />
+            ) : currentView === 'parts' ? (
+              <Parts />
+            ) : currentView === 'procedures' ? (
+              <Procedures />
+            ) : currentView === 'meters' ? (
+              <Meters />
+            ) : currentView === 'locations' ? (
+              <Locations />
+            ) : currentView === 'users' ? (
+              <Users />
+            ) : currentView === 'vendors' ? (
+              <Vendors />
+            ) : currentView === 'settings' ? (
+              <Settings />
+            ) : (
+              <MainContent />
+            )}
+          </div>
         </div>
         </div>
         <div className="box-border caret-transparent shrink-0"></div>

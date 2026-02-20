@@ -49,9 +49,9 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-end" onClick={onClose}>
-      <div className="bg-white w-full max-w-xl h-full overflow-auto border-l border-zinc-200" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white w-full max-w-xl h-full overflow-auto border-l border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
           <div className="text-lg font-semibold">{initial?.id ? 'Edit Meter' : 'New Meter'}</div>
           <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>✕</button>
         </div>
@@ -61,28 +61,28 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="block text-xs text-gray-500 mb-1">Name<span className="text-red-500">*</span></label>
-              <input value={value.name} onChange={(e) => set({ name: e.target.value })} className={`w-full border rounded px-2 py-1 text-sm ${errors.name ? 'border-red-400' : 'border-zinc-200'}`} />
+              <input value={value.name} onChange={(e) => set({ name: e.target.value })} className={`w-full border rounded px-2 py-1 text-sm ${errors.name ? 'border-red-400' : 'border-[var(--border)]'}`} />
               {errors.name && <div className="text-xs text-red-500 mt-1">{errors.name}</div>}
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Unit</label>
-              <input value={value.unit || ''} onChange={(e) => set({ unit: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="e.g., Hours, kWh" />
+              <input value={value.unit || ''} onChange={(e) => set({ unit: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="e.g., Hours, kWh" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Active</label>
-              <select value={value.active ? 'true' : 'false'} onChange={(e) => set({ active: e.target.value === 'true' })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm">
+              <select value={value.active ? 'true' : 'false'} onChange={(e) => set({ active: e.target.value === 'true' })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm">
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
               </select>
             </div>
             <div className="col-span-2">
               <label className="block text-xs text-gray-500 mb-1">Description</label>
-              <textarea value={value.description || ''} onChange={(e) => set({ description: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm min-h-[72px]" />
+              <textarea value={value.description || ''} onChange={(e) => set({ description: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[72px]" />
             </div>
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Linked Asset</label>
-              <select value={value.assetId || ''} onChange={(e) => set({ assetId: e.target.value || undefined })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm">
+              <select value={value.assetId || ''} onChange={(e) => set({ assetId: e.target.value || undefined })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm">
                 <option value="">None (Global Meter)</option>
                 {assets.map(a => (
                   <option key={a.id} value={a.id}>{a.name}</option>
@@ -92,14 +92,14 @@ export const MeterEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
             <div>
               <label className="block text-xs text-gray-500 mb-1">Linked Location (optional)</label>
-              <input value={value.locationName || ''} onChange={(e) => set({ locationName: e.target.value })} className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Location name" />
+              <input value={value.locationName || ''} onChange={(e) => set({ locationName: e.target.value })} className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Location name" />
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-zinc-200 bg-gray-50 flex items-center justify-end gap-2">
-          <button className="px-3 py-1 rounded border border-zinc-200 text-sm" onClick={onClose}>Cancel</button>
+        <div className="px-4 py-3 border-t border-[var(--border)] bg-gray-50 flex items-center justify-end gap-2">
+          <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
           <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
         </div>
       </div>

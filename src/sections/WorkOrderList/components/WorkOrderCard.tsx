@@ -11,7 +11,6 @@ export type WorkOrderCardProps = {
   isOverdue?: boolean;
   isRecurring?: boolean;
   assignedUsers?: Array<{ name: string; imageUrl?: string }>;
-  assignedTeams?: Array<{ name: string; initials: string; color: string }>;
   onClick?: () => void;
   isActive?: boolean;
 };
@@ -29,15 +28,14 @@ export const WorkOrderCard = ({
   isOverdue,
   isRecurring,
   assignedUsers,
-  assignedTeams,
   onClick,
   isActive
 }: WorkOrderCardProps) => {
   return (
     <div 
       onClick={onClick}
-      className={`relative items-center bg-transparent border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-[var(--panel-2)] cursor-pointer pl-3 py-3 transition-colors ${
-        isActive ? "bg-[var(--panel-2)] border-l-4 border-l-[var(--accent)]" : ""
+      className={`relative items-center bg-transparent border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] cursor-pointer pl-3 py-3 transition-colors ${
+        isActive ? "bg-[var(--panel-2)] border-l-2 border-l-[var(--accent)]" : "border-l-2 border-l-transparent"
       }`}
     >
       {/* Image */}
@@ -86,17 +84,12 @@ export const WorkOrderCard = ({
           <div className="box-border caret-transparent shrink-0 flex items-center mr-4">
             <div className="flex -space-x-2">
               {assignedUsers?.map((user, index) => (
-                <div key={`user-${index}`} className="relative z-10 rounded-full border-2 border-white">
+                <div key={`user-${index}`} className="relative z-10 rounded-full border-2 border-[var(--border)]">
                   <img 
                     src={user.imageUrl} 
                     alt={user.name}
                     className="h-6 w-6 rounded-full object-cover"
                   />
-                </div>
-              ))}
-              {assignedTeams?.map((team, index) => (
-                <div key={`team-${index}`} className={`relative z-0 rounded-full border-2 border-white ${team.color} flex items-center justify-center h-6 w-6 text-[10px] text-white font-bold`}>
-                  {team.initials}
                 </div>
               ))}
             </div>
@@ -105,10 +98,10 @@ export const WorkOrderCard = ({
 
         {/* Middle Row: Asset & ID */}
         <div className="items-center box-border caret-transparent flex shrink-0 justify-between mb-1.5">
-          <div className="text-gray-600 text-sm box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden">
+          <div className="text-[var(--muted)] text-[13px] box-border caret-transparent basis-[0%] grow text-ellipsis text-nowrap w-full overflow-hidden opacity-80">
             {assetName}
           </div>
-          <div className="text-gray-500 text-sm box-border caret-transparent shrink-0 mr-4">
+          <div className="text-[var(--muted)] text-[13px] box-border caret-transparent shrink-0 mr-4 opacity-70">
             {workOrderNumber}
           </div>
         </div>
@@ -117,7 +110,7 @@ export const WorkOrderCard = ({
         <div className="items-center box-border caret-transparent flex shrink-0 gap-2">
           {/* Status Badge */}
           <div className="relative box-border caret-transparent shrink-0">
-            <div className={`text-xs font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
+            <div className={`text-[11px] font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
               status === 'Open' ? 'bg-sky-100 text-blue-600' : 
               status === 'Done' ? 'bg-teal-100 text-teal-600' : 
               status === 'In Progress' ? 'bg-blue-100 text-blue-600' :
@@ -125,17 +118,17 @@ export const WorkOrderCard = ({
               'bg-gray-100 text-gray-600'
             }`}>
               <div className="mr-1.5 flex items-center">
-                {status === 'Open' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" alt="Open" className="h-3 w-3" />}
-                {status === 'On Hold' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" alt="On Hold" className="h-3 w-3" />}
-                {status === 'In Progress' && <img src="/src/public/inprogress.svg" alt="In Progress" className="h-3 w-3" />}
-                {status === 'Done' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg" alt="Done" className="h-3 w-3" />}
+                {status === 'Open' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-41.svg" alt="Open" className="h-3 w-3 opacity-100" />}
+                {status === 'On Hold' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-42.svg" alt="On Hold" className="h-3 w-3 opacity-100" />}
+                {status === 'In Progress' && <img src="/src/public/inprogress.svg" alt="In Progress" className="h-3 w-3 opacity-100" />}
+                {status === 'Done' && <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-44.svg" alt="Done" className="h-3 w-3 opacity-100" />}
               </div>
               {status}
             </div>
           </div>
 
           {/* Priority Badge */}
-          <div className="text-xs font-medium items-center text-teal-600 border border-zinc-200 bg-white flex shrink-0 leading-none px-2 py-1 rounded">
+          <div className="text-[11px] font-medium items-center text-teal-600 border border-[var(--border)] bg-white flex shrink-0 leading-none px-2 py-1 rounded">
             <div className="mr-1">
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-34.svg"
@@ -147,11 +140,11 @@ export const WorkOrderCard = ({
           </div>
 
           {/* Due Date / Overdue */}
-          <div className="flex items-center text-xs ml-auto mr-4 text-gray-600">
+          <div className="flex items-center text-[13px] ml-auto mr-4 text-[var(--muted)] opacity-80">
             {startDate && (
               <span className="flex items-center">
                 S: {startDate}
-                <span className="mx-1.5">•</span>
+                <span className="mx-1.5 opacity-50">•</span>
               </span>
             )}
             {isOverdue && status !== 'Done' && (
@@ -162,7 +155,7 @@ export const WorkOrderCard = ({
                 Overdue
               </span>
             )}
-            {isOverdue && status !== 'Done' && <span className="text-gray-400 mx-1.5">•</span>}
+            {isOverdue && status !== 'Done' && <span className="text-[var(--muted)] mx-1.5 opacity-40">•</span>}
             <span className={`${isOverdue && status !== 'Done' ? 'text-red-600' : ''}`}>D: {dueDate}</span>
           </div>
         </div>

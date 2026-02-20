@@ -54,9 +54,9 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/30 flex items-center justify-end" onClick={onClose}>
-      <div className="bg-white w-full max-w-xl h-full overflow-auto border-l border-zinc-200" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[var(--panel)] w-full max-w-xl h-full overflow-auto border-l border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-[var(--border)] bg-[var(--panel-2)] flex items-center justify-between">
           <div className="text-lg font-semibold">{initial?.id ? 'Edit Work Order' : 'New Work Order'}</div>
           <button className="text-gray-600 hover:text-gray-800" onClick={onClose}>✕</button>
         </div>
@@ -69,7 +69,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
               <input 
                 value={value.title} 
                 onChange={(e) => set({ title: e.target.value })} 
-                className={`w-full border rounded px-2 py-1 text-sm ${errors.title ? 'border-red-400' : 'border-zinc-200'}`} 
+                className={`w-full border rounded px-2 py-1 text-sm ${errors.title ? 'border-red-400' : 'border-[var(--border)]'}`} 
               />
               {errors.title && <div className="text-xs text-red-500 mt-1">{errors.title}</div>}
             </div>
@@ -79,7 +79,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
               <select 
                 value={value.status} 
                 onChange={(e) => set({ status: e.target.value as WorkOrderStatus })} 
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="Open">Open</option>
                 <option value="On Hold">On Hold</option>
@@ -93,7 +93,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
               <select 
                 value={value.priority} 
                 onChange={(e) => set({ priority: e.target.value as WorkOrderPriority })} 
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -107,7 +107,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
                 type="date" 
                 value={value.dueDate} 
                 onChange={(e) => set({ dueDate: e.target.value })} 
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" 
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" 
               />
             </div>
 
@@ -119,7 +119,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
                   const asset = assets.find(a => a.id === e.target.value);
                   set({ asset: asset?.name || '', assetId: asset?.id || '', location: asset?.locationName || '' });
                 }} 
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
               >
                 <option value="">No Asset</option>
                 {assets.map(a => (
@@ -133,15 +133,15 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
               <textarea 
                 value={value.description} 
                 onChange={(e) => set({ description: e.target.value })} 
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm min-h-[100px]" 
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[100px]" 
               />
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-zinc-200 bg-gray-50 flex items-center justify-end gap-2">
-          <button className="px-3 py-1 rounded border border-zinc-200 text-sm" onClick={onClose}>Cancel</button>
+        <div className="px-4 py-3 border-t border-[var(--border)] bg-[var(--panel-2)] flex items-center justify-end gap-2">
+          <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
           <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
         </div>
       </div>

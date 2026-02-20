@@ -17,10 +17,10 @@ type MessageThreadProps = {
 export const MessageThread = ({ conversationName, conversationAvatarUrl, messages }: MessageThreadProps) => {
   return (
     <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-hidden w-full">
           {/* Header */}
-          <div className="box-border caret-transparent shrink-0 border-b border-zinc-200">
+          <div className="box-border caret-transparent shrink-0 border-b border-[var(--border)]">
             <div className="items-center box-border caret-transparent flex shrink-0 justify-between px-4 py-3">
               <div className="items-center box-border caret-transparent flex shrink-0 gap-3">
                 <div
@@ -118,7 +118,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                             <button
                               key={idx}
                               type="button"
-                              className="items-center bg-gray-50 box-border caret-transparent flex shrink-0 border border-gray-200 px-2 py-1 rounded-full hover:bg-gray-100"
+                              className="items-center bg-gray-50 box-border caret-transparent flex shrink-0 border border-[var(--border)] px-2 py-1 rounded-full hover:bg-gray-100"
                             >
                               <span className="text-base">{reaction.emoji}</span>
                               <span className="text-xs ml-1">{reaction.count}</span>
@@ -127,7 +127,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                           <button
                             type="button"
                             title="Add Reaction"
-                            className="items-center bg-gray-50 box-border caret-transparent flex shrink-0 h-6 w-6 justify-center border border-gray-200 rounded-full hover:bg-gray-100"
+                            className="items-center bg-gray-50 box-border caret-transparent flex shrink-0 h-6 w-6 justify-center border border-[var(--border)] rounded-full hover:bg-gray-100"
                           >
                             <span className="text-xs">+</span>
                           </button>
@@ -141,7 +141,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
           </div>
 
           {/* Input */}
-          <div className="box-border caret-transparent shrink-0 border-t border-zinc-200 px-4 py-3">
+          <div className="box-border caret-transparent shrink-0 border-t border-[var(--border)] px-4 py-3">
             <form className="box-border caret-transparent shrink-0">
               <div className="items-center box-border caret-transparent flex shrink-0 gap-2">
                 <button
@@ -161,7 +161,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                 <div
                   role="textbox"
                   contentEditable
-                  className="relative bg-transparent box-border caret-transparent flex grow shrink-0 leading-5 max-h-[218px] min-h-[38px] break-words overflow-x-hidden overflow-y-auto w-full border border-zinc-200 px-3 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid focus:outline-none focus:border-blue-500"
+                  className="relative bg-transparent box-border caret-transparent flex grow shrink-0 leading-5 max-h-[218px] min-h-[38px] break-words overflow-x-hidden overflow-y-auto w-full border border-[var(--border)] px-3 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid focus:outline-none focus:border-blue-500"
                   data-placeholder="Write a message…"
                 >
                   <p className="box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[20.0004px]">

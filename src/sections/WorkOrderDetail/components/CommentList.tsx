@@ -10,7 +10,7 @@ export const CommentList = () => {
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
                 <div 
-                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
                   style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
                 ></div>
               </a>
@@ -43,7 +43,7 @@ export const CommentList = () => {
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
                 <div 
-                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
                   style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture24.png')" }}
                 ></div>
               </a>
@@ -76,7 +76,7 @@ export const CommentList = () => {
                 className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
               >
                 <div 
-                  className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
+                  className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
                   style={{ backgroundImage: "url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png')" }}
                 ></div>
               </a>

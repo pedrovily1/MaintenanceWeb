@@ -16,7 +16,7 @@ export const MainContent = () => {
   }, []);
 
   return (
-    <div className="box-border caret-transparent flex basis-[0%] grow isolate overflow-x-hidden overflow-y-auto">
+    <div className="bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] grow isolate overflow-x-hidden overflow-y-auto">
       <div className="box-border caret-transparent flex basis-[0%] flex-col grow overflow-hidden">
         <Header />
         <div className="box-border caret-transparent shrink-0"></div>

@@ -5,7 +5,6 @@ export interface User {
   fullName: string;
   role: UserRole;
   pin: string; // numeric, 4–6 digits, unique per user
-  teams: string[];
   lastVisit: string; // ISO date string (lastActiveAt equivalent)
   createdAt?: string; // ISO date string
   isActive: boolean;

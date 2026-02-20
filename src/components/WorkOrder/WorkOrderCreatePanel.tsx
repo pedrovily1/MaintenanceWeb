@@ -31,7 +31,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
     <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
       <div className="relative box-border caret-transparent flex flex-col grow w-full">
         <div className="box-border caret-transparent shrink-0">
-          <header className="border-b-zinc-200 box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
+          <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
               <div className="box-border caret-transparent">
                 <h3 className="text-[20.0004px] font-semibold box-border caret-transparent tracking-[-0.2px] leading-[28.0006px]">
@@ -43,7 +43,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-zinc-200 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
+                  className="items-center bg-white caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
                 >
                   Cancel
                 </button>
@@ -51,7 +51,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   type="button"
                   disabled={!isValid}
                   onClick={() => onCreate(value)}
-                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid ${isValid ? 'text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-400' : 'text-gray-400 bg-gray-200 border-gray-200 cursor-not-allowed'}`}
+                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid ${isValid ? 'text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-400' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
                 >
                   Create
                 </button>
@@ -69,7 +69,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   <strong className="font-semibold box-border caret-transparent shrink-0">Title</strong>
                 </div>
                 <input
-                  className={`w-full border rounded p-2 text-sm ${value.title?.trim() ? 'border-zinc-200' : 'border-red-300'}`}
+                  className={`w-full border rounded p-2 text-sm ${value.title?.trim() ? 'border-[var(--border)]' : 'border-red-300'}`}
                   placeholder="Enter a descriptive title"
                   value={value.title}
                   onChange={(e) => update('title', e.target.value)}
@@ -80,7 +80,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   <strong className="font-semibold box-border caret-transparent shrink-0">Description</strong>
                 </div>
                 <textarea
-                  className="w-full border border-zinc-200 rounded p-2 text-sm min-h-[100px]"
+                  className="w-full border border-[var(--border)] rounded p-2 text-sm min-h-[100px]"
                   placeholder="Describe the task..."
                   value={value.description}
                   onChange={(e) => update('description', e.target.value)}
@@ -93,7 +93,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Work Type</strong>
                     </div>
                     <select
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.workType}
                       onChange={(e) => update('workType', e.target.value as DraftWorkOrder['workType'])}
                     >
@@ -108,7 +108,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Priority</strong>
                     </div>
                     <select
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.priority}
                       onChange={(e) => update('priority', e.target.value as DraftWorkOrder['priority'])}
                     >
@@ -127,7 +127,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                     </div>
                     <input
                       type="date"
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.startDate || ''}
                       onChange={(e) => update('startDate', e.target.value)}
                     />
@@ -138,7 +138,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                     </div>
                     <input
                       type="date"
-                      className={`w-full border rounded p-2 text-sm ${value.dueDate ? 'border-zinc-200' : 'border-red-300'}`}
+                      className={`w-full border rounded p-2 text-sm ${value.dueDate ? 'border-[var(--border)]' : 'border-red-300'}`}
                       value={value.dueDate}
                       onChange={(e) => update('dueDate', e.target.value)}
                     />
@@ -148,7 +148,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Status</strong>
                     </div>
                     <select
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.status}
                       onChange={(e) => update('status', e.target.value as DraftWorkOrder['status'])}
                     >
@@ -167,7 +167,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Assigned To</strong>
                     </div>
                     <input
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.assignedTo}
                       onChange={(e) => update('assignedTo', e.target.value)}
                     />
@@ -177,7 +177,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Asset</strong>
                     </div>
                     <input
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.asset}
                       onChange={(e) => update('asset', e.target.value)}
                     />
@@ -191,7 +191,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Location</strong>
                     </div>
                     <input
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.location}
                       onChange={(e) => update('location', e.target.value)}
                     />
@@ -201,7 +201,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <strong className="font-semibold box-border caret-transparent shrink-0">Category</strong>
                     </div>
                     <select
-                      className="w-full border border-zinc-200 rounded p-2 text-sm"
+                      className="w-full border border-[var(--border)] rounded p-2 text-sm"
                       value={value.categoryId || ''}
                       onChange={(e) => update('categoryId', e.target.value || null)}
                     >
@@ -220,7 +220,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                     <span className="text-gray-500 text-xs ml-2">(optional - for external contractor work)</span>
                   </div>
                   <select
-                    className="w-full border border-zinc-200 rounded p-2 text-sm"
+                    className="w-full border border-[var(--border)] rounded p-2 text-sm"
                     value={value.vendorId || ''}
                     onChange={(e) => update('vendorId', e.target.value || null)}
                   >
@@ -239,7 +239,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                     <strong className="font-semibold box-border caret-transparent shrink-0">Tags</strong>
                   </div>
                   <input
-                    className="w-full border border-zinc-200 rounded p-2 text-sm"
+                    className="w-full border border-[var(--border)] rounded p-2 text-sm"
                     placeholder="Comma separated tags"
                     value={(value.categories || []).join(', ')}
                     onChange={(e) => update('categories', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
@@ -274,7 +274,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                         <strong className="text-xs font-semibold box-border caret-transparent shrink-0">Frequency</strong>
                       </div>
                       <select
-                        className="w-full border border-zinc-200 rounded p-2 text-sm"
+                        className="w-full border border-[var(--border)] rounded p-2 text-sm"
                         value={value.schedule?.frequency || 'weekly'}
                         onChange={(e) => {
                           const freq = e.target.value as any;
@@ -292,7 +292,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                         </div>
                         <input
                           type="date"
-                          className="w-full border border-zinc-200 rounded p-2 text-sm"
+                          className="w-full border border-[var(--border)] rounded p-2 text-sm"
                           value={value.schedule?.startDate || value.startDate || ''}
                           onChange={(e) => {
                             update('schedule', { ...value.schedule, startDate: e.target.value });

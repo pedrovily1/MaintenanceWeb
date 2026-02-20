@@ -13,7 +13,7 @@ export const FilterButtons = () => {
         <button
           type="button"
           onClick={() => setShowUserDropdown(!showUserDropdown)}
-          className={`items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border ${assignedTo ? 'border-[var(--accent)] bg-[var(--panel-2)]' : 'border-zinc-200'} overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300`}
+          className={`items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border ${assignedTo ? 'border-[var(--accent)] bg-[var(--panel-2)]' : 'border-[var(--border)]'} overflow-hidden px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300`}
         >
           <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
             <img

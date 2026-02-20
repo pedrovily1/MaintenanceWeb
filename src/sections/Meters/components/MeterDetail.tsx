@@ -87,9 +87,9 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
 
   if (!meterId) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a meter to view details
           </div>
         </div>
@@ -99,9 +99,9 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
 
   if (!meter) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-red-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-red-500 bg-[var(--panel-2)]">
             Meter not found
           </div>
         </div>
@@ -130,11 +130,11 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
   };
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <div className="box-border caret-transparent shrink-0 px-4 py-4">
+          <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                 <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
@@ -194,7 +194,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
             </div>
 
             {/* Asset and Location */}
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 text-sm text-gray-600 mb-4">
+            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 text-sm text-gray-600 mb-0">
               <div className="flex items-center gap-1">
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
@@ -220,11 +220,11 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
           </div>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6">
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 pt-6">
             {/* Readings Section */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold">Readings</h2>
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">Readings</h2>
                 {recordMode && (
                   <div className="flex items-center gap-2">
                     <input
@@ -234,7 +234,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                       value={recordValue}
                       onChange={(e) => setRecordValue(e.target.value)}
                       placeholder={`Enter ${meter.unit || ''}`.trim()}
-                      className="border border-zinc-200 rounded px-2 py-1 text-sm w-40"
+                      className="border border-[var(--border)] rounded px-2 py-1 text-sm w-40"
                     />
                     <button
                       type="button"
@@ -249,7 +249,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                     >
                       Save
                     </button>
-                    <button type="button" className="px-3 py-1 rounded border border-zinc-200 text-sm" onClick={() => { setRecordMode(false); setError(''); }}>Cancel</button>
+                    <button type="button" className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={() => { setRecordMode(false); setError(''); }}>Cancel</button>
                     {error && <div className="text-xs text-red-500 ml-2">{error}</div>}
                   </div>
                 )}
@@ -259,10 +259,10 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                       key={timeframe}
                       type="button"
                       onClick={() => setActiveTimeframe(timeframe)}
-                      className={`px-3 py-1 text-sm rounded ${
+                      className={`px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded ${
                         activeTimeframe === timeframe
                           ? 'bg-blue-500 text-white'
-                          : 'bg-transparent text-gray-600 hover:bg-gray-100'
+                          : 'bg-transparent text-gray-500 hover:bg-gray-100'
                       }`}
                     >
                       {timeframe}
@@ -272,33 +272,34 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
 
               {/* Chart Section */}
-              <div className="h-64 bg-white rounded border border-zinc-200 mb-4 p-4">
+              <div className="h-48 bg-white rounded border border-[var(--border)] mb-4 p-4">
                 {chartData.length === 0 ? (
-                  <div className="flex items-center justify-center h-full text-gray-500 text-sm">
-                    No data for the selected timeframe
+                  <div className="flex items-center justify-center h-full text-gray-500 text-[10px] uppercase tracking-widest">
+                    No data
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
                       <XAxis 
                         dataKey="name" 
-                        fontSize={10} 
+                        fontSize={9} 
                         tickMargin={10}
+                        stroke="var(--muted)"
                       />
-                      <YAxis fontSize={10} />
+                      <YAxis fontSize={9} stroke="var(--muted)" />
                       <Tooltip 
-                        contentStyle={{ fontSize: '12px', borderRadius: '8px' }}
+                        contentStyle={{ fontSize: '10px', borderRadius: '4px', border: '1px solid var(--border)', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
                         labelStyle={{ fontWeight: 'bold' }}
                         labelFormatter={(label, payload) => payload?.[0]?.payload?.fullDate || label}
                       />
                       <Line 
                         type="monotone" 
                         dataKey="value" 
-                        stroke="#3b82f6" 
-                        strokeWidth={2} 
-                        dot={{ r: 3 }} 
-                        activeDot={{ r: 5 }} 
+                        stroke="var(--accent)" 
+                        strokeWidth={1.5} 
+                        dot={{ r: 2, fill: 'var(--accent)' }} 
+                        activeDot={{ r: 4, strokeWidth: 0 }} 
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -306,9 +307,9 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
 
               {/* Summary */}
-              <div className="min-h-[80px] bg-white rounded flex items-center justify-center border border-zinc-200 mb-4 relative">
+              <div className="min-h-[60px] bg-[var(--panel-2)] rounded flex items-center justify-center border border-[var(--border)] mb-4 relative">
                 {readings.length === 0 ? (
-                  <div className="text-gray-500 text-sm">No readings yet</div>
+                  <div className="text-[var(--muted)] text-[11px] uppercase tracking-wider">No readings yet</div>
                 ) : (
                   <div className="text-center p-4">
                     <div className="text-2xl font-semibold">{meter.lastReading}{meter.unit ? ` ${meter.unit}` : ''}</div>
@@ -319,8 +320,8 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
 
               {/* History List */}
-              <div className="bg-white border border-zinc-200 rounded">
-                <div className="px-3 py-2 border-b border-zinc-200 text-sm font-medium">History</div>
+              <div className="bg-white border border-[var(--border)] rounded">
+                <div className="px-3 py-2 border-b border-[var(--border)] text-sm font-medium">History</div>
                 {readings.length === 0 ? (
                   <div className="px-3 py-3 text-sm text-gray-500">No readings to display</div>
                 ) : (
@@ -334,7 +335,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                                 type="number" 
                                 value={editValue} 
                                 onChange={(e) => setEditValue(e.target.value)}
-                                className="border border-zinc-200 rounded px-2 py-1 text-sm w-24"
+                                className="border border-[var(--border)] rounded px-2 py-1 text-sm w-24"
                               />
                               <span className="text-gray-500">{meter.unit}</span>
                             </div>
@@ -343,7 +344,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                                 type="datetime-local" 
                                 value={editDate} 
                                 onChange={(e) => setEditDate(e.target.value)}
-                                className="border border-zinc-200 rounded px-2 py-1 text-sm flex-grow"
+                                className="border border-[var(--border)] rounded px-2 py-1 text-sm flex-grow"
                               />
                             </div>
                             <div className="flex justify-end gap-2">
@@ -421,7 +422,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-4"></div>
 
             {/* Description */}
             <div className="box-border caret-transparent shrink-0 mb-6">
@@ -431,7 +432,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-4"></div>
 
             {/* Meter Details */}
             <div className="box-border caret-transparent shrink-0 mb-6">
@@ -456,7 +457,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               </div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-4"></div>
 
             {/* Upcoming Reading Work Orders: dynamic empty state (no fake data) */}
             <div className="box-border caret-transparent shrink-0 mb-6">
@@ -466,7 +467,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               <div className="text-gray-500 text-sm">No upcoming work orders with meter readings configured</div>
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-4"></div>
 
             {/* Metadata */}
             <div className="text-sm text-gray-600 space-y-2 mb-6">

@@ -2,7 +2,7 @@ export const LocationSelector = () => {
   return (
     <button
       type="button"
-      className="items-center bg-white caret-transparent gap-x-2 flex shrink-0 justify-between gap-y-2 text-left w-full border border-zinc-200 mb-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+      className="items-center bg-white caret-transparent gap-x-2 flex shrink-0 justify-between gap-y-2 text-left w-full border border-[var(--border)] mb-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
     >
       <img
         src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"

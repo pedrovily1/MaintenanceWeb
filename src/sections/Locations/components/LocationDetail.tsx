@@ -22,9 +22,9 @@ type LocationDetailProps = {
 export const LocationDetail = ({ locationId, locations }: LocationDetailProps) => {
   if (!locationId) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a location to view details
           </div>
         </div>
@@ -36,9 +36,9 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
 
   if (!location) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-red-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-red-500 bg-[var(--panel-2)]">
             Location not found
           </div>
         </div>
@@ -47,14 +47,14 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
   }
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
-          <div className="box-border caret-transparent shrink-0 px-4 py-4">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
+          <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
+            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-0">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
-                <h3 className="text-xl font-medium box-border caret-transparent tracking-[-0.2px]">
+                <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
                   {location.name}
                 </h3>
                 <button
@@ -97,86 +97,86 @@ export const LocationDetail = ({ locationId, locations }: LocationDetailProps) =
           </div>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6">
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 pt-6">
             {/* Description */}
             {location.description && (
               <>
-                <div className="box-border caret-transparent shrink-0 mb-6">
-                  <h2 className="text-base font-semibold mb-3">Description</h2>
-                  <div className="box-border caret-transparent leading-[21px] break-words">
+                <div className="box-border caret-transparent shrink-0 mb-4">
+                  <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">Description</h2>
+                  <div className="box-border caret-transparent text-sm leading-relaxed text-gray-700">
                     {location.description}
                   </div>
                 </div>
-                <div className="border-b border-zinc-200 my-4"></div>
+                <div className="border-b border-[var(--border)] my-3"></div>
               </>
             )}
 
             {/* Sub-Locations */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
                 Sub-Locations ({location.subLocationsCount})
               </h2>
               {location.subLocationsCount === 0 ? (
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-[var(--muted)] italic">
                     Add sub elements inside this Location
                   </p>
                   <a
                     href={`/locations/${location.id}/create`}
-                    className="text-blue-500 text-sm font-medium hover:text-blue-400"
+                    className="text-blue-500 text-xs font-bold uppercase tracking-wider hover:text-blue-400"
                   >
-                    Create Sub-Location
+                    + Create Sub-Location
                   </a>
                 </div>
               ) : (
                 <a
                   href={`/locations/${location.id}/subs`}
-                  className="text-blue-500 text-sm font-medium hover:text-blue-400"
+                  className="text-blue-500 text-sm font-medium hover:underline"
                 >
                   View {location.subLocationsCount} Sub-Locations →
                 </a>
               )}
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Assets */}
-            <div className="box-border caret-transparent shrink-0 mb-6">
-              <h2 className="text-base font-semibold mb-3">
+            <div className="box-border caret-transparent shrink-0 mb-4">
+              <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-2">
                 Assets ({location.assetsCount})
               </h2>
               {(!location.assets || location.assets.length === 0) ? (
-                <div className="text-gray-500 text-sm">No assets at this location</div>
+                <div className="text-[var(--muted)] text-xs italic">No assets at this location</div>
               ) : (
-                <div className="space-y-0">
+                <div className="space-y-1">
                   {location.assets.map((asset) => (
                     <a
                       key={asset.id}
                       href={`/assets/${asset.id}`}
-                      className="items-center box-border caret-transparent flex shrink-0 p-3 border border-zinc-200 rounded hover:bg-gray-50 mb-2"
+                      className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
                       <div className="box-border caret-transparent shrink-0 mr-3">
-                        <div className="font-semibold items-center box-border caret-transparent flex shrink-0 h-8 justify-center w-8 border border-zinc-200 overflow-hidden rounded-lg border-solid">
+                        <div className="items-center box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-[var(--border)] overflow-hidden rounded border-solid">
                           <figure
-                            className="bg-cover box-border caret-transparent shrink-0 h-8 w-8 bg-center"
+                            className="bg-cover box-border caret-transparent shrink-0 h-full w-full bg-center"
                             style={{ backgroundImage: `url('${asset.imageUrl}')` }}
                           ></figure>
                         </div>
                       </div>
-                      <div className="text-sm">{asset.name}</div>
+                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{asset.name}</div>
                     </a>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="border-b border-zinc-200 my-4"></div>
+            <div className="border-b border-[var(--border)] my-3"></div>
 
             {/* Metadata */}
-            <div className="text-sm text-gray-600 space-y-2 mb-6">
+            <div className="text-[10px] text-[var(--muted)] space-y-1 mb-4 italic">
               <div className="flex items-center gap-2">
                 Created By 
-                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture15.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center w-4 bg-center rounded-[50%]"></div>
+                <div className="items-center bg-white bg-[url('https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture15.png')] bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"></div>
                 <a href="#" className="text-blue-500 hover:underline">Victor Garcia</a>
                 <span>on 24/12/2024, 00:56</span>
               </div>

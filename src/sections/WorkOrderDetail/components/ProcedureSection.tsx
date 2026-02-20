@@ -75,7 +75,7 @@ export const ProcedureSection = () => {
           <div className="box-border caret-transparent shrink-0 h-[3828px]">
             <div className="box-border caret-transparent flex flex-col shrink-0">
               <div className="box-border caret-transparent shrink-0">
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -93,7 +93,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Visual Inspection"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Visual Inspection
@@ -105,7 +105,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Oil Level"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Oil Level
@@ -117,7 +117,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Coolant Level"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Coolant Level
@@ -129,7 +129,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Fuel"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Fuel
@@ -141,7 +141,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Air Filter"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Air Filter
@@ -153,7 +153,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Battery Connections/Corrosion"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Battery Connections/Corrosion
@@ -165,7 +165,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Connections for fraying"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Connections for fraying
@@ -177,7 +177,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Fan belts"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Fan belts
@@ -189,7 +189,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Hours"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Hours
@@ -201,7 +201,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Ensure generator runs shortly (5 min) for general start and shutdown check."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Ensure generator runs shortly (5 min) for
@@ -214,7 +214,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -233,7 +233,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -256,7 +256,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -287,7 +287,7 @@ export const ProcedureSection = () => {
                               placeholder="Enter Number"
                               type="number"
                               value="69.1"
-                              className="bg-gray-50 box-border caret-transparent shrink-0 leading-5 min-h-[38px] w-full border border-gray-50 my-1 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+                              className="bg-gray-50 box-border caret-transparent shrink-0 leading-5 min-h-[38px] w-full border border-[var(--border)] my-1 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                             />
                             <span className="absolute text-gray-600 border-b-gray-600 border-l-zinc-200 border-r-gray-600 border-t-gray-600 box-border caret-transparent block shrink-0 leading-[17.5px] pl-2 border-l right-8 top-3.5">
                               Hours
@@ -316,7 +316,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -333,7 +333,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               None
                             </textarea>
@@ -344,7 +344,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -374,7 +374,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="FLAG"
-                                className="absolute text-neutral-600 bg-transparent box-border caret-transparent block shrink-0 h-full text-start w-full border border-zinc-200 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid left-0 top-0"
+                                className="absolute text-neutral-600 bg-transparent box-border caret-transparent block shrink-0 h-full text-start w-full border border-[var(--border)] p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid left-0 top-0"
                               />
                               <span className="relative text-orange-500 font-medium box-border caret-transparent shrink-0">
                                 Flag
@@ -386,7 +386,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="FAIL"
-                                className="absolute text-neutral-600 bg-transparent box-border caret-transparent block shrink-0 h-full text-start w-full border border-zinc-200 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid left-0 top-0"
+                                className="absolute text-neutral-600 bg-transparent box-border caret-transparent block shrink-0 h-full text-start w-full border border-[var(--border)] p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid left-0 top-0"
                               />
                               <span className="relative text-red-500 font-medium box-border caret-transparent shrink-0">
                                 Fail
@@ -422,7 +422,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -440,7 +440,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Ensure they pass fill level and inspection is up to date"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Ensure they pass fill level and inspection is up
@@ -453,7 +453,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -471,7 +471,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Disconnect backup batteries for 15 minutes"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Disconnect backup batteries for 15 minutes
@@ -483,7 +483,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Clean Bio reader with alcohol."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Clean Bio reader with alcohol.
@@ -495,7 +495,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Open Options Logs."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Open Options Logs.
@@ -507,7 +507,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="After 15 minutes, check 12V Backup with multimeter to ensure adequate voltage (12v)"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 After 15 minutes, check 12V Backup with
@@ -520,7 +520,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Visually inspect for forced entry."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Visually inspect for forced entry.
@@ -532,7 +532,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -551,7 +551,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -574,7 +574,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -593,7 +593,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -616,7 +616,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -635,7 +635,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -658,7 +658,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -685,7 +685,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -708,7 +708,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -735,7 +735,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -758,7 +758,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -776,7 +776,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Visual Inspection Outside"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Visual Inspection Outside
@@ -788,7 +788,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Camera images from Main Site."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Camera images from Main Site.
@@ -800,7 +800,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Clean CCTV servers with compressed air."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Clean CCTV servers with compressed air.
@@ -812,7 +812,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Camera Images from Remote Site (SOC)"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Camera Images from Remote Site (SOC)
@@ -824,7 +824,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Clean CCTV work station with compressed air."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Clean CCTV work station with compressed air.
@@ -836,7 +836,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check to see if video is recording for 90 days."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check to see if video is recording for 90 days.
@@ -848,7 +848,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -876,7 +876,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -899,7 +899,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -927,7 +927,7 @@ export const ProcedureSection = () => {
                               <div className="box-border caret-transparent shrink-0 mt-2">
                                 <button
                                   type="button"
-                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-zinc-200 py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
+                                  className="text-slate-400 text-[11.2px] font-medium items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[13.44px] min-h-[100px] text-center w-full border border-[var(--border)] py-6 rounded-bl rounded-br rounded-tl rounded-tr border-dashed"
                                 >
                                   <div className="box-border caret-transparent shrink-0 mb-1">
                                     <img
@@ -950,7 +950,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -975,7 +975,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Visual Inspection"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Visual Inspection
@@ -987,7 +987,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Photo sensors."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Photo sensors.
@@ -999,7 +999,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1026,7 +1026,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check for alarms"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check for alarms
@@ -1038,7 +1038,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check for charging"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check for charging
@@ -1050,7 +1050,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Test by cutting power to rack via breaker."
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Test by cutting power to rack via breaker.
@@ -1062,7 +1062,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1088,7 +1088,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Visual Inspection"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Visual Inspection
@@ -1100,7 +1100,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="checkbox"
                                 value="Check Log for Errors/Alarms (Also Vanguard)"
-                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-white before:left-[5px] before:top-px before:font-system_ui"
+                                className="relative text-neutral-600 bg-blue-500 box-border caret-transparent block shrink-0 h-4 w-4 border border-blue-500 p-0 rounded-bl rounded-br rounded-tl rounded-tr border-solid before:accent-auto before:box-border before:caret-transparent before:text-neutral-600 before:block before:shrink-0 before:text-sm before:not-italic before:normal-nums before:font-normal before:h-[9px] before:tracking-[normal] before:leading-[16.8px] before:list-outside before:list-none before:pointer-events-auto before:absolute before:text-start before:indent-[0px] before:normal-case before:rotate-45 before:visible before:w-1 before:border-r-2 before:border-b-2 before:border-separate before:border-[var(--border)] before:left-[5px] before:top-px before:font-system_ui"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Check Log for Errors/Alarms (Also Vanguard)
@@ -1128,7 +1128,7 @@ export const ProcedureSection = () => {
           <div className="box-border caret-transparent shrink-0 h-[806px]">
             <div className="box-border caret-transparent flex flex-col shrink-0">
               <div className="box-border caret-transparent shrink-0">
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1146,7 +1146,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Scheduled Maintenance"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Scheduled Maintenance
@@ -1158,7 +1158,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Handling"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Handling
@@ -1170,7 +1170,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Normal Operation"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Normal Operation
@@ -1182,7 +1182,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Test"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Test
@@ -1194,7 +1194,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Storage"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Storage
@@ -1206,7 +1206,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Inspection"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Inspection
@@ -1218,7 +1218,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Other"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Other
@@ -1230,7 +1230,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1248,7 +1248,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Inoperative"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Inoperative
@@ -1260,7 +1260,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Overheating"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Overheating
@@ -1272,7 +1272,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Out of Adjustment"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Out of Adjustment
@@ -1284,7 +1284,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Noise"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Noise
@@ -1296,7 +1296,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Low Performance"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Low Performance
@@ -1308,7 +1308,7 @@ export const ProcedureSection = () => {
                               <input
                                 type="radio"
                                 value="Other"
-                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                                className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                               />
                               <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                                 Other
@@ -1320,7 +1320,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1338,7 +1338,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               None
                             </textarea>
@@ -1349,7 +1349,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1366,7 +1366,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               None
                             </textarea>
@@ -1393,7 +1393,7 @@ export const ProcedureSection = () => {
           <div className="box-border caret-transparent shrink-0 h-[246px]">
             <div className="box-border caret-transparent flex flex-col shrink-0">
               <div className="box-border caret-transparent shrink-0">
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1410,7 +1410,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               None
                             </textarea>
@@ -1421,7 +1421,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1438,7 +1438,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               None
                             </textarea>
@@ -1465,7 +1465,7 @@ export const ProcedureSection = () => {
           <div className="box-border caret-transparent shrink-0 h-[710px]">
             <div className="box-border caret-transparent flex flex-col shrink-0">
               <div className="box-border caret-transparent shrink-0">
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1481,7 +1481,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent shrink-0">
                             <button
                               type="button"
-                              className="text-slate-400 text-[12.6px] font-semibold items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[15.12px] min-h-[100px] text-center w-full border border-zinc-200 mb-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+                              className="text-slate-400 text-[12.6px] font-semibold items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[15.12px] min-h-[100px] text-center w-full border border-[var(--border)] mb-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                             >
                               Click here to sign
                             </button>
@@ -1503,7 +1503,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1520,7 +1520,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               Pedro Modesto
                             </textarea>
@@ -1531,7 +1531,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1555,7 +1555,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent shrink-0">
                             <button
                               type="button"
-                              className="text-slate-400 text-[12.6px] font-semibold items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[15.12px] min-h-[100px] text-center w-full border border-zinc-200 mb-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
+                              className="text-slate-400 text-[12.6px] font-semibold items-center bg-gray-50 caret-transparent flex flex-col shrink-0 justify-center leading-[15.12px] min-h-[100px] text-center w-full border border-[var(--border)] mb-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
                             >
                               Click here to sign
                             </button>
@@ -1565,7 +1565,7 @@ export const ProcedureSection = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+                <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                   <div className="box-border caret-transparent flex shrink-0 justify-start">
                     <div className="box-border caret-transparent grow-[4] w-full p-4">
                       <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -1582,7 +1582,7 @@ export const ProcedureSection = () => {
                           <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                             <textarea
                               placeholder="Enter Text"
-                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                              className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                             >
                               Jason Degg
                             </textarea>

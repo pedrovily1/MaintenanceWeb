@@ -136,7 +136,7 @@ export const CalendarView = () => {
     })();
 
     return (
-      <div key={idx} className={`border border-zinc-200 p-1 min-h-[96px] ${isOtherMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'}`}>
+      <div key={idx} className={`border border-[var(--border)] p-1 min-h-[96px] ${isOtherMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'}`}>
         <div className="flex items-center justify-between text-xs mb-1">
           <span className={`font-medium ${isSameDay(d, todayUTC) ? 'text-blue-600' : ''}`}>{d.getUTCDate()}</span>
           {mode === 'week' && <span className="text-gray-400">{d.toLocaleDateString(undefined, { weekday: 'short', timeZone: 'UTC' })}</span>}
@@ -184,14 +184,14 @@ export const CalendarView = () => {
   };
 
   return (
-    <div className="mx-2 lg:mx-4">
+    <div className="mx-2 lg:mx-4 bg-[var(--panel-2)]">
       {/* Toolbar */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="text-lg font-semibold">
             {cursor.toLocaleDateString(undefined, { year: 'numeric', month: 'long', timeZone: 'UTC' })}
           </div>
-          <div className="inline-flex border border-zinc-200 rounded overflow-hidden">
+          <div className="inline-flex border border-[var(--border)] rounded overflow-hidden">
             <button
               className={`px-3 py-1 text-sm ${mode === 'month' ? 'bg-blue-50 text-blue-600' : ''}`}
               onClick={() => setMode('month')}
@@ -199,16 +199,16 @@ export const CalendarView = () => {
               Month
             </button>
             <button
-              className={`px-3 py-1 text-sm border-l border-zinc-200 ${mode === 'week' ? 'bg-blue-50 text-blue-600' : ''}`}
+              className={`px-3 py-1 text-sm border-l border-[var(--border)] ${mode === 'week' ? 'bg-blue-50 text-blue-600' : ''}`}
               onClick={() => setMode('week')}
             >
               Week
             </button>
           </div>
-          <div className="inline-flex border border-zinc-200 rounded overflow-hidden ml-2">
+          <div className="inline-flex border border-[var(--border)] rounded overflow-hidden ml-2">
             <button className="px-2 py-1 text-sm" onClick={prev}>Prev</button>
-            <button className="px-2 py-1 text-sm border-l border-zinc-200" onClick={today}>Today</button>
-            <button className="px-2 py-1 text-sm border-l border-zinc-200" onClick={next}>Next</button>
+            <button className="px-2 py-1 text-sm border-l border-[var(--border)]" onClick={today}>Today</button>
+            <button className="px-2 py-1 text-sm border-l border-[var(--border)]" onClick={next}>Next</button>
           </div>
         </div>
         <div className="text-sm text-gray-500">

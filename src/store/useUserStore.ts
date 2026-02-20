@@ -9,7 +9,6 @@ const DEFAULT_ADMIN: User = {
   fullName: 'Admin',
   role: 'Administrator',
   pin: '1234',
-  teams: [],
   lastVisit: new Date().toISOString(),
   createdAt: new Date().toISOString(),
   isActive: true,
@@ -133,10 +132,6 @@ export const useUserStore = () => {
 
   const allUsers = users;
 
-  const usersByTeam = useCallback((teamName: string) => {
-    return users.filter(u => u.teams.includes(teamName));
-  }, [users]);
-
   const getUserById = useCallback((id: string) => {
     return globalUsers.find(u => u.id === id);
   }, []);
@@ -151,7 +146,6 @@ export const useUserStore = () => {
     deleteUser,
     authenticateByPin,
     setActiveUser,
-    usersByTeam,
     getUserById,
     // Future Extension Points:
     // - Role-based permissions: Use user.role to gate UI/Actions

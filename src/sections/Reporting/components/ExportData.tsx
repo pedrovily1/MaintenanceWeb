@@ -165,8 +165,8 @@ export const ExportData = () => {
         </div>
       )}
 
-      <div className="bg-white border border-zinc-200 rounded-lg shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-zinc-200 bg-gray-50 flex items-center gap-3">
+      <div className="bg-white border border-[var(--border)] rounded-lg shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-[var(--border)] bg-gray-50 flex items-center gap-3">
           <div className="bg-blue-100 p-2 rounded">
             <FileText className="text-blue-600" size={24} />
           </div>
@@ -186,7 +186,7 @@ export const ExportData = () => {
                   type="date"
                   value={dateRange.start}
                   onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-                  className="w-full border border-zinc-200 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -197,7 +197,7 @@ export const ExportData = () => {
                   type="date"
                   value={dateRange.end}
                   onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-                  className="w-full border border-zinc-200 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -209,18 +209,18 @@ export const ExportData = () => {
             <div className="flex gap-4">
               <button
                 onClick={() => setFormat('CSV')}
-                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'CSV' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-zinc-200 hover:bg-gray-50'}`}
+                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'CSV' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-[var(--border)] hover:bg-gray-50'}`}
               >
-                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'CSV' ? 'border-blue-500 bg-blue-500' : 'border-zinc-300'}`}>
+                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'CSV' ? 'border-blue-500 bg-blue-500' : 'border-[var(--border)]'}`}>
                   {format === 'CSV' && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
                 </div>
                 <span className="font-medium">CSV (Excel)</span>
               </button>
               <button
                 onClick={() => setFormat('PDF')}
-                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'PDF' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-zinc-200 hover:bg-gray-50'}`}
+                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'PDF' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-[var(--border)] hover:bg-gray-50'}`}
               >
-                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'PDF' ? 'border-blue-500 bg-blue-500' : 'border-zinc-300'}`}>
+                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'PDF' ? 'border-blue-500 bg-blue-500' : 'border-[var(--border)]'}`}>
                   {format === 'PDF' && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
                 </div>
                 <span className="font-medium">PDF Document</span>
@@ -232,30 +232,30 @@ export const ExportData = () => {
           <div className="space-y-3">
             <label className="text-sm font-medium text-gray-700">Work Orders to include in this date range</label>
             <div className="space-y-2">
-              <label className="flex items-center gap-3 p-3 border border-zinc-100 rounded hover:bg-gray-50 cursor-pointer group">
+              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={includeStatus.planned}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, planned: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
                 />
                 <span className="text-sm text-gray-700">Planned / Created</span>
               </label>
-              <label className="flex items-center gap-3 p-3 border border-zinc-100 rounded hover:bg-gray-50 cursor-pointer group">
+              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={includeStatus.due}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, due: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
                 />
                 <span className="text-sm text-gray-700">Due</span>
               </label>
-              <label className="flex items-center gap-3 p-3 border border-zinc-100 rounded hover:bg-gray-50 cursor-pointer group">
+              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={includeStatus.completed}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, completed: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
                 />
                 <span className="text-sm text-gray-700">Completed</span>
               </label>
@@ -268,7 +268,7 @@ export const ExportData = () => {
             <select
               value={procedureFormat}
               onChange={(e) => setProcedureFormat(e.target.value as any)}
-              className="w-full border border-zinc-200 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             >
               <option value="Summary">Summary</option>
               <option value="Full">Full</option>
@@ -284,7 +284,7 @@ export const ExportData = () => {
                   type="checkbox"
                   checked={additionalOptions.maintenancePlan}
                   onChange={(e) => setAdditionalOptions(prev => ({ ...prev, maintenancePlan: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
                 />
                 <span className="text-sm text-gray-700">Include Maintenance Plan</span>
               </label>
@@ -293,7 +293,7 @@ export const ExportData = () => {
                   type="checkbox"
                   checked={additionalOptions.onePerPage}
                   onChange={(e) => setAdditionalOptions(prev => ({ ...prev, onePerPage: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
                 />
                 <span className="text-sm text-gray-700">1 Work Order per page</span>
               </label>
@@ -301,7 +301,7 @@ export const ExportData = () => {
           </div>
 
           {/* Column Selector */}
-          <div className="border border-zinc-200 rounded-lg overflow-hidden">
+          <div className="border border-[var(--border)] rounded-lg overflow-hidden">
             <button
               onClick={() => setShowColumns(!showColumns)}
               className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
@@ -310,10 +310,10 @@ export const ExportData = () => {
               {showColumns ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
             </button>
             {showColumns && (
-              <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-3 bg-white border-t border-zinc-200">
+              <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-3 bg-white border-t border-[var(--border)]">
                 {Object.entries(selectedColumns).map(([key, enabled]) => (
                   <label key={key} className="flex items-center gap-2 cursor-pointer group">
-                    <div className={`w-4 h-4 border rounded flex items-center justify-center transition-colors ${enabled ? 'bg-blue-500 border-blue-500' : 'border-zinc-300 group-hover:border-blue-400'}`}>
+                    <div className={`w-4 h-4 border rounded flex items-center justify-center transition-colors ${enabled ? 'bg-blue-500 border-blue-500' : 'border-[var(--border)] group-hover:border-blue-400'}`}>
                       {enabled && <Check size={12} className="text-white" />}
                     </div>
                     <input
@@ -331,10 +331,10 @@ export const ExportData = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 border-t border-zinc-200 bg-gray-50 flex justify-end gap-3">
+        <div className="p-6 border-t border-[var(--border)] bg-gray-50 flex justify-end gap-3">
           <button
             type="button"
-            className="px-6 py-2 border border-zinc-200 rounded-lg text-sm font-medium hover:bg-gray-100"
+            className="px-6 py-2 border border-[var(--border)] rounded-lg text-sm font-medium hover:bg-gray-100"
             onClick={() => alert('Scheduling exports coming soon!')}
           >
             Schedule
@@ -348,7 +348,7 @@ export const ExportData = () => {
           <button
             onClick={handlePreview}
             disabled={isGenerating || format === 'CSV'}
-            className="flex items-center gap-2 px-6 py-2 border border-zinc-200 rounded-lg text-sm font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-2 border border-[var(--border)] rounded-lg text-sm font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating && format === 'PDF' && <Loader2 size={16} className="animate-spin" />}
             Preview

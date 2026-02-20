@@ -14,12 +14,6 @@ export interface AssignedUser {
   imageUrl?: string;
 }
 
-export interface AssignedTeam {
-  name: string;
-  initials: string;
-  color: string;
-}
-
 export type FieldType = 
   | 'checkbox' 
   | 'multi-checkbox' 
@@ -94,7 +88,6 @@ export interface WorkOrder {
   dueDate: string;
   assignedTo: string; // user or role string
   assignedUsers?: AssignedUser[];
-  assignedTeams?: AssignedTeam[];
   assetId?: string;
   asset: string;
   assetImageUrl?: string;

@@ -69,7 +69,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-        <header className="px-6 py-4 border-b border-zinc-200 flex justify-between items-center">
+        <header className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
           <h3 className="text-lg font-semibold">{category ? 'Edit Category' : 'New Category'}</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -81,7 +81,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
             <input
               type="text"
               required
-              className="w-full border border-zinc-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
               value={name}
               onChange={(e) => { setName(e.target.value); setError(''); }}
               placeholder="e.g. Preventive Maintenance"
@@ -110,7 +110,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
                   key={opt.value}
                   type="button"
                   onClick={() => setColor(opt.value)}
-                  className={`w-8 h-8 rounded ${opt.value} border-2 ${color === opt.value ? 'border-blue-500' : 'border-zinc-200'} hover:border-blue-300`}
+                  className={`w-8 h-8 rounded ${opt.value} border-2 ${color === opt.value ? 'border-blue-500' : 'border-[var(--border)]'} hover:border-blue-300`}
                   title={opt.label}
                 />
               ))}
@@ -119,7 +119,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
             <textarea
-              className="w-full border border-zinc-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500 min-h-[80px]"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500 min-h-[80px]"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief description of this category..."

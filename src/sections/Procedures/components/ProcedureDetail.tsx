@@ -9,9 +9,9 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
 
   if (!procedureId) {
     return (
-      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
-          <div className="flex items-center justify-center w-full h-full text-gray-500">
+      <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+        <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="flex items-center justify-center w-full h-full text-gray-500 bg-[var(--panel-2)]">
             Select a procedure to view details
           </div>
         </div>
@@ -20,11 +20,11 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
   }
 
   return (
-    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2">
-      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-zinc-200 overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+    <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
+      <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-hidden w-full">
           {/* Header */}
-          <header className="box-border caret-transparent shrink-0 px-4 py-4">
+          <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
                 <img
@@ -32,7 +32,7 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
                   alt="Procedure Icon"
                   className="h-8 w-8"
                 />
-                <h3 className="text-xl font-medium box-border caret-transparent tracking-[-0.2px]">
+                <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
                   Annual Fire Extinguisher Inspection
                 </h3>
               </div>
@@ -61,15 +61,15 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
             </div>
 
             {/* Tabs */}
-            <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b">
+            <div className="bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent flex shrink-0 flex-wrap border-b">
               <button
                 type="button"
                 onClick={() => setActiveTab('fields')}
                 className={`${
                   activeTab === 'fields'
-                    ? 'text-blue-500 font-semibold border-b-blue-500'
-                    : 'text-gray-600 border-b-zinc-200'
-                } bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+                    ? 'text-[var(--accent)] border-b-[var(--accent)]'
+                    : 'text-[var(--muted)] border-b-transparent'
+                } bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
               >
                 Fields
               </button>
@@ -78,9 +78,9 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
                 onClick={() => setActiveTab('details')}
                 className={`${
                   activeTab === 'details'
-                    ? 'text-blue-500 font-semibold border-b-blue-500'
-                    : 'text-gray-600 border-b-zinc-200'
-                } bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+                    ? 'text-[var(--accent)] border-b-[var(--accent)]'
+                    : 'text-[var(--muted)] border-b-transparent'
+                } bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
               >
                 Details
               </button>
@@ -89,9 +89,9 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
                 onClick={() => setActiveTab('history')}
                 className={`${
                   activeTab === 'history'
-                    ? 'text-blue-500 font-semibold border-b-blue-500'
-                    : 'text-gray-600 border-b-zinc-200'
-                } bg-transparent border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b hover:bg-gray-50`}
+                    ? 'text-[var(--accent)] border-b-[var(--accent)]'
+                    : 'text-[var(--muted)] border-b-transparent'
+                } bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
               >
                 History
               </button>
@@ -99,245 +99,178 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
           </header>
 
           {/* Content */}
-          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 py-4">
+          <div className="relative box-border caret-transparent flex flex-col grow scroll-smooth overflow-auto scroll-pt-4 px-6 py-6">
             {activeTab === 'fields' && (
               <>
                 {/* Pre-Inspection Section */}
-                <h2 className="text-lg font-semibold mb-4">Pre-Inspection</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-3">Pre-Inspection</h2>
                 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Check that the fire extinguisher is mounted correctly and securely.
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Pass
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Flag
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Fail
                     </button>
                   </div>
                 </div>
 
+                <div className="border-b border-[var(--border)] my-4"></div>
+
                 {/* Inspection Section */}
-                <h2 className="text-lg font-semibold mb-4 mt-6">Inspection</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-3">Inspection</h2>
                 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Confirm that the fire extinguisher has been inspected by a certified third-party professional.
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Yes
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       No
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       N/A
                     </button>
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Ensure that the inspection tag is replaced with a new tag showing the current date.
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Pass
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Flag
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Fail
                     </button>
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Upload the photos of the new inspection tags.
                   </label>
-                  <div className="bg-gray-50 border border-zinc-200 rounded p-4 text-center text-sm text-gray-500">
-                    Assignees will add a Picture/File here
+                  <div className="bg-[var(--panel-2)] border border-dashed border-[var(--border)] rounded p-4 text-center text-[10px] uppercase tracking-widest text-[var(--muted)] italic">
+                    Picture/File placeholder
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Check that the pressure gauge is in the operable range (green zone).
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Pass
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Flag
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
+                      className="border border-[var(--border)] px-4 py-1.5 rounded text-[11px] uppercase font-bold tracking-wider text-gray-400 cursor-not-allowed bg-gray-50"
                     >
                       Fail
                     </button>
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
-                    Inspect the extinguisher for any physical damage, corrosion, leakage, or clogged nozzle.
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Pass
-                    </button>
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Flag
-                    </button>
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Fail
-                    </button>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
-                    Ensure the safety pin is intact and the tamper seal is unbroken.
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Pass
-                    </button>
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Flag
-                    </button>
-                    <button
-                      type="button"
-                      disabled
-                      className="border border-zinc-200 px-4 py-2 rounded text-sm text-gray-400 cursor-not-allowed"
-                    >
-                      Fail
-                    </button>
-                  </div>
-                </div>
+                <div className="border-b border-[var(--border)] my-4"></div>
 
                 {/* Post-Inspection Section */}
-                <h2 className="text-lg font-semibold mb-4 mt-6">Post-Inspection</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold mb-3">Post-Inspection</h2>
                 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
                     Document any issues found during the inspection.
                   </label>
-                  <textarea
-                    disabled
-                    placeholder="Enter Text"
-                    className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr resize-none"
-                  ></textarea>
-                </div>
-
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
-                    Technician Signature
-                  </label>
-                  <div className="bg-gray-50 border border-zinc-200 rounded p-4 text-center text-sm text-gray-500">
-                    Assignees will sign here
+                  <div className="bg-[var(--panel-2)] border border-[var(--border)] rounded p-3 text-xs text-gray-400 italic">
+                    Text input placeholder
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block mb-3 text-sm">
-                    Print Name
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm text-gray-700 font-medium">
+                    Technician Signature
                   </label>
-                  <textarea
-                    disabled
-                    placeholder="Enter Text"
-                    className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr resize-none"
-                  ></textarea>
+                  <div className="bg-[var(--panel-2)] border border-dashed border-[var(--border)] rounded p-4 text-center text-[10px] uppercase tracking-widest text-[var(--muted)] italic">
+                    Signature placeholder
+                  </div>
                 </div>
               </>
             )}
 
             {activeTab === 'details' && (
-              <div className="text-center text-gray-500 py-8">
-                <p className="text-lg font-medium mb-2">Procedure Details</p>
-                <p className="text-sm">Details about this procedure will appear here</p>
+              <div className="text-center text-[var(--muted)] py-8">
+                <p className="text-xs uppercase tracking-widest mb-2">Procedure Details</p>
+                <p className="text-xs italic">Details will appear here</p>
               </div>
             )}
 
             {activeTab === 'history' && (
-              <div className="text-center text-gray-500 py-8">
-                <p className="text-lg font-medium mb-2">Work Order History</p>
-                <p className="text-sm">No work order history</p>
+              <div className="text-center text-[var(--muted)] py-8">
+                <p className="text-xs uppercase tracking-widest mb-2">Work Order History</p>
+                <p className="text-xs italic">No history</p>
               </div>
             )}
           </div>

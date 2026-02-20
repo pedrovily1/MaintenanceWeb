@@ -12,12 +12,6 @@ export type InfoSectionProps = {
     profileUrl: string;
     subtitle?: string;
   }>;
-  assignedTeams?: Array<{
-    name: string;
-    iconUrl: string;
-    teamUrl: string;
-    subtitle?: string;
-  }>;
   description?: string;
   assetName?: string;
   assetImageUrl?: string;
@@ -119,30 +113,6 @@ export const InfoSection = (props: InfoSectionProps) => {
               </a>
             </li>
           ))}
-          {props.assignedTeams?.map((team, index) => (
-            <li key={index} className="box-border caret-transparent block px-2">
-              <a
-                href={team.teamUrl}
-                className="items-center box-border caret-transparent flex shrink-0 break-words py-2"
-              >
-                <div className="items-center box-border caret-transparent flex shrink-0 break-words mr-1">
-                  <img
-                    src={team.iconUrl}
-                    alt="Icon"
-                    className="box-border caret-transparent shrink-0 h-5 w-5"
-                  />
-                </div>
-                <div className="box-border caret-transparent break-words">
-                  <div className="box-border caret-transparent flow-root shrink-0 break-words text-ellipsis overflow-hidden">
-                    {team.name}
-                  </div>
-                  <div className="text-gray-600 text-[11.2px] box-border caret-transparent shrink-0 leading-[13.44px] break-words">
-                    {team.subtitle}
-                  </div>
-                </div>
-              </a>
-            </li>
-          ))}
         </ul>
       </div>
     );
@@ -181,7 +151,7 @@ export const InfoSection = (props: InfoSectionProps) => {
           <div className="box-border caret-transparent shrink-0 mr-2">
             <div
               title={props.assetName}
-              className="font-semibold items-center box-border caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] w-10 border border-zinc-200 overflow-hidden rounded-lg border-solid"
+              className="font-semibold items-center box-border caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] w-10 border border-[var(--border)] overflow-hidden rounded-lg border-solid"
             >
               <figure
                 className="bg-cover box-border caret-transparent shrink-0 h-10 w-10 bg-center"
@@ -268,7 +238,7 @@ export const InfoSection = (props: InfoSectionProps) => {
               key={index}
               className="box-border caret-transparent block shrink-0 max-w-full break-all mr-2.5 mb-2.5"
             >
-              <span className="items-center bg-gray-50 box-border caret-transparent inline-flex shrink-0 justify-center min-h-[25px] min-w-[60px] break-all border border-gray-50 px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+              <span className="items-center bg-gray-50 box-border caret-transparent inline-flex shrink-0 justify-center min-h-[25px] min-w-[60px] break-all border border-[var(--border)] px-1 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
                 <img
                   src={category.iconUrl}
                   className="box-border caret-transparent shrink-0 h-2.5 object-cover w-2.5 break-all mr-[5px] rounded-[50%]"

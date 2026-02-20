@@ -16,7 +16,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <input
-          className="border border-zinc-200 rounded px-2 py-1 text-sm min-w-[200px]"
+          className="border border-[var(--border)] rounded px-2 py-1 text-sm min-w-[200px]"
           placeholder={item.kind === 'Heading' ? 'Heading text' : 'Field label'}
           value={item.label || ''}
           onChange={(e) => onChange({ label: e.target.value })}
@@ -43,7 +43,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
       case 'TextBlock':
         return (
           <textarea
-            className="w-full border border-zinc-200 rounded p-2 text-sm min-h-[60px] mt-2"
+            className="w-full border border-[var(--border)] rounded p-2 text-sm min-h-[60px] mt-2"
             placeholder="Instructional text..."
             value={(item as any).text || ''}
             onChange={(e) => onChange({ ...(item as any), text: e.target.value })}
@@ -54,7 +54,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
         return (
           <div className="grid grid-cols-2 gap-2 mt-2">
             <input
-              className="border border-zinc-200 rounded px-2 py-1 text-sm"
+              className="border border-[var(--border)] rounded px-2 py-1 text-sm"
               placeholder="Placeholder"
               value={it.placeholder || ''}
               onChange={(e) => onChange({ placeholder: e.target.value })}
@@ -69,9 +69,9 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
         const it = item as NumberInputItem;
         return (
           <div className="grid grid-cols-3 gap-2 mt-2">
-            <input className="border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Unit (e.g., hrs, psi)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
-            <input className="border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Min" type="number" value={it.min ?? ''} onChange={(e) => onChange({ min: e.target.value === '' ? undefined : Number(e.target.value) })} />
-            <input className="border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Max" type="number" value={it.max ?? ''} onChange={(e) => onChange({ max: e.target.value === '' ? undefined : Number(e.target.value) })} />
+            <input className="border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Unit (e.g., hrs, psi)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
+            <input className="border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Min" type="number" value={it.min ?? ''} onChange={(e) => onChange({ min: e.target.value === '' ? undefined : Number(e.target.value) })} />
+            <input className="border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Max" type="number" value={it.max ?? ''} onChange={(e) => onChange({ max: e.target.value === '' ? undefined : Number(e.target.value) })} />
           </div>
         );
       }
@@ -84,7 +84,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
               <div key={idx} className="flex items-center gap-2">
                 <span className="text-xs text-gray-400">{idx + 1}.</span>
                 <input
-                  className="border border-zinc-200 rounded px-2 py-1 text-sm grow"
+                  className="border border-[var(--border)] rounded px-2 py-1 text-sm grow"
                   value={o}
                   onChange={(e) => {
                     const next = [...opts];
@@ -120,7 +120,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
               <div>
                 <label className="block text-xs text-gray-500 mb-1">Default Meter</label>
                 <select
-                  className="w-full border border-zinc-200 rounded px-2 py-1 text-sm"
+                  className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
                   value={it.meterId || ''}
                   onChange={(e) => onChange({ meterId: e.target.value || undefined })}
                 >
@@ -132,14 +132,14 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
               </div>
               <div>
                 <label className="block text-xs text-gray-500 mb-1">Units</label>
-                <input className="w-full border border-zinc-200 rounded px-2 py-1 text-sm" placeholder="Units (e.g., kWh)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
+                <input className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm" placeholder="Units (e.g., kWh)" value={it.unit || ''} onChange={(e) => onChange({ unit: e.target.value })} />
               </div>
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">Allowed Meters (optional)</label>
               <select
                 multiple
-                className="w-full border border-zinc-200 rounded px-2 py-1 text-sm min-h-[80px]"
+                className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[80px]"
                 value={it.allowedMeterIds || []}
                 onChange={(e) => {
                   const opts = Array.from(e.target.selectedOptions).map(o => o.value);
@@ -162,11 +162,11 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
   };
 
   return (
-    <div className="border border-zinc-200 rounded p-3 bg-white">
+    <div className="border border-[var(--border)] rounded p-3 bg-white">
       {commonHeader}
       {item.helpText !== undefined && (
         <input
-          className="mt-2 w-full border border-zinc-200 rounded px-2 py-1 text-xs text-gray-600"
+          className="mt-2 w-full border border-[var(--border)] rounded px-2 py-1 text-xs text-gray-600"
           placeholder="Help text / notes (optional)"
           value={item.helpText || ''}
           onChange={(e) => onChange({ helpText: e.target.value })}

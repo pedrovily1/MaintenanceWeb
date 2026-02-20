@@ -126,8 +126,6 @@ export const instantiateFromTemplate = (
     dueDate: dateISO,   // Use the occurrence date as due date (can be refined if needed)
     assignedTo: template.assignedTo,
     assignedUsers: template.assignedUsers ? JSON.parse(JSON.stringify(template.assignedUsers)) : [],
-    assignedTeams: template.assignedTeams ? JSON.parse(JSON.stringify(template.assignedTeams)) : [],
-    asset: template.asset,
     assetId: template.assetId,
     assetImageUrl: template.assetImageUrl,
     location: template.location,

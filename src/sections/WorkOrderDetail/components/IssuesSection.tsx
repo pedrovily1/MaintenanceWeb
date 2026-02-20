@@ -3,7 +3,7 @@ export const IssuesSection = () => {
     <div className="box-border caret-transparent shrink-0 h-[806px]">
       <div className="box-border caret-transparent flex flex-col shrink-0">
         <div className="box-border caret-transparent shrink-0">
-          <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
             <div className="box-border caret-transparent flex shrink-0 justify-start">
               <div className="box-border caret-transparent grow-[4] w-full p-4">
                 <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -21,7 +21,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Scheduled Maintenance"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Scheduled Maintenance
@@ -33,7 +33,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Handling"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Handling
@@ -45,7 +45,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Normal Operation"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Normal Operation
@@ -57,7 +57,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Test"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Test
@@ -69,7 +69,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Storage"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Storage
@@ -81,7 +81,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Inspection"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Inspection
@@ -93,7 +93,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Other"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Other
@@ -105,7 +105,7 @@ export const IssuesSection = () => {
               </div>
             </div>
           </div>
-          <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
             <div className="box-border caret-transparent flex shrink-0 justify-start">
               <div className="box-border caret-transparent grow-[4] w-full p-4">
                 <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -123,7 +123,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Inoperative"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Inoperative
@@ -135,7 +135,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Overheating"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Overheating
@@ -147,7 +147,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Out of Adjustment"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Out of Adjustment
@@ -159,7 +159,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Noise"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Noise
@@ -171,7 +171,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Low Performance"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Low Performance
@@ -183,7 +183,7 @@ export const IssuesSection = () => {
                         <input
                           type="radio"
                           value="Other"
-                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-zinc-200 p-0 rounded-[50%] border-solid"
+                          className="relative text-neutral-600 box-border caret-transparent block shrink-0 h-4 w-4 border-[var(--border)] p-0 rounded-[50%] border-solid"
                         />
                         <span className="box-border caret-transparent block grow break-words w-0 ml-2">
                           Other
@@ -195,7 +195,7 @@ export const IssuesSection = () => {
               </div>
             </div>
           </div>
-          <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
             <div className="box-border caret-transparent flex shrink-0 justify-start">
               <div className="box-border caret-transparent grow-[4] w-full p-4">
                 <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -213,7 +213,7 @@ export const IssuesSection = () => {
                     <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                       <textarea
                         placeholder="Enter Text"
-                        className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                        className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                       >
                         None
                       </textarea>
@@ -224,7 +224,7 @@ export const IssuesSection = () => {
               </div>
             </div>
           </div>
-          <div className="relative box-border caret-transparent grow border border-zinc-200 mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
+          <div className="relative box-border caret-transparent grow border border-[var(--border)] mt-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid">
             <div className="box-border caret-transparent flex shrink-0 justify-start">
               <div className="box-border caret-transparent grow-[4] w-full p-4">
                 <div className="items-center box-border caret-transparent flex shrink-0 justify-start">
@@ -241,7 +241,7 @@ export const IssuesSection = () => {
                     <div className="box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2">
                       <textarea
                         placeholder="Enter Text"
-                        className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-zinc-200 px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
+                        className="bg-transparent box-border caret-transparent flex shrink-0 h-10 tracking-[-0.2px] leading-[20.0004px] max-h-[220px] min-h-10 w-full border-[var(--border)] px-3 py-[9px] rounded-bl rounded-br rounded-tl rounded-tr"
                       >
                         None
                       </textarea>

@@ -1,8 +1,8 @@
 export const Settings = () => {
   return (
-    <div className="relative bg-[var(--bg)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       {/* Header */}
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-5 mb-6">
+      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4 mb-6">
         <h1 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
           General
         </h1>
@@ -11,11 +11,11 @@ export const Settings = () => {
       {/* Content */}
       <div className="box-border caret-transparent flex flex-col grow px-4 pb-8">
         {/* Organization Summary */}
-        <section className="bg-white box-border caret-transparent shrink-0 border border-zinc-200 rounded-lg p-6 mb-4">
+        <section className="bg-white box-border caret-transparent shrink-0 border border-[var(--border)] rounded-lg p-6 mb-4">
           <div className="flex items-start gap-6">
             <div className="box-border caret-transparent shrink-0">
               <div
-                  className="items-center bg-white flex h-[104px] w-[104px] justify-center bg-center rounded-lg border border-zinc-200"
+                  className="items-center bg-white flex h-[104px] w-[104px] justify-center bg-center rounded-lg border border-[var(--border)]"
                   style={{
                     backgroundImage: "url(/logo.svg)",
                     backgroundRepeat: "no-repeat",
@@ -58,7 +58,7 @@ export const Settings = () => {
             <div className="flex items-center">
               <label className="text-sm font-medium w-48">Organization Language</label>
               <div className="flex-1 max-w-md">
-                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-zinc-200 rounded px-3">
+                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-[var(--border)] rounded px-3">
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     English (Default)
                   </div>
@@ -77,7 +77,7 @@ export const Settings = () => {
             <div className="flex items-center">
               <label className="text-sm font-medium w-48">Currency</label>
               <div className="flex-1 max-w-md">
-                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-zinc-200 rounded px-3">
+                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-[var(--border)] rounded px-3">
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     USD (US Dollar)
                   </div>
@@ -96,7 +96,7 @@ export const Settings = () => {
             <div className="flex items-center">
               <label className="text-sm font-medium w-48">Date Format</label>
               <div className="flex-1 max-w-md">
-                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-zinc-200 rounded px-3">
+                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-[var(--border)] rounded px-3">
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     MM/DD/YYYY – 11:59 PM
                   </div>
@@ -115,7 +115,7 @@ export const Settings = () => {
             <div className="flex items-center">
               <label className="text-sm font-medium w-48">Time Zone</label>
               <div className="flex-1 max-w-md">
-                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-zinc-200 rounded px-3">
+                <div className="relative items-center bg-white box-border caret-transparent flex shrink-0 h-10 justify-between w-full border border-[var(--border)] rounded px-3">
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     Europe/Belgrade : +01:00
                   </div>
@@ -139,7 +139,7 @@ export const Settings = () => {
           <div className="grid grid-cols-3 gap-4">
             <a
               href="/settings/export/workorders"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
@@ -150,7 +150,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/assets"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
@@ -161,7 +161,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/assetStatus"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
@@ -172,7 +172,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/locations"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
@@ -183,7 +183,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/parts"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
@@ -194,7 +194,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/partTransactions"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
@@ -205,7 +205,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/meters"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-13.svg"
@@ -216,7 +216,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/readings"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-13.svg"
@@ -227,7 +227,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/vendors"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-17.svg"
@@ -238,7 +238,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/timeAndCost"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
@@ -249,7 +249,7 @@ export const Settings = () => {
             </a>
             <a
               href="/settings/export/laborUtilization"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
@@ -262,13 +262,13 @@ export const Settings = () => {
         </section>
 
         {/* Import Data */}
-        <section className="bg-white box-border caret-transparent shrink-0 border border-zinc-200 rounded-lg p-6 mb-4">
+        <section className="bg-white box-border caret-transparent shrink-0 border border-[var(--border)] rounded-lg p-6 mb-4">
           <h2 className="text-2xl font-semibold mb-6">Import Data</h2>
           
           <div className="grid grid-cols-3 gap-4">
             <a
               href="/imports/assets"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
@@ -279,7 +279,7 @@ export const Settings = () => {
             </a>
             <a
               href="/imports/parts"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
@@ -290,7 +290,7 @@ export const Settings = () => {
             </a>
             <a
               href="/imports/workorders"
-              className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg hover:bg-gray-50 cursor-pointer"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
@@ -299,7 +299,7 @@ export const Settings = () => {
               />
               <p className="text-sm font-medium">Work Orders</p>
             </a>
-            <div className="flex flex-col items-center justify-center p-6 border border-zinc-200 rounded-lg opacity-50 cursor-not-allowed">
+            <div className="flex flex-col items-center justify-center p-6 border border-[var(--border)] rounded-lg opacity-50 cursor-not-allowed">
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
                 alt="Icon"

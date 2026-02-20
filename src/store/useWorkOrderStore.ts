@@ -23,9 +23,6 @@ const SEED_DATA: WorkOrder[] = [
     assignedUsers: [
       { name: "Admin", imageUrl: "https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png" }
     ],
-    assignedTeams: [
-      { name: "Site Maintenance", initials: "SM", color: "bg-pink-500" }
-    ],
     location: "Main Building",
     categories: ["Maintenance"],
     workType: "Preventive",
