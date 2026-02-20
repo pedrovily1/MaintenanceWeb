@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
+import { Login } from "@/sections/Login";
 import { Reporting } from "@/sections/Reporting";
 import { Assets } from "@/sections/Assets";
 import { Categories } from "@/sections/Categories";
@@ -29,10 +30,22 @@ type View =
 export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
   const { ensureActiveRecurringInstances } = useWorkOrderStore();
+  const [isAuthed, setIsAuthed] = useState(localStorage.getItem("omp-auth") === "true");
 
   useEffect(() => {
-    ensureActiveRecurringInstances();
-  }, [ensureActiveRecurringInstances]);
+    // Sync auth state if localStorage changes (e.g. from other tabs or our own Login/Logout)
+    const checkAuth = () => {
+      setIsAuthed(localStorage.getItem("omp-auth") === "true");
+    };
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthed) {
+      ensureActiveRecurringInstances();
+    }
+  }, [ensureActiveRecurringInstances, isAuthed]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -87,6 +100,10 @@ export const App = () => {
         return <MainContent />;
     }
   };
+
+  if (!isAuthed) {
+    return <Login />;
+  }
 
   return (
       <div className="flex h-screen w-full overflow-hidden bg-[var(--bg)] text-[var(--text)]">

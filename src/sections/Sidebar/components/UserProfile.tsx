@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LogOut } from "lucide-react";
 import { useUserStore } from "@/store/useUserStore";
 import { PinModal } from "@/components/Common/PinModal";
 
@@ -7,11 +8,17 @@ export const UserProfile = () => {
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const isActive = window.location.hash === '#settings';
   
+  const handleLogout = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    localStorage.removeItem("omp-auth");
+    window.location.reload();
+  };
+
   return (
-    <div className="box-border caret-transparent shrink-0 w-full">
+    <div className="box-border caret-transparent shrink-0 w-full group/profile">
       <div
         onClick={() => setIsPinModalOpen(true)}
-        className={`items-center cursor-pointer caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600 text-center w-full mt-2 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
+        className={`relative items-center cursor-pointer caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600 text-center w-full mt-2 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
           isActive ? 'bg-[var(--panel)] text-[var(--accent)] opacity-100' : 'bg-transparent hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
         }`}
         title="Switch User"
@@ -39,12 +46,21 @@ export const UserProfile = () => {
             </div>
           </div>
         </div>
+
+        {/* Logout Button (Desktop) */}
+        <button
+          onClick={handleLogout}
+          title="Log Out"
+          className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center p-1.5 rounded-md text-[#9AA4B2] hover:text-red-500 hover:bg-red-500/10 opacity-0 group-hover/profile:opacity-100 transition-all"
+        >
+          <LogOut className="h-4 w-4" />
+        </button>
         
-        {/* Chevron - Hidden on mobile/tablet */}
+        {/* Chevron - Hidden on mobile/tablet and hidden when profile is hovered */}
         <img
           src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-19.svg"
           alt="Icon"
-          className={`hidden lg:block text-blue-500 box-border caret-transparent shrink-0 h-5 w-5 ${isActive ? 'opacity-100' : ''}`}
+          className={`hidden lg:block text-blue-500 box-border caret-transparent shrink-0 h-5 w-5 group-hover/profile:opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}`}
         />
       </div>
       <PinModal isOpen={isPinModalOpen} onClose={() => setIsPinModalOpen(false)} />
