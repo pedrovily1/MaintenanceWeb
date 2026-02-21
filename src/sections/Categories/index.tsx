@@ -67,11 +67,6 @@ export const Categories = () => {
     }
   };
 
-  const handleUseInNewWorkOrder = () => {
-    if (selectedCategoryId) {
-      window.dispatchEvent(new CustomEvent('use-category-in-new-work-order', { detail: { categoryId: selectedCategoryId } }));
-    }
-  };
 
   return (
     <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
@@ -125,7 +120,6 @@ export const Categories = () => {
           onEdit={handleEditCategory}
           onArchive={handleArchiveCategory}
           onRestore={handleRestoreCategory}
-          onUseInNewWorkOrder={handleUseInNewWorkOrder}
         />
       </div>
 
