@@ -30,7 +30,7 @@ export const CollapsibleNavItem = (props: CollapsibleNavItemProps) => {
           {props.label}
         </label>
         {props.badgeCount && (
-          <div className="text-white text-[10.0002px] font-semibold items-center bg-blue-500 box-border caret-transparent flex shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr">
+          <div className="text-white text-[10.0002px] font-semibold items-center bg-accent box-border caret-transparent flex shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr">
             {props.badgeCount}
           </div>
         )}
@@ -58,7 +58,7 @@ export const CollapsibleNavItem = (props: CollapsibleNavItemProps) => {
                     {item.label}
                   </span>
                   {item.badgeCount && (
-                    <div className="text-white text-[10.0002px] font-semibold items-center bg-blue-500 box-border caret-transparent flex shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 break-words px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr">
+                    <div className="text-white text-[10.0002px] font-semibold items-center bg-accent box-border caret-transparent flex shrink-0 h-4 justify-center leading-[12.0002px] min-w-4 break-words px-1 py-0.5 rounded-bl rounded-br rounded-tl rounded-tr">
                       {item.badgeCount}
                     </div>
                   )}

@@ -105,7 +105,7 @@ export const WorkOrderCard = ({
           {/* Status Badge */}
           <div className="relative box-border caret-transparent shrink-0">
             <div className={`text-[11px] font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
-              status === 'Open' ? 'bg-sky-100 text-accent' : 
+              status === 'Open' ? 'bg-accent-muted text-accent' : 
               status === 'Done' ? 'bg-teal-100 text-teal-600' : 
               status === 'In Progress' ? 'bg-accent-muted text-accent' :
               status === 'On Hold' ? 'bg-yellow-100 text-yellow-600' :

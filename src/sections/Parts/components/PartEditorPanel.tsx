@@ -111,7 +111,7 @@ export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditor
             <button
               type="button"
               onClick={handleSubmit}
-              className="bg-blue-500 text-white border border-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-400"
+              className="bg-accent text-white border border-accent px-3 py-1 rounded text-sm hover:bg-accent-hover transition-colors"
             >
               {initial ? 'Save' : 'Create'}
             </button>

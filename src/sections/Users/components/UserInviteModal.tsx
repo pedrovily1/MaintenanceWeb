@@ -127,7 +127,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 hover:bg-blue-400 rounded"
+              className="px-4 py-2 text-sm font-bold text-white bg-accent hover:bg-accent-hover rounded"
             >
               Create User
             </button>

@@ -176,7 +176,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                 </div>
                 <button
                   type="submit"
-                  className="relative text-white font-bold items-center bg-blue-500 caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+                  className="relative text-white font-bold items-center bg-accent caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent-hover hover:border-accent-hover transition-colors"
                 >
                   Send
                 </button>

@@ -135,53 +135,53 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
           <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
-              <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
-                <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
-                  {meter?.name}
-                </h3>
-                <button
-                  title="Copy Link"
-                  type="button"
-                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-accent-hover"
-                  onClick={() => {
-                    try {
-                      navigator.clipboard?.writeText(window.location.href.replace(/#.*/, '#meters'));
-                    } catch {}
-                  }}
-                >
-                  <span className="box-border caret-transparent flex text-nowrap">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-35.svg"
-                      alt="Icon"
-                      className="box-border caret-transparent h-5 text-nowrap w-5"
-                    />
-                  </span>
-                </button>
-              </div>
-              <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
-                <button
-                  type="button"
-                  onClick={() => { setRecordMode(true); setError(''); setRecordValue(''); }}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
-                >
-                  <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
-                    Record Reading
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={onEdit}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
-                >
-                  <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
-                    Edit
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
-                >
+              <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
+                <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
+                  <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
+                    {meter?.name}
+                  </h3>
+                  <button
+                    title="Copy Link"
+                    type="button"
+                    className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:bg-accent hover:text-white transition-colors"
+                    onClick={() => {
+                      try {
+                        navigator.clipboard?.writeText(window.location.href.replace(/#.*/, '#meters'));
+                      } catch {}
+                    }}
+                  >
+                    <span className="box-border caret-transparent flex text-nowrap">
+                      <img
+                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-35.svg"
+                        alt="Icon"
+                        className="box-border caret-transparent h-5 text-nowrap w-5"
+                      />
+                    </span>
+                  </button>
+                </div>
+                <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => { setRecordMode(true); setError(''); setRecordValue(''); }}
+                    className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:bg-accent hover:text-white transition-colors"
+                  >
+                    <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
+                      Record Reading
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onEdit}
+                    className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:bg-accent hover:text-white transition-colors"
+                  >
+                    <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
+                      Edit
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:bg-accent hover:text-white transition-colors"
+                  >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-40.svg"

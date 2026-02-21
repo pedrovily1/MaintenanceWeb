@@ -29,7 +29,7 @@ export const PageHeader = () => {
         <div className="relative box-border caret-transparent flex shrink-0">
           <button
             type="button"
-            className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 lg:px-4 rounded-md border-solid hover:bg-blue-400 hover:border-blue-400"
+            className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-3 lg:px-4 rounded-md border-solid hover:bg-accent-hover hover:border-accent-hover"
             onClick={() => window.dispatchEvent(new CustomEvent('trigger-new-work-order'))}
           >
             <img

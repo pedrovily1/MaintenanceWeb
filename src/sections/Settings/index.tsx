@@ -41,7 +41,7 @@ export const Settings = () => {
             <div className="box-border caret-transparent shrink-0">
               <button
                 type="button"
-                className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded text-accent hover:bg-accent hover:text-white transition-colors"
               >
                 Edit Profile
               </button>

@@ -349,13 +349,13 @@ export const WorkOrderList = () => {
                               <button
                                 title="Copy Link"
                                 type="button"
-                                className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                                className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-full hover:bg-accent hover:text-white transition-colors"
                               >
                                 <span className="box-border caret-transparent flex text-nowrap">
                                   <img
                                     src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-35.svg"
                                     alt="Icon"
-                                    className="box-border caret-transparent h-5 text-nowrap w-5"
+                                    className="box-border caret-transparent h-5 text-nowrap w-5 group-hover:brightness-0 group-hover:invert transition-all"
                                   />
                                 </span>
                               </button>
@@ -365,7 +365,7 @@ export const WorkOrderList = () => {
                                   <img
                                     src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-36.svg"
                                     alt="Icon"
-                                    className="text-blue-500 box-border caret-transparent h-3.5 w-3.5"
+                                    className="text-accent box-border caret-transparent h-3.5 w-3.5"
                                   />
                                   <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
                                     {selectedWorkOrder.workType}
@@ -401,13 +401,8 @@ export const WorkOrderList = () => {
                             <button
                               type="button"
                               onClick={() => setShowEditor(true)}
-                              className="relative text-[var(--accent)] font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-[var(--accent)] px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:opacity-80 transition-opacity cursor-pointer"
+                              className="relative text-accent font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded-md border-solid hover:bg-accent hover:text-white transition-colors cursor-pointer"
                             >
-                              <img
-                                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-39.svg"
-                                alt="Icon"
-                                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-                              />
                               <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                                 Edit
                               </span>
@@ -416,11 +411,11 @@ export const WorkOrderList = () => {
                           <div className="relative box-border caret-transparent flex shrink-0">
                             <button
                               type="button"
-                              className="relative text-[var(--accent)] font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-bl rounded-br rounded-tl rounded-tr border border-transparent hover:border-[var(--border)] transition-all cursor-pointer"
+                              className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-md border border-transparent hover:border-[var(--border)] hover:bg-gray-100 transition-all cursor-pointer group/delete"
                               onClick={() => setConfirmDelete((v) => !v)}
                             >
                               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                                <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-red-600 hover:border-red-600">
+                                <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap group-hover/delete:text-red-600 transition-colors">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                                 </span>
                               </span>
@@ -468,7 +463,7 @@ export const WorkOrderList = () => {
                                     onClick={() => handleStatusUpdate(status)}
                                     className={`${
                                       selectedWorkOrder.status === status 
-                                      ? 'bg-[rgba(47,107,255,0.15)] border-[var(--accent)] text-[var(--accent)] opacity-100'
+                                      ? 'bg-accent-muted border-accent text-accent opacity-100'
                                       : 'bg-transparent border-[var(--border)] text-[var(--muted)] opacity-65'
                                     } text-[11.2px] items-center caret-transparent flex flex-col shrink-0 h-[50px] justify-center leading-[13.44px] text-center w-[71.25px] border mr-2 p-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid md:h-[60px] md:w-[90px] hover:bg-[var(--panel-2)] hover:opacity-100 transition-all`}
                                   >
@@ -505,7 +500,7 @@ export const WorkOrderList = () => {
                                 {(() => {
                                   const cat = getCategoryById(selectedWorkOrder.categoryId);
                                   return cat ? (
-                                    <span className={`text-blue-500 text-[11px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100 ${!cat.isActive ? 'opacity-60' : ''}`}>
+                                    <span className={`text-accent text-[11px] font-bold uppercase tracking-tighter bg-accent-muted px-1 py-0.5 rounded border border-accent/20 ${!cat.isActive ? 'opacity-60' : ''}`}>
                                       {cat.name}{!cat.isActive && ' (Archived)'}
                                     </span>
                                   ) : (
@@ -602,7 +597,7 @@ export const WorkOrderList = () => {
 
                             {(selectedWorkOrder.procedureInstances || []).map((pi, index) => (
                               <div key={pi.id} className="border border-[var(--border)] rounded-lg overflow-hidden bg-white shadow-sm">
-                                <div className="bg-blue-500 px-4 py-3 flex items-center justify-between">
+                                <div className="bg-accent px-4 py-3 flex items-center justify-between">
                                   <div className="flex items-center gap-3 text-white">
                                     <div className="flex flex-col gap-0.5 mr-1">
                                        <button

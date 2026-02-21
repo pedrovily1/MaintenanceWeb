@@ -60,7 +60,7 @@ export const PinModal: React.FC<PinModalProps> = ({ isOpen, onClose }) => {
             <button
               type="submit"
               disabled={pin.length < 4}
-              className={`w-full py-2.5 text-sm font-bold text-white rounded-md transition-colors ${pin.length < 4 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-400'}`}
+              className={`w-full py-2.5 text-sm font-bold text-white rounded-md transition-colors ${pin.length < 4 ? 'bg-gray-300 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover'}`}
             >
               Confirm
             </button>

@@ -111,7 +111,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   type="button"
                   disabled={!isValid}
                   onClick={() => onCreate(value)}
-                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid ${isValid ? 'text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-400' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
+                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid transition-colors ${isValid ? 'text-white bg-accent border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
                 >
                   Create
                 </button>

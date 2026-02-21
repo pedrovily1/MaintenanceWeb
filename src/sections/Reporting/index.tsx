@@ -179,13 +179,13 @@ export const Reporting = () => {
             </div>
             <button
               type="button"
-              className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-accent font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent hover:text-white transition-colors"
             >
               Export
             </button>
             <button
               type="button"
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent-hover hover:border-accent-hover"
             >
               Build report
             </button>
@@ -197,42 +197,42 @@ export const Reporting = () => {
         <button
           type="button"
           onClick={() => setActiveTab('work-orders')}
-          className={`${activeTab === 'work-orders' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'work-orders' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Work Orders
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('asset-health')}
-          className={`${activeTab === 'asset-health' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'asset-health' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Asset Health
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('details')}
-          className={`${activeTab === 'details' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'details' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Reporting Details
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('activity')}
-          className={`${activeTab === 'activity' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'activity' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Recent Activity
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('export')}
-          className={`${activeTab === 'export' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'export' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Export Data
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('dashboards')}
-          className={`${activeTab === 'dashboards' ? 'text-[var(--accent)] border-b-[var(--accent)]' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all`}
+          className={`${activeTab === 'dashboards' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
         >
           Custom Dashboards
         </button>
@@ -606,7 +606,7 @@ export const Reporting = () => {
             </p>
             <button
               type="button"
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 inline-flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 inline-flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent-hover hover:border-accent-hover transition-colors"
             >
               Send Suggestions
             </button>

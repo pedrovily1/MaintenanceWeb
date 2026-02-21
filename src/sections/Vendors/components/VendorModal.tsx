@@ -184,7 +184,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 hover:bg-blue-400 rounded"
+              className="px-4 py-2 text-sm font-bold text-white bg-accent hover:bg-accent-hover rounded"
             >
               {vendor ? 'Save Changes' : 'Create Vendor'}
             </button>

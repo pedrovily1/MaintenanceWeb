@@ -52,7 +52,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                 <button
                   title="Copy Link"
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-accent-hover"
                 >
                   <span className="box-border caret-transparent flex text-nowrap">
                     <img
@@ -67,7 +67,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:bg-accent hover:text-white transition-colors"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -77,7 +77,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                   <button
                     type="button"
                     onClick={() => setShowMenu(!showMenu)}
-                    className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                    className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
                   >
                     <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                       <img

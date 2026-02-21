@@ -1,24 +1,17 @@
 <svg
-  width="1200"
-  height="200"
-  viewBox="0 0 1200 200"
   xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 240"
+  preserveAspectRatio="xMidYMid meet"
 >
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bgGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0a0d12"/>
-      <stop offset="100%" stop-color="#1b212a"/>
-    </linearGradient>
-
-    <!-- Main ring gradient -->
+    <!-- Ring gradient -->
     <linearGradient id="ringMain" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#6fd1ff"/>
       <stop offset="50%" stop-color="#2e8bff"/>
       <stop offset="100%" stop-color="#1b4fa3"/>
     </linearGradient>
 
-    <!-- Highlight gradient -->
+    <!-- Highlight -->
     <linearGradient id="ringHighlight" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
@@ -26,25 +19,18 @@
 
     <!-- Glow -->
     <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feGaussianBlur stdDeviation="6"/>
     </filter>
   </defs>
-
-  <!-- Background -->
-  <rect width="1200" height="200" fill="url(#bgGradient)" />
 
   <!-- Outer glow ring -->
   <circle
     cx="120"
-    cy="100"
-    r="54"
+    cy="120"
+    r="70"
     fill="none"
     stroke="#4db8ff"
-    stroke-width="16"
+    stroke-width="18"
     opacity="0.25"
     filter="url(#softGlow)"
   />
@@ -52,8 +38,8 @@
   <!-- Main ring -->
   <circle
     cx="120"
-    cy="100"
-    r="50"
+    cy="120"
+    r="62"
     fill="none"
     stroke="url(#ringMain)"
     stroke-width="14"
@@ -61,45 +47,35 @@
 
   <!-- Highlight arc -->
   <path
-    d="
-      M 120 50
-      A 50 50 0 0 1 165 80
-    "
+    d="M120 58 A62 62 0 0 1 175 95"
     fill="none"
     stroke="url(#ringHighlight)"
     stroke-width="6"
     stroke-linecap="round"
-    opacity="0.9"
   />
 
-  <!-- Inner cutout -->
-  <circle
-    cx="120"
-    cy="100"
-    r="30"
-    fill="#0a0d12"
-  />
+  <!-- Inner cut -->
+  <circle cx="120" cy="120" r="36" fill="#0a0d12"/>
 
-  <!-- OMP text -->
+  <!-- Text -->
   <text
-    x="210"
-    y="110"
+    x="230"
+    y="120"
     font-family="Arial, Helvetica, sans-serif"
-    font-size="64"
+    font-size="72"
     font-weight="700"
     fill="#ffffff"
+    dominant-baseline="middle"
     letter-spacing="2"
   >
     OMP
   </text>
 
-  <!-- Subtitle -->
   <text
-    x="210"
-    y="150"
+    x="230"
+    y="165"
     font-family="Arial, Helvetica, sans-serif"
-    font-size="26"
-    font-weight="400"
+    font-size="28"
     fill="#cfd6df"
     letter-spacing="3"
   >
