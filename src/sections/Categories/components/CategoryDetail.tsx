@@ -53,7 +53,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                 <button
                   title="Copy Link"
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                  className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-teal-400"
                 >
                   <span className="box-border caret-transparent flex text-nowrap">
                     <img
@@ -68,7 +68,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-teal-500 px-3 rounded text-teal-500 hover:text-teal-400 hover:border-teal-400"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -78,7 +78,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                   <button
                     type="button"
                     onClick={() => setShowMenu(!showMenu)}
-                    className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                    className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-teal-400"
                   >
                     <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                       <img
@@ -132,7 +132,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                   className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"
                   style={{ backgroundImage: `url('${createdByUser?.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
                 ></div>
-                <span className="text-blue-500 hover:underline cursor-pointer">{createdByUser?.fullName || 'Admin'}</span>
+                <span className="text-teal-500 hover:underline cursor-pointer">{createdByUser?.fullName || 'Admin'}</span>
                 <span>on {formatDate(category.createdAt)}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -141,7 +141,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                   className="items-center bg-white bg-cover box-border caret-transparent flex shrink-0 h-3 justify-center w-3 bg-center rounded-[50%]"
                   style={{ backgroundImage: `url('${updatedByUser?.avatarUrl || 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png'}')` }}
                 ></div>
-                <span className="text-blue-500 hover:underline cursor-pointer">{updatedByUser?.fullName || 'Admin'}</span>
+                <span className="text-teal-500 hover:underline cursor-pointer">{updatedByUser?.fullName || 'Admin'}</span>
                 <span>on {formatDate(category.updatedAt)}</span>
               </div>
             </div>
@@ -181,13 +181,13 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                           <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
                             <div
                               title={workOrder.title}
-                              className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-blue-500 transition-colors"
+                              className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-teal-500 transition-colors"
                             >
                               {workOrder.title}
                             </div>
                           </div>
                           <div className="box-border caret-transparent shrink-0">
-                            <span className="text-blue-500 text-[9px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100">
+                            <span className="text-teal-500 text-[9px] font-bold uppercase tracking-tighter bg-teal-50 px-1 py-0.5 rounded border border-teal-100">
                               {category.name}
                             </span>
                           </div>
@@ -204,11 +204,11 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
                           <div className="relative box-border caret-transparent shrink-0">
                             <div className="text-[10px] items-center box-border caret-transparent gap-x-1 flex shrink-0 leading-none uppercase font-bold tracking-wider">
                               <div className="items-center box-border caret-transparent flex shrink-0">
-                                <div className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-blue-500'} box-border caret-transparent shrink-0 h-2.5 w-2.5 mr-1`}>
+                                <div className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-teal-500'} box-border caret-transparent shrink-0 h-2.5 w-2.5 mr-1`}>
                                   {workOrder.status === 'Done' ? '✓' : '○'}
                                 </div>
                               </div>
-                              <span className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-blue-500'} box-border caret-transparent text-ellipsis text-nowrap overflow-hidden`}>
+                              <span className={`${workOrder.status === 'Done' ? 'text-teal-500' : 'text-teal-500'} box-border caret-transparent text-ellipsis text-nowrap overflow-hidden`}>
                                 {workOrder.status}
                               </span>
                             </div>
@@ -232,7 +232,7 @@ export const CategoryDetail = ({ category, workOrders, onEdit, onArchive, onRest
             <button
               type="button"
               onClick={onUseInNewWorkOrder}
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-teal-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-3xl border-solid hover:text-teal-400 hover:border-teal-400"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"
