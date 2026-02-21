@@ -5,6 +5,7 @@ export interface Location {
   address?: string;
   parentLocationId?: string | null;
   siteId?: string;
+  imageUrl?: string;
   createdAt: string;
   updatedAt: string;
 }

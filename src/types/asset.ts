@@ -27,6 +27,7 @@ export interface Asset {
   serialNumber?: string;
   installDate?: string; // ISO
   warrantyEnd?: string; // ISO
+  imageUrl?: string;
   notes?: string;
   meters?: AssetMeter[];
   /** IDs of Parts compatible with or assigned to this asset */

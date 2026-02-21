@@ -81,7 +81,7 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -91,7 +91,7 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                   <button
                     type="button"
                     onClick={() => setShowArchiveModal(true)}
-                    className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                    className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
                     title="Archive or Delete"
                   >
                     <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
@@ -133,7 +133,7 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                     {vendor.phone && (
                       <div className="text-gray-700">
                         <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Phone:</span>{' '}
-                        <a href={`tel:${vendor.phone}`} className="text-blue-500 hover:underline font-medium">
+                        <a href={`tel:${vendor.phone}`} className="text-accent hover:underline font-medium">
                           {vendor.phone}
                         </a>
                       </div>
@@ -141,7 +141,7 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                     {vendor.email && (
                       <div className="text-gray-700">
                         <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] mr-2">Email:</span>{' '}
-                        <a href={`mailto:${vendor.email}`} className="text-blue-500 hover:underline font-medium">
+                        <a href={`mailto:${vendor.email}`} className="text-accent hover:underline font-medium">
                           {vendor.email}
                         </a>
                       </div>
@@ -223,14 +223,14 @@ export const VendorDetail = ({ vendorId, onEdit }: VendorDetailProps) => {
                             <div className="box-border caret-transparent flex basis-[0%] grow overflow-hidden mr-2">
                               <div
                                 title={wo.title}
-                                className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-blue-500 transition-colors"
+                                className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden font-medium text-sm group-hover:text-accent transition-colors"
                               >
                                 {wo.title}
                               </div>
                             </div>
                             {category && (
                               <div className="box-border caret-transparent shrink-0">
-                                <span className="text-blue-500 text-[9px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100">
+                                <span className="text-accent text-[9px] font-bold uppercase tracking-tighter bg-accent-muted px-1 py-0.5 rounded border border-accent/20">
                                   {category.name}
                                 </span>
                               </div>

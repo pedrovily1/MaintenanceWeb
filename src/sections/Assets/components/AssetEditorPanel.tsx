@@ -3,6 +3,7 @@ import type { Asset, AssetStatus, AssetCriticality } from '@/types/asset';
 import { AssetAttachments } from './AssetAttachments';
 import type { Attachment } from '@/types/workOrder';
 import { LocationTreeSelector } from '@/components/LocationTreeSelector';
+import { ImageUpload } from '@/components/ImageUpload';
 
 export type AssetEditorValue = Omit<Asset, 'id' | 'createdAt' | 'updatedAt'>;
 
@@ -28,6 +29,7 @@ const empty: AssetEditorValue = {
   serialNumber: '',
   installDate: '',
   warrantyEnd: '',
+  imageUrl: '',
   notes: '',
   meters: [],
   attachments: []
@@ -70,6 +72,13 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
 
         {/* Body */}
         <div className="p-4 space-y-4">
+          <ImageUpload
+            currentImageUrl={value.imageUrl}
+            onImageUploaded={(url) => set({ imageUrl: url })}
+            onImageRemoved={() => set({ imageUrl: '' })}
+            label="Asset Photo"
+          />
+
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="block text-xs text-gray-500 mb-1">Name<span className="text-red-500">*</span></label>

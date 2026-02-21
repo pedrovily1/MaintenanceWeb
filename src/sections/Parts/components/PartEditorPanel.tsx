@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Part, PartType, PartInventory } from '@/types/part';
 import { useLocationStore } from '@/store/useLocationStore';
+import { ImageUpload } from '@/components/ImageUpload';
 
 const PART_TYPES: PartType[] = ['Spare Part', 'Consumable', 'Tool', 'Safety Equipment', 'Other'];
 
@@ -136,6 +137,14 @@ export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditor
               placeholder="Part name"
             />
           </div>
+
+          {/* Image Upload */}
+          <ImageUpload
+            currentImageUrl={form.imageUrl}
+            onImageUploaded={(url) => update('imageUrl', url)}
+            onImageRemoved={() => update('imageUrl', '')}
+            label="Part Photo"
+          />
 
           {/* Description */}
           <div>

@@ -231,60 +231,7 @@ export const WorkOrderList = () => {
     return () => window.removeEventListener('trigger-new-work-order', handler);
   }, []);
 
-  // Listen to Procedure -> Use in New Work Order
-  useEffect(() => {
-    const handler = (e: any) => {
-      const pid = e.detail?.procedureId;
-      if (pid) {
-        setPendingAttachProcedureId(pid);
-        handleNewWorkOrder();
-      }
-    };
-    window.addEventListener('use-procedure-in-new-work-order', handler as EventListener);
-    return () => window.removeEventListener('use-procedure-in-new-work-order', handler as EventListener);
-  }, []);
 
-  // Listen to Location -> Use in New Work Order
-  useEffect(() => {
-    const handler = (e: any) => {
-      const { locationId, locationName } = e.detail || {};
-      if (locationId) {
-        // Create draft with location pre-filled
-        setDraft(prev => ({
-          ...(prev ?? buildDefaultDraft()),
-          locationId,
-          location: locationName || '',
-        }));
-        setPanelMode('create');
-      }
-    };
-    window.addEventListener('use-location-in-new-work-order', handler as EventListener);
-    return () => window.removeEventListener('use-location-in-new-work-order', handler as EventListener);
-  }, []);
-
-  // Listen to Part -> Use in New Work Order
-  useEffect(() => {
-    const handler = (e: any) => {
-      const { partId, partName } = e.detail || {};
-      if (partId) {
-        const preAttachedPart = {
-          partId,
-          partName: partName || '',
-          locationId: '',
-          locationName: '',
-          quantityUsed: 1,
-          consumed: false,
-        };
-        setDraft(prev => ({
-          ...(prev ?? buildDefaultDraft()),
-          parts: [preAttachedPart],
-        }));
-        setPanelMode('create');
-      }
-    };
-    window.addEventListener('use-part-in-new-work-order', handler as EventListener);
-    return () => window.removeEventListener('use-part-in-new-work-order', handler as EventListener);
-  }, []);
 
   // Listen for parts inventory error (stock too low to complete WO)
   useEffect(() => {

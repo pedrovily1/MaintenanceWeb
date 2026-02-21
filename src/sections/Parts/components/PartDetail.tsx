@@ -5,6 +5,7 @@ import { useAssetStore } from '@/store/useAssetStore';
 import { getTotalStock, needsRestock } from '@/types/part';
 import { PartEditorPanel } from './PartEditorPanel';
 import { Part } from '@/types/part';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 
 type PartDetailProps = {
   partId: string | null;
@@ -74,16 +75,6 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
     window.dispatchEvent(new CustomEvent('part-deleted', { detail: { id: part.id } }));
   };
 
-  const handleUseInNewWorkOrder = () => {
-    window.location.hash = '#workorders';
-    setTimeout(() => {
-      window.dispatchEvent(
-        new CustomEvent('use-part-in-new-work-order', {
-          detail: { partId: part.id, partName: part.name },
-        })
-      );
-    }, 100);
-  };
 
   const handleRestock = () => {
     if (!restockLocId || restockQty <= 0) return;
@@ -100,8 +91,20 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
           <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
-              <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
+            <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
+              <div className="items-center box-border caret-transparent gap-x-4 flex gap-y-2">
+                <EntityThumbnail
+                  imageUrl={part.imageUrl}
+                  alt={part.name}
+                  fallbackIcon={
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
+                      alt="Icon"
+                      className="box-border caret-transparent shrink-0 h-6 w-6"
+                    />
+                  }
+                  className="h-16 w-16"
+                />
                 <div className="box-border caret-transparent">
                   <div className="box-border caret-transparent gap-x-1 flex gap-y-1">
                     <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
@@ -120,7 +123,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setShowRestockModal(true)}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Restock
@@ -129,7 +132,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setShowEditor(true)}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -138,7 +141,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                 <button
                   type="button"
                   onClick={() => { setConfirmDelete(true); setDeleteError(null); }}
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                     <img
@@ -234,7 +237,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                                       alt="Icon"
                                       className="h-3 w-3"
                                     />
-                                    <span className="text-blue-500 font-medium">{inv.locationName}</span>
+                                    <span className="text-accent font-medium">{inv.locationName}</span>
                                   </div>
                                 </td>
                                 <td className={`px-3 py-2 text-center font-medium ${low ? 'text-amber-600' : ''}`}>
@@ -291,7 +294,7 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
                               className="h-4 w-4"
                             />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-blue-500 transition-colors">
+                          <span className="text-sm font-medium group-hover:text-accent transition-colors">
                             {asset.name}
                           </span>
                         </button>
@@ -386,23 +389,6 @@ export const PartDetail = ({ partId }: PartDetailProps) => {
             )}
           </div>
 
-          {/* Floating "Use in New Work Order" button */}
-          <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
-            <button
-              type="button"
-              onClick={handleUseInNewWorkOrder}
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
-            >
-              <img
-                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"
-                alt="Icon"
-                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-              />
-              <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                Use in New Work Order
-              </span>
-            </button>
-          </div>
         </div>
       </div>
 

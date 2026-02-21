@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 import { useLocationStore } from '@/store/useLocationStore';
 import { useAssetStore } from '@/store/useAssetStore';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
@@ -47,14 +48,6 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
   const locationAssets = assets.filter(a => a.locationId === locationId);
   const locationWorkOrders = workOrders.filter(wo => wo.locationId === locationId);
 
-  const handleUseInNewWorkOrder = () => {
-    // Dispatch custom event with location data for WorkOrderList to pick up
-    window.dispatchEvent(new CustomEvent('use-location-in-new-work-order', {
-      detail: { locationId: location.id, locationName: location.name }
-    }));
-    // Navigate to work orders view
-    window.location.hash = '#workorders';
-  };
 
   const handleDelete = () => {
     setDeleteError(null);
@@ -88,15 +81,27 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full relative">
           {/* Header */}
           <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent shrink-0 px-4 py-4">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-0">
-              <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
+            <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 flex-wrap justify-between gap-y-2 mb-0">
+              <div className="items-center box-border caret-transparent gap-x-4 flex gap-y-2">
+                <EntityThumbnail
+                  imageUrl={location.imageUrl}
+                  alt={location.name}
+                  fallbackIcon={
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                      alt="Icon"
+                      className="box-border caret-transparent shrink-0 h-6 w-6"
+                    />
+                  }
+                  className="h-16 w-16"
+                />
                 <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7">
                   {location.name}
                 </h3>
                 <button
                   title="Copy Link"
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-accent-hover"
                 >
                   <span className="box-border caret-transparent flex text-nowrap">
                     <img
@@ -111,7 +116,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setShowEdit(true)}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -120,7 +125,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                 <button
                   type="button"
                   onClick={handleDelete}
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-red-500"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-red-500"
                   title="Delete Location"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-red-500">
@@ -177,7 +182,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                   <button
                     type="button"
                     onClick={handleCreateSubLocation}
-                    className="text-blue-500 text-xs font-bold uppercase tracking-wider hover:text-blue-400 text-left"
+                    className="text-accent text-xs font-bold uppercase tracking-wider hover:text-accent-hover text-left"
                   >
                     + Create Sub-Location
                   </button>
@@ -189,16 +194,19 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                       key={child.id}
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
-                      <div className="box-border caret-transparent shrink-0 mr-3">
-                        <div className="items-center bg-blue-50 box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-blue-200 overflow-hidden rounded border-solid">
+                      <EntityThumbnail
+                        imageUrl={child.imageUrl}
+                        alt={child.name}
+                        fallbackIcon={
                           <img
                             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                             alt="Location"
                             className="box-border caret-transparent shrink-0 h-3 w-3"
                           />
-                        </div>
-                      </div>
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{child.name}</div>
+                        }
+                        className="h-7 w-7 mr-3"
+                      />
+                      <div className="text-sm font-medium group-hover:text-accent transition-colors">{child.name}</div>
                     </div>
                   ))}
                 </div>
@@ -221,12 +229,15 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                       key={asset.id}
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
-                      <div className="box-border caret-transparent shrink-0 mr-3">
-                        <div className="items-center box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-[var(--border)] overflow-hidden rounded border-solid bg-gray-100">
+                      <EntityThumbnail
+                        imageUrl={asset.imageUrl}
+                        alt={asset.name}
+                        fallbackIcon={
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        </div>
-                      </div>
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{asset.name}</div>
+                        }
+                        className="h-7 w-7 mr-3"
+                      />
+                      <div className="text-sm font-medium group-hover:text-accent transition-colors">{asset.name}</div>
                     </div>
                   ))}
                 </div>
@@ -249,13 +260,13 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                       key={wo.id}
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors flex items-center gap-2">
+                      <div className="text-sm font-medium group-hover:text-accent transition-colors flex items-center gap-2">
                         <span className="text-[10px] text-gray-400">{wo.workOrderNumber}</span>
                         {wo.title}
                       </div>
                       <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded ${
                         wo.status === 'Done' ? 'bg-green-50 text-green-600' :
-                        wo.status === 'In Progress' ? 'bg-blue-50 text-blue-600' :
+                        wo.status === 'In Progress' ? 'bg-accent-muted text-accent' :
                         'bg-gray-50 text-gray-500'
                       }`}>{wo.status}</span>
                     </div>
@@ -278,23 +289,6 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
             </div>
           </div>
 
-          {/* Floating Button: Use in New Work Order */}
-          <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
-            <button
-              type="button"
-              onClick={handleUseInNewWorkOrder}
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
-            >
-              <img
-                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"
-                alt="Icon"
-                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-              />
-              <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                Use in New Work Order
-              </span>
-            </button>
-          </div>
         </div>
       </div>
 

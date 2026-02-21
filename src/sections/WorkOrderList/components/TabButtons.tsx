@@ -13,7 +13,7 @@ import React from 'react';
             onClick={() => onTabChange('todo')}
             className={`flex-1 text-center py-3 text-sm font-semibold border-b-2 transition-colors ${
               activeTab === 'todo'
-                ? 'text-blue-500 border-blue-500'
+                ? 'text-accent border-accent'
                 : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-50'
             }`}
           >
@@ -24,7 +24,7 @@ import React from 'react';
             onClick={() => onTabChange('done')}
             className={`flex-1 text-center py-3 text-sm font-semibold border-b-2 transition-colors ${
               activeTab === 'done'
-                ? 'text-blue-500 border-blue-500'
+                ? 'text-accent border-accent'
                 : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-50'
             }`}
           >

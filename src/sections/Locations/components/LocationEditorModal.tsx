@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Location } from '@/types/location';
 import { LocationTreeSelector } from '@/components/LocationTreeSelector';
+import { ImageUpload } from '@/components/ImageUpload';
 
 type Props = {
   initial?: Partial<Location>;
@@ -12,6 +13,7 @@ export const LocationEditorModal: React.FC<Props> = ({ initial, onClose, onSubmi
   const [name, setName] = useState(initial?.name || '');
   const [description, setDescription] = useState(initial?.description || '');
   const [address, setAddress] = useState(initial?.address || '');
+  const [imageUrl, setImageUrl] = useState(initial?.imageUrl || '');
   const [parentLocationId, setParentLocationId] = useState<string | null>(initial?.parentLocationId || null);
   const [errors, setErrors] = useState<{ name?: string }>({});
 
@@ -28,6 +30,7 @@ export const LocationEditorModal: React.FC<Props> = ({ initial, onClose, onSubmi
       name: name.trim(),
       description: description.trim() || undefined,
       address: address.trim() || undefined,
+      imageUrl: imageUrl || undefined,
       parentLocationId,
     });
   };
@@ -41,6 +44,12 @@ export const LocationEditorModal: React.FC<Props> = ({ initial, onClose, onSubmi
         </div>
 
         <div className="p-4 space-y-4">
+          <ImageUpload
+            currentImageUrl={imageUrl}
+            onImageUploaded={setImageUrl}
+            onImageRemoved={() => setImageUrl('')}
+            label="Location Photo"
+          />
           <div>
             <label className="block text-xs text-gray-500 mb-1">Name<span className="text-red-500">*</span></label>
             <input

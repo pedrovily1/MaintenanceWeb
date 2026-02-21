@@ -1,4 +1,5 @@
 import { Part, getTotalStock, needsRestock } from '@/types/part';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 
 type PartListProps = {
   parts: Part[];
@@ -60,27 +61,18 @@ export const PartList = ({ parts, selectedPartId, onSelectPart }: PartListProps)
                 selectedPartId === part.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
               } group`}
             >
-              <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3 rounded-lg">
-                <div
-                  title={part.name}
-                  className={`text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid transition-opacity ${selectedPartId === part.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
-                >
-                  {part.imageUrl ? (
-                    <figure
-                      className="bg-cover box-border caret-transparent shrink-0 h-12 w-12 bg-center"
-                      style={{ backgroundImage: `url('${part.imageUrl}')` }}
-                    ></figure>
-                  ) : (
-                    <span className="text-blue-500 box-border caret-transparent flex shrink-0">
-                      <img
-                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
-                        alt="Icon"
-                        className="box-border caret-transparent shrink-0 h-[18px] w-[18px]"
-                      />
-                    </span>
-                  )}
-                </div>
-              </div>
+              <EntityThumbnail
+                imageUrl={part.imageUrl}
+                alt={part.name}
+                fallbackIcon={
+                  <img
+                    src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
+                    alt="Icon"
+                    className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedPartId === part.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                  />
+                }
+                className="h-12 w-12 ml-4 mr-3"
+              />
 
               <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3">
                 <div className="items-center box-border caret-transparent flex shrink-0 my-px">

@@ -1,3 +1,5 @@
+import { EntityThumbnail } from '@/components/EntityThumbnail';
+
 export type WorkOrderCardProps = {
   id: string;
   title: string;
@@ -35,27 +37,19 @@ export const WorkOrderCard = ({
     <div 
       onClick={onClick}
       className={`relative items-center bg-transparent border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[98px] hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] cursor-pointer pl-3 py-3 transition-colors ${
-        isActive ? "bg-[var(--panel-2)] border-l-2 border-l-[var(--accent)]" : "border-l-2 border-l-transparent"
+        isActive ? "bg-[var(--panel-2)] border-l-2 border-l-accent" : "border-l-2 border-l-transparent"
       }`}
     >
-      {/* Image */}
-      <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg z-0">
-        <div
-          title={assetName}
-          className="text-[16px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid bg-[var(--panel-2)]"
-        >
-          {assetImageUrl ? (
-            <figure 
-              className="bg-cover bg-center w-full h-full"
-              style={{ backgroundImage: `url('${assetImageUrl}')` }}
-            ></figure>
-          ) : (
-            <span className="text-blue-500">
-              <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg" alt="Asset" className="h-6 w-6" />
-            </span>
-          )}
-        </div>
-      </div>
+      <EntityThumbnail
+        imageUrl={assetImageUrl}
+        alt={assetName}
+        fallbackIcon={
+          <span className="text-accent">
+            <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg" alt="Asset" className="h-6 w-6" />
+          </span>
+        }
+        className="h-12 w-12 mr-3"
+      />
 
       {/* Content */}
       <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center min-w-0 z-0">
@@ -111,9 +105,9 @@ export const WorkOrderCard = ({
           {/* Status Badge */}
           <div className="relative box-border caret-transparent shrink-0">
             <div className={`text-[11px] font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
-              status === 'Open' ? 'bg-sky-100 text-blue-600' : 
+              status === 'Open' ? 'bg-sky-100 text-accent' : 
               status === 'Done' ? 'bg-teal-100 text-teal-600' : 
-              status === 'In Progress' ? 'bg-blue-100 text-blue-600' :
+              status === 'In Progress' ? 'bg-accent-muted text-accent' :
               status === 'On Hold' ? 'bg-yellow-100 text-yellow-600' :
               'bg-gray-100 text-gray-600'
             }`}>

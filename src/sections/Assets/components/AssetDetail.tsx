@@ -6,6 +6,7 @@ import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useMeterStore } from '@/store/useMeterStore';
 import { usePartStore } from '@/store/usePartStore';
 import type { Asset } from '@/types/asset';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 
 type AssetDetailProps = {
   assetId: string | null;
@@ -87,8 +88,20 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
         <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
           {/* Header */}
           <header className="bg-[var(--panel-2)] border-b-[var(--border)] border-l-transparent border-r-transparent border-t-transparent box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4 border-b">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
-              <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2">
+            <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 flex-wrap justify-between gap-y-2 px-4">
+              <div className="items-center box-border caret-transparent gap-x-4 flex gap-y-2">
+                <EntityThumbnail
+                  imageUrl={asset.imageUrl}
+                  alt={asset.name}
+                  fallbackIcon={
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                      alt="Icon"
+                      className="box-border caret-transparent shrink-0 h-6 w-6"
+                    />
+                  }
+                  className="h-16 w-16"
+                />
                 <div className="box-border caret-transparent">
                   <div className="box-border caret-transparent gap-x-1 flex gap-y-1">
                     <h3 className="text-xl font-semibold box-border caret-transparent tracking-[-0.2px] leading-7 text-[var(--text)]">
@@ -97,7 +110,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                     <button
                       title="Copy Link"
                       type="button"
-                      className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                      className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-accent-hover"
                     >
                       <span className="box-border caret-transparent flex text-nowrap">
                         <img
@@ -114,7 +127,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setShowEditor(true)}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -123,7 +136,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setConfirmDelete(true)}
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                     <img
@@ -161,7 +174,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 <h2 className="text-[11px] uppercase tracking-[0.04em] text-[var(--muted)] font-semibold">Status</h2>
                 <button
                   type="button"
-                  className="text-blue-500 text-[10px] font-medium hover:text-blue-400 uppercase tracking-wider"
+                  className="text-accent text-[10px] font-medium hover:text-accent-hover uppercase tracking-wider"
                 >
                   See More
                 </button>
@@ -181,7 +194,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                   </div>
                 </div>
                 <div className="items-center box-border caret-transparent flex shrink-0 overflow-hidden">
-                  <div className="text-blue-500 box-border caret-transparent flex shrink-0 pr-1 pb-1">
+                  <div className="text-accent box-border caret-transparent flex shrink-0 pr-1 pb-1">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
                       alt="Icon"
@@ -248,7 +261,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                 <div className="space-y-1">
                   {linkedMeters.map(m => (
                     <button key={m.id} onClick={() => { window.location.hash = '#meters'; setTimeout(() => window.dispatchEvent(new CustomEvent('select-meter', { detail: { id: m.id } })), 0); }} className="w-full text-left p-2 border border-[var(--border)] rounded hover:bg-gray-50 flex justify-between items-center group transition-colors">
-                      <div className="text-sm font-medium text-blue-500 group-hover:underline">{m.name}</div>
+                      <div className="text-sm font-medium text-accent group-hover:underline">{m.name}</div>
                       <div className="text-xs text-[var(--muted)]">{typeof m.lastReading === 'number' ? `${m.lastReading}${m.unit ? ` ${m.unit}` : ''}` : 'No readings'}</div>
                     </button>
                   ))}
@@ -288,7 +301,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
               <p className="text-xs text-[var(--muted)] mb-2">
                 Add sub elements inside this Asset
               </p>
-              <button className="text-blue-500 text-xs font-semibold hover:text-blue-400 uppercase tracking-wider">
+              <button className="text-accent text-xs font-semibold hover:text-accent-hover uppercase tracking-wider">
                 + Create Sub-Asset
               </button>
             </div>
@@ -314,11 +327,16 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                       }}
                       className="w-full items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer transition-colors group text-left"
                     >
-                      <div className="bg-sky-100 border border-blue-300 h-7 w-7 flex items-center justify-center rounded-lg mr-3">
-                        <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg" alt="Icon" className="h-4 w-4" />
-                      </div>
+                      <EntityThumbnail
+                        imageUrl={p.imageUrl}
+                        alt={p.name}
+                        fallbackIcon={
+                          <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg" alt="Icon" className="h-4 w-4" />
+                        }
+                        className="h-7 w-7 mr-3"
+                      />
                       <div className="flex-1">
-                        <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{p.name}</div>
+                        <div className="text-sm font-medium group-hover:text-accent transition-colors">{p.name}</div>
                         <div className="text-xs text-[var(--muted)]">{p.inventory.reduce((s, i) => s + i.quantity, 0)} in stock</div>
                       </div>
                     </button>
@@ -357,7 +375,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                       className="h-4 w-4"
                     />
                   </div>
-                  <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">Door Delay Troubleshooting</div>
+                  <div className="text-sm font-medium group-hover:text-accent transition-colors">Door Delay Troubleshooting</div>
                 </div>
                 <div className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer transition-colors group">
                   <div className="bg-sky-100 border border-blue-300 h-7 w-7 flex items-center justify-center rounded-lg mr-3">
@@ -370,7 +388,7 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
                   <div className="text-sm">Quarterly Door inspections</div>
                 </div>
               </div>
-              <button className="text-blue-500 text-sm font-medium mt-3 hover:text-blue-400">
+              <button className="text-accent text-sm font-medium mt-3 hover:text-accent-hover">
                 See all →
               </button>
             </div>
@@ -430,22 +448,6 @@ export const AssetDetail = ({ assetId }: AssetDetailProps) => {
             </div>
           </div>
 
-          {/* Floating Button */}
-          <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
-            <button
-              type="button"
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
-            >
-              <img
-                src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"
-                alt="Icon"
-                className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-              />
-              <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                Use in New Work Order
-              </span>
-            </button>
-          </div>
           {/* Editor Panel */}
           <AssetEditorPanel open={showEditor} initial={asset} onClose={() => setShowEditor(false)} onSubmit={(val) => { updateAsset(asset.id, val); setShowEditor(false); }} />
 

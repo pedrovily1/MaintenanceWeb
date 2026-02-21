@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 
 type LocationType = {
   id: string;
@@ -6,6 +7,7 @@ type LocationType = {
   address: string;
   parentLocationId: string | null;
   subLocationsCount: number;
+  imageUrl?: string;
 };
 
 type LocationListProps = {
@@ -81,17 +83,18 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
             } group`}
             style={{ paddingLeft: `${location.depth * 24}px` }}
           >
-            <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-              <div className={`items-center box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border rounded-lg ${
-                location.depth > 0 ? 'bg-blue-50 border-blue-200' : 'bg-sky-100 border-blue-300'
-              }`}>
+            <EntityThumbnail
+              imageUrl={location.imageUrl}
+              alt={location.name}
+              fallbackIcon={
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                   alt="Icon"
-                  className={`text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedLocationId === location.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                  className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedLocationId === location.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                 />
-              </div>
-            </div>
+              }
+              className={`h-12 w-12 ml-4 mr-3 ${location.depth > 0 ? 'scale-90' : ''}`}
+            />
 
             <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center py-3 pr-4">
               <div className="items-center box-border caret-transparent flex shrink-0 my-px">

@@ -1,4 +1,5 @@
 import type { Asset } from '@/types/asset';
+import { EntityThumbnail } from '@/components/EntityThumbnail';
 
 type AssetListProps = {
   assets: Asset[];
@@ -49,20 +50,18 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
                   selectedAssetId === asset.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
                 } group`}
               >
-                <div className="relative box-border caret-transparent shrink-0 mr-3 rounded-lg">
-                  <div
-                    title={asset.name}
-                    className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid"
-                  >
-                    <span className="text-blue-500 box-border caret-transparent flex shrink-0">
-                      <img
-                        src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
-                        alt="Icon"
-                        className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedAssetId === asset.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
-                      />
-                    </span>
-                  </div>
-                </div>
+                <EntityThumbnail
+                  imageUrl={asset.imageUrl}
+                  alt={asset.name}
+                  fallbackIcon={
+                    <img
+                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
+                      alt="Icon"
+                      className={`box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedAssetId === asset.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                    />
+                  }
+                  className="h-12 w-12 mr-3"
+                />
 
                 <div className="box-border caret-transparent flex basis-[0%] flex-col grow justify-center">
                   <div className="items-center box-border caret-transparent flex shrink-0 my-px">

@@ -143,7 +143,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                 <button
                   title="Copy Link"
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-accent-hover"
                   onClick={() => {
                     try {
                       navigator.clipboard?.writeText(window.location.href.replace(/#.*/, '#meters'));
@@ -163,7 +163,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                 <button
                   type="button"
                   onClick={() => { setRecordMode(true); setError(''); setRecordValue(''); }}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Record Reading
@@ -172,7 +172,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -180,7 +180,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                 </button>
                 <button
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                  className="relative text-accent font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-accent-hover"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                     <img
@@ -202,7 +202,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                   className="text-slate-500 box-border caret-transparent shrink-0 h-4 w-4"
                 />
                 {asset ? (
-                  <a href="#assets" className="text-blue-500 hover:text-blue-400" onClick={() => setTimeout(() => window.dispatchEvent(new CustomEvent('select-asset', { detail: { id: asset.id } })), 0)}>{asset?.name}</a>
+                  <a href="#assets" className="text-accent hover:text-accent-hover" onClick={() => setTimeout(() => window.dispatchEvent(new CustomEvent('select-asset', { detail: { id: asset.id } })), 0)}>{asset?.name}</a>
                 ) : (
                   <span>Global</span>
                 )}
@@ -214,7 +214,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                   alt="Icon"
                   className="text-slate-500 box-border caret-transparent shrink-0 h-4 w-4"
                 />
-                <a href="#locations" className="text-blue-500 hover:text-blue-400">{meter.locationName || '—'}</a>
+                <a href="#locations" className="text-accent hover:text-accent-hover">{meter.locationName || '—'}</a>
               </div>
             </div>
           </div>
@@ -238,7 +238,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                     />
                     <button
                       type="button"
-                      className="px-3 py-1 rounded bg-blue-600 text-white text-sm"
+                      className="px-3 py-1 rounded bg-accent text-white text-sm"
                       onClick={() => {
                         const v = parseFloat(recordValue);
                         if (isNaN(v)) { setError('Enter a valid number'); return; }
@@ -261,7 +261,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                       onClick={() => setActiveTimeframe(timeframe)}
                       className={`px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded ${
                         activeTimeframe === timeframe
-                          ? 'bg-blue-500 text-white'
+                          ? 'bg-accent text-white'
                           : 'bg-transparent text-[var(--muted)] hover:bg-[var(--panel-2)]'
                       }`}
                     >
@@ -365,7 +365,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                               <button onClick={() => setEditingReadingId(null)} className="p-1 text-gray-500 hover:text-gray-700">
                                 <X size={16} />
                               </button>
-                              <button onClick={handleUpdateReading} className="p-1 text-blue-600 hover:text-blue-700">
+                              <button onClick={handleUpdateReading} className="p-1 text-accent hover:text-accent-hover">
                                 <Check size={16} />
                               </button>
                             </div>
@@ -376,7 +376,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                               <div className="flex items-center justify-between">
                                 <div className="font-medium">{r.value}{meter.unit ? ` ${meter.unit}` : (r.unit ? ` ${r.unit}` : '')}</div>
                                 {r.workOrderId && (
-                                  <div className="text-[10px] text-blue-500 font-medium">WO: {r.workOrderId.slice(0, 8)}...</div>
+                                  <div className="text-[10px] text-accent font-medium">WO: {r.workOrderId.slice(0, 8)}...</div>
                                 )}
                               </div>
                               <div className="text-xs text-gray-500">{new Date(r.recordedAt || r.createdAt).toLocaleString()} • {r.source || '—'}</div>
@@ -384,7 +384,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
                               <button
                                 onClick={() => startEditReading(r)}
-                                className="p-1.5 text-[var(--muted)] hover:text-blue-400 hover:bg-[rgba(47,107,255,0.1)] rounded"
+                                className="p-1.5 text-[var(--muted)] hover:text-accent hover:bg-accent-muted rounded"
                                 title="Edit reading"
                               >
                                 <Edit2 size={14} />
@@ -426,7 +426,7 @@ export const MeterDetail = ({ meterId, onEdit }: MeterDetailProps) => {
               <div className="flex justify-center">
                 <button
                   type="button"
-                  className="text-blue-500 font-medium items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
+                  className="text-accent font-medium items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-accent-hover hover:border-accent-hover"
                   onClick={() => { /* future: open readings view */ }}
                 >
                   <span className="box-border caret-transparent flex shrink-0 text-nowrap">

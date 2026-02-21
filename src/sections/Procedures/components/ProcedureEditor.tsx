@@ -114,7 +114,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
             <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap justify-between gap-y-2 mb-4">
               <div className="items-center box-border caret-transparent gap-x-2 flex gap-y-2 w-full">
                 <input
-                  className="text-xl font-medium box-border caret-transparent tracking-[-0.2px] w-full border-b border-transparent focus:border-blue-500 outline-none"
+                  className="text-xl font-medium box-border caret-transparent tracking-[-0.2px] w-full border-b border-transparent focus:border-accent outline-none"
                   placeholder="Enter Procedure Name"
                   value={draft.name}
                   onChange={(e) => updateDraft({ name: e.target.value })}
@@ -132,7 +132,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                 <button
                   type="button"
                   onClick={onSave}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-accent px-3 rounded text-accent hover:text-accent-hover hover:border-accent-hover"
                 >
                   Save to Procedure Library
                 </button>
@@ -154,7 +154,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                   key={section.id}
                   onClick={() => setActiveSectionId(section.id)}
                   className={`transition-colors duration-200 rounded-lg mb-4 ${
-                    activeSectionId === section.id ? 'ring-2 ring-blue-500' : ''
+                    activeSectionId === section.id ? 'ring-2 ring-accent' : ''
                   }`}
                 >
                   <SectionEditor
@@ -231,17 +231,6 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
                 onAddItem={onAddItem}
                 onAddSection={onAddSection}
               />
-              <div className="mt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.dispatchEvent(new CustomEvent('use-procedure-in-new-work-order', { detail: { procedureId: draft.id } }));
-                  }}
-                  className="w-full relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
-                >
-                  Use in New Work Order
-                </button>
-              </div>
             </div>
           </div>
         </div>

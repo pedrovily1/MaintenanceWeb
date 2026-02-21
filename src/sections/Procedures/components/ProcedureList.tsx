@@ -30,14 +30,14 @@ export const ProcedureList = ({ procedures, selectedProcedureId, onSelectProcedu
                 className="text-gray-600 text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center font-medium"
               >
                 Sort By:
-                <div className="text-blue-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-blue-500 font-medium">
-                  <span className="box-border caret-transparent block basis-[0%] grow stroke-blue-500 text-ellipsis text-nowrap overflow-hidden ml-1">
-                    <span className="font-medium box-border caret-transparent shrink-0 stroke-blue-500 text-nowrap">
+                <div className="text-accent items-center box-border caret-transparent flex basis-[0%] grow stroke-accent font-medium">
+                  <span className="box-border caret-transparent block basis-[0%] grow stroke-accent text-ellipsis text-nowrap overflow-hidden ml-1">
+                    <span className="font-medium box-border caret-transparent shrink-0 stroke-accent text-nowrap">
                       Name
                     </span>
                     : Ascending Order
                   </span>
-                  <div className="box-border caret-transparent shrink-0 stroke-blue-500 ml-1 mb-1">
+                  <div className="box-border caret-transparent shrink-0 stroke-accent ml-1 mb-1">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-27.svg"
                       alt="Icon"
@@ -64,15 +64,15 @@ export const ProcedureList = ({ procedures, selectedProcedureId, onSelectProcedu
                 key={procedure.id}
                 onClick={() => onSelectProcedure(procedure.id)}
                 className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
-                  selectedProcedureId === procedure.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+                  selectedProcedureId === procedure.id ? "bg-[var(--panel-2)] border-l-accent" : "border-l-transparent"
                 } group`}
               >
                 <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-                  <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
+                  <div className="items-center bg-accent-muted box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-accent/20 rounded-lg">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
                       alt="Icon"
-                      className={`text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedProcedureId === procedure.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                      className={`text-accent box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedProcedureId === procedure.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                     />
                   </div>
                 </div>
@@ -129,15 +129,15 @@ export const ProcedureList = ({ procedures, selectedProcedureId, onSelectProcedu
                 key={procedure.id}
                 onClick={() => onSelectProcedure(procedure.id)}
                 className={`relative items-center border-b border-[var(--border)] box-border caret-transparent flex shrink-0 min-h-[80px] cursor-pointer hover:bg-[var(--panel-2)] even:bg-[rgba(255,255,255,0.02)] border-l-2 transition-colors ${
-                  selectedProcedureId === procedure.id ? "bg-[var(--panel-2)] border-l-[var(--accent)]" : "border-l-transparent"
+                  selectedProcedureId === procedure.id ? "bg-[var(--panel-2)] border-l-accent" : "border-l-transparent"
                 } group`}
               >
                 <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
-                  <div className="items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-blue-300 rounded-lg">
+                  <div className="items-center bg-accent-muted box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border border-accent/20 rounded-lg">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-12.svg"
                       alt="Icon"
-                      className={`text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedProcedureId === procedure.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                      className={`text-accent box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedProcedureId === procedure.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                     />
                   </div>
                 </div>
