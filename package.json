@@ -12,6 +12,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
+    "@supabase/supabase-js": "^2.97.0",
     "class-variance-authority": "^0.7.0",
     "jspdf": "^4.1.0",
     "jspdf-autotable": "^5.0.7",

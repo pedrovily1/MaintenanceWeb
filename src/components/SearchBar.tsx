@@ -1,3 +1,6 @@
+
+
+
 export const SearchBar = () => {
   return (
     <div className="box-border caret-transparent flex basis-[0%] grow max-w-[400px]">

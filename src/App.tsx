@@ -13,6 +13,8 @@ import { Users } from "@/sections/Users";
 import { Vendors } from "@/sections/Vendors";
 import { Settings } from "@/sections/Settings";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
+import { supabase } from "@/lib/supabase";
+
 
 type View =
     | "workorders"
@@ -30,16 +32,33 @@ type View =
 export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
   const { ensureActiveRecurringInstances } = useWorkOrderStore();
-  const [isAuthed, setIsAuthed] = useState(localStorage.getItem("omp-auth") === "true");
+  const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
-    // Sync auth state if localStorage changes (e.g. from other tabs or our own Login/Logout)
+    const { data: listener } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setIsAuthed(!!session);
+        }
+    );
+
+    supabase.auth.getSession().then(({ data }) => {
+      setIsAuthed(!!data.session);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  /*useEffect(() => {
+     Sync auth state if localStorage changes (e.g. from other tabs or our own Login/Logout)
     const checkAuth = () => {
       setIsAuthed(localStorage.getItem("omp-auth") === "true");
     };
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
+*/
 
   useEffect(() => {
     if (isAuthed) {
