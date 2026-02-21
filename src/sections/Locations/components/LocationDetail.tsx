@@ -96,7 +96,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                 <button
                   title="Copy Link"
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                  className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-teal-400"
                 >
                   <span className="box-border caret-transparent flex text-nowrap">
                     <img
@@ -111,7 +111,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                 <button
                   type="button"
                   onClick={() => setShowEdit(true)}
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-teal-500 px-3 rounded text-teal-500 hover:text-teal-400 hover:border-teal-400"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -120,7 +120,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                 <button
                   type="button"
                   onClick={handleDelete}
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-red-500"
+                  className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-red-500"
                   title="Delete Location"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-red-500">
@@ -177,7 +177,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                   <button
                     type="button"
                     onClick={handleCreateSubLocation}
-                    className="text-blue-500 text-xs font-bold uppercase tracking-wider hover:text-blue-400 text-left"
+                    className="text-teal-500 text-xs font-bold uppercase tracking-wider hover:text-teal-400 text-left"
                   >
                     + Create Sub-Location
                   </button>
@@ -190,7 +190,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
                       <div className="box-border caret-transparent shrink-0 mr-3">
-                        <div className="items-center bg-blue-50 box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-blue-200 overflow-hidden rounded border-solid">
+                        <div className="items-center bg-teal-50 box-border caret-transparent flex shrink-0 h-7 justify-center w-7 border border-teal-200 overflow-hidden rounded border-solid">
                           <img
                             src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                             alt="Location"
@@ -198,7 +198,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                           />
                         </div>
                       </div>
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{child.name}</div>
+                      <div className="text-sm font-medium group-hover:text-teal-500 transition-colors">{child.name}</div>
                     </div>
                   ))}
                 </div>
@@ -226,7 +226,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         </div>
                       </div>
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors">{asset.name}</div>
+                      <div className="text-sm font-medium group-hover:text-teal-500 transition-colors">{asset.name}</div>
                     </div>
                   ))}
                 </div>
@@ -249,13 +249,13 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
                       key={wo.id}
                       className="items-center box-border caret-transparent flex shrink-0 p-2 border border-[var(--border)] rounded hover:bg-gray-50 transition-colors group"
                     >
-                      <div className="text-sm font-medium group-hover:text-blue-500 transition-colors flex items-center gap-2">
+                      <div className="text-sm font-medium group-hover:text-teal-500 transition-colors flex items-center gap-2">
                         <span className="text-[10px] text-gray-400">{wo.workOrderNumber}</span>
                         {wo.title}
                       </div>
                       <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded ${
                         wo.status === 'Done' ? 'bg-green-50 text-green-600' :
-                        wo.status === 'In Progress' ? 'bg-blue-50 text-blue-600' :
+                        wo.status === 'In Progress' ? 'bg-teal-50 text-teal-600' :
                         'bg-gray-50 text-gray-500'
                       }`}>{wo.status}</span>
                     </div>
@@ -283,7 +283,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
             <button
               type="button"
               onClick={handleUseInNewWorkOrder}
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-teal-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-3xl border-solid hover:text-teal-400 hover:border-teal-400"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"

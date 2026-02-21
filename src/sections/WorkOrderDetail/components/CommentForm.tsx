@@ -25,7 +25,7 @@ export const CommentForm = () => {
       <div className="box-border caret-transparent flex shrink-0 justify-end mt-2">
         <button
           type="button"
-          className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap px-2 rounded-bl rounded-br rounded-tl rounded-tr hover:text-blue-400 hover:border-blue-400"
+          className="relative text-teal-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap px-2 rounded-bl rounded-br rounded-tl rounded-tr hover:text-teal-400 hover:border-teal-400"
         >
           <span className="box-border caret-transparent flex shrink-0 text-nowrap">
             <img

@@ -48,7 +48,7 @@ export const AssetAttachments: React.FC<Props> = ({ attachments, onChange, disab
           </div>
         ))}
         {!disabled && (
-          <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-[var(--border)] rounded hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors text-gray-400 hover:text-blue-500">
+          <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-[var(--border)] rounded hover:border-teal-500 hover:bg-teal-50 cursor-pointer transition-colors text-gray-400 hover:text-teal-500">
             <span className="text-lg">＋</span>
             <span className="text-[10px] mt-1">Add</span>
             <input type="file" multiple onChange={handleFileChange} className="hidden" />

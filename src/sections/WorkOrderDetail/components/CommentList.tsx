@@ -7,7 +7,7 @@ export const CommentList = () => {
             <div className="box-border caret-transparent shrink-0 text-center w-14">
               <a
                 href="https://app.getmaintainx.com/users/profile/849627"
-                className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
+                className="font-semibold box-border caret-transparent break-words hover:text-teal-500 hover:border-teal-500"
               >
                 <div 
                   className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
@@ -19,7 +19,7 @@ export const CommentList = () => {
               <div className="box-border caret-transparent flex shrink-0 break-words mb-1">
                 <a
                   href="https://app.getmaintainx.com/users/profile/849627"
-                  className="font-semibold box-border caret-transparent block break-words hover:text-blue-500 hover:border-blue-500"
+                  className="font-semibold box-border caret-transparent block break-words hover:text-teal-500 hover:border-teal-500"
                 >
                   Pedro Modesto
                 </a>
@@ -40,7 +40,7 @@ export const CommentList = () => {
             <div className="box-border caret-transparent shrink-0 text-center w-14">
               <a
                 href="https://app.getmaintainx.com/users/profile/849627"
-                className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
+                className="font-semibold box-border caret-transparent break-words hover:text-teal-500 hover:border-teal-500"
               >
                 <div 
                   className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
@@ -52,7 +52,7 @@ export const CommentList = () => {
               <div className="box-border caret-transparent flex shrink-0 break-words mb-1">
                 <a
                   href="https://app.getmaintainx.com/users/profile/849627"
-                  className="font-semibold box-border caret-transparent block break-words hover:text-blue-500 hover:border-blue-500"
+                  className="font-semibold box-border caret-transparent block break-words hover:text-teal-500 hover:border-teal-500"
                 >
                   Pedro Modesto
                 </a>
@@ -73,7 +73,7 @@ export const CommentList = () => {
             <div className="box-border caret-transparent shrink-0 text-center w-14">
               <a
                 href="https://app.getmaintainx.com/users/profile/870649"
-                className="font-semibold box-border caret-transparent break-words hover:text-blue-500 hover:border-blue-500"
+                className="font-semibold box-border caret-transparent break-words hover:text-teal-500 hover:border-teal-500"
               >
                 <div 
                   className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex shrink-0 h-9 justify-center break-words w-9 bg-center rounded-[50%]"
@@ -85,7 +85,7 @@ export const CommentList = () => {
               <div className="box-border caret-transparent flex shrink-0 break-words mb-1">
                 <a
                   href="https://app.getmaintainx.com/users/profile/870649"
-                  className="font-semibold box-border caret-transparent block break-words hover:text-blue-500 hover:border-blue-500"
+                  className="font-semibold box-border caret-transparent block break-words hover:text-teal-500 hover:border-teal-500"
                 >
                   Jason Degg
                 </a>

@@ -162,9 +162,9 @@ export const InfoSection = (props: InfoSectionProps) => {
           <div className="box-border caret-transparent flex flex-col grow shrink-0 w-0">
             <a
               href={props.assetUrl}
-              className="items-start box-border caret-transparent flex flex-col shrink-0 break-words hover:text-blue-500 hover:border-blue-500"
+              className="items-start box-border caret-transparent flex flex-col shrink-0 break-words hover:text-teal-500 hover:border-teal-500"
             >
-              <div className="box-border caret-transparent shrink-0 break-words w-full text-blue-500">
+              <div className="box-border caret-transparent shrink-0 break-words w-full text-teal-500">
                 {props.assetName}
               </div>
             </a>
@@ -189,8 +189,8 @@ export const InfoSection = (props: InfoSectionProps) => {
           className="items-center box-border caret-transparent flex shrink-0 break-words py-2"
         >
           <div className="box-border caret-transparent shrink-0 break-words mr-2">
-            <div className="font-semibold items-center bg-sky-100 box-border caret-transparent flex shrink-0 h-8 justify-center tracking-[-0.2px] break-words w-8 border border-blue-300 overflow-hidden rounded-lg border-solid">
-              <span className="text-blue-500 box-border caret-transparent flex shrink-0 break-words">
+            <div className="font-semibold items-center bg-teal-100 box-border caret-transparent flex shrink-0 h-8 justify-center tracking-[-0.2px] break-words w-8 border border-teal-300 overflow-hidden rounded-lg border-solid">
+              <span className="text-teal-500 box-border caret-transparent flex shrink-0 break-words">
                 <img
                   src={props.locationIconUrl}
                   alt="Icon"
@@ -285,7 +285,7 @@ export const InfoSection = (props: InfoSectionProps) => {
             <div className="box-border caret-transparent gap-x-1 inline-flex shrink-0 leading-7 gap-y-1">
               <a
                 href={props.parentWorkOrderUrl}
-                className="text-blue-500 text-[16.0006px] items-center box-border caret-transparent gap-x-2 flex shrink-0 leading-[24.0009px] break-words gap-y-2 underline"
+                className="text-teal-500 text-[16.0006px] items-center box-border caret-transparent gap-x-2 flex shrink-0 leading-[24.0009px] break-words gap-y-2 underline"
               >
                 <p className="text-sm box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[21px] break-words">
                   {props.parentWorkOrderName}
@@ -320,7 +320,7 @@ export const InfoSection = (props: InfoSectionProps) => {
               <div className="box-border caret-transparent shrink-0 text-right pl-2">
                 <a
                   href={props.partsAddUrl}
-                  className="text-blue-500 font-medium items-center box-border caret-transparent inline-flex shrink-0 break-words hover:text-blue-400 hover:border-blue-400"
+                  className="text-teal-500 font-medium items-center box-border caret-transparent inline-flex shrink-0 break-words hover:text-teal-400 hover:border-teal-400"
                 >
                   <span className="box-border caret-transparent block shrink-0 break-words">
                     Add
@@ -346,7 +346,7 @@ export const InfoSection = (props: InfoSectionProps) => {
               <div className="box-border caret-transparent shrink-0 text-right pl-2">
                 <a
                   href={props.timeOverviewUrl}
-                  className="text-blue-500 font-medium items-center box-border caret-transparent inline-flex shrink-0 break-words hover:text-blue-400 hover:border-blue-400"
+                  className="text-teal-500 font-medium items-center box-border caret-transparent inline-flex shrink-0 break-words hover:text-teal-400 hover:border-teal-400"
                 >
                   <span className="box-border caret-transparent block shrink-0 break-words">
                     {props.timeTracked}
@@ -377,7 +377,7 @@ export const InfoSection = (props: InfoSectionProps) => {
           <a
             title={props.createdByName}
             href={props.createdByUrl}
-            className="relative items-center box-border caret-transparent inline-flex shrink-0 break-words top-[3px] hover:text-blue-500 hover:border-blue-500"
+            className="relative items-center box-border caret-transparent inline-flex shrink-0 break-words top-[3px] hover:text-teal-500 hover:border-teal-500"
           >
             <div className="items-center bg-white bg-[url('https://maintainx-static.s3-us-west-2.amazonaws.com/img/default-org-logo.png')] bg-cover box-border caret-transparent flex shrink-0 h-4 justify-center break-words w-4 bg-center rounded-[50%]"></div>
             <span className="box-border caret-transparent block shrink-0 max-w-[250px] break-words text-ellipsis text-nowrap overflow-hidden ml-1">

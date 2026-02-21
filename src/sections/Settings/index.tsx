@@ -41,7 +41,7 @@ export const Settings = () => {
             <div className="box-border caret-transparent shrink-0">
               <button
                 type="button"
-                className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded text-teal-500 hover:text-teal-400 hover:border-teal-400"
               >
                 Edit Profile
               </button>
@@ -62,7 +62,7 @@ export const Settings = () => {
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     English (Default)
                   </div>
-                  <div className="text-blue-500 box-border caret-transparent flex shrink-0">
+                  <div className="text-teal-500 box-border caret-transparent flex shrink-0">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
                       alt="Icon"
@@ -81,7 +81,7 @@ export const Settings = () => {
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     USD (US Dollar)
                   </div>
-                  <div className="text-blue-500 box-border caret-transparent flex shrink-0">
+                  <div className="text-teal-500 box-border caret-transparent flex shrink-0">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
                       alt="Icon"
@@ -100,7 +100,7 @@ export const Settings = () => {
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     MM/DD/YYYY – 11:59 PM
                   </div>
-                  <div className="text-blue-500 box-border caret-transparent flex shrink-0">
+                  <div className="text-teal-500 box-border caret-transparent flex shrink-0">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
                       alt="Icon"
@@ -119,7 +119,7 @@ export const Settings = () => {
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden">
                     Europe/Belgrade : +01:00
                   </div>
-                  <div className="text-blue-500 box-border caret-transparent flex shrink-0">
+                  <div className="text-teal-500 box-border caret-transparent flex shrink-0">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-47.svg"
                       alt="Icon"
@@ -144,7 +144,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Work Orders</p>
             </a>
@@ -155,7 +155,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Assets</p>
             </a>
@@ -166,7 +166,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Asset Status</p>
             </a>
@@ -177,7 +177,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Locations</p>
             </a>
@@ -188,7 +188,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Parts List</p>
             </a>
@@ -199,7 +199,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Parts Transactions</p>
             </a>
@@ -210,7 +210,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-13.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Meters</p>
             </a>
@@ -221,7 +221,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-13.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Readings</p>
             </a>
@@ -232,7 +232,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-17.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Vendors</p>
             </a>
@@ -243,7 +243,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Time & Cost Tracking</p>
             </a>
@@ -254,7 +254,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Labor Utilization</p>
             </a>
@@ -273,7 +273,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Assets</p>
             </a>
@@ -284,7 +284,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-10.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Parts</p>
             </a>
@@ -295,7 +295,7 @@ export const Settings = () => {
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-4.svg"
                 alt="Icon"
-                className="text-blue-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
+                className="text-teal-500 box-border caret-transparent shrink-0 h-8 w-8 mb-3"
               />
               <p className="text-sm font-medium">Work Orders</p>
             </a>

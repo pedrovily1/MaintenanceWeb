@@ -13,7 +13,7 @@ export const DetailHeader = () => {
               <button
                 title="Copy Link"
                 type="button"
-                className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400 hover:border-blue-400"
+                className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-teal-400 hover:border-teal-400"
               >
                 <span className="box-border caret-transparent flex text-nowrap">
                   <img
@@ -29,7 +29,7 @@ export const DetailHeader = () => {
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-36.svg"
                   alt="Icon"
-                  className="text-blue-500 box-border caret-transparent h-3.5 w-3.5"
+                  className="text-teal-500 box-border caret-transparent h-3.5 w-3.5"
                 />
                 <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
                   Weekly

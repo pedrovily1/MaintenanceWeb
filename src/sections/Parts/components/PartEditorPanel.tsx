@@ -110,7 +110,7 @@ export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditor
             <button
               type="button"
               onClick={handleSubmit}
-              className="bg-blue-500 text-white border border-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-400"
+              className="bg-teal-500 text-white border border-teal-500 px-3 py-1 rounded text-sm hover:bg-teal-400"
             >
               {initial ? 'Save' : 'Create'}
             </button>
@@ -301,7 +301,7 @@ export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditor
               <button
                 type="button"
                 onClick={addInventoryRow}
-                className="text-blue-500 text-xs font-bold uppercase tracking-widest hover:text-blue-400"
+                className="text-teal-500 text-xs font-bold uppercase tracking-widest hover:text-teal-400"
               >
                 + Add to Inventory
               </button>

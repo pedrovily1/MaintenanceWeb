@@ -111,7 +111,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   type="button"
                   disabled={!isValid}
                   onClick={() => onCreate(value)}
-                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid ${isValid ? 'text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-400' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
+                  className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid ${isValid ? 'text-white bg-teal-500 border-teal-500 hover:bg-teal-400 hover:border-teal-400' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
                 >
                   Create
                 </button>
@@ -428,7 +428,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       <button
                         type="button"
                         onClick={addPart}
-                        className="text-blue-500 text-xs font-bold uppercase tracking-widest hover:text-blue-400"
+                        className="text-teal-500 text-xs font-bold uppercase tracking-widest hover:text-teal-400"
                       >
                         + Add Part
                       </button>
@@ -472,7 +472,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                   </div>
 
                   {value.isRepeating && (
-                    <div className="mt-3 pl-6 border-l-2 border-blue-500">
+                    <div className="mt-3 pl-6 border-l-2 border-teal-500">
                       <div className="box-border caret-transparent shrink-0 pb-2">
                         <strong className="text-xs font-semibold box-border caret-transparent shrink-0">Frequency</strong>
                       </div>

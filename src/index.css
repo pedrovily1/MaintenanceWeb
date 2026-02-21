@@ -73,8 +73,11 @@
     --text: #E6EAF2;
     --muted: #9AA4B2;
     --border: rgba(255,255,255,0.08);
-    --accent: #2F6BFF;
-    --accent-2: #00D4FF;
+    --accent: #14B8A6;
+    --accent-hover: #2DD4BF;
+    --accent-active: #0D9488;
+    --accent-muted: rgba(20,184,166,0.12);
+    --accent-2: #2DD4BF;
     --status-active: #2FE58C;
     --status-offline: #FF4D6D;
     --status-warning: #FFB020;
@@ -87,8 +90,8 @@
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 174 60% 17%;
+    --accent-foreground: 170 40% 98%;
 
     --popover: 224 71% 4%;
     --popover-foreground: 215 20.2% 65.1%;
@@ -196,7 +199,7 @@
   .bg-white, .bg-zinc-50, .bg-neutral-50 {
     background-color: var(--panel) !important;
   }
-  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100, .bg-zinc-100, .bg-gray-100 {
+  .bg-gray-50, .bg-slate-50, .bg-sky-50, .bg-sky-100, .bg-teal-50, .bg-teal-100, .bg-zinc-100, .bg-gray-100 {
     background-color: var(--panel-2) !important;
   }
 

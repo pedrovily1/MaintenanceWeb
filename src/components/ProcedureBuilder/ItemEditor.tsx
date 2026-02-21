@@ -29,8 +29,8 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
         )}
       </div>
       <div className="flex items-center gap-2">
-        <button type="button" onClick={onMoveUp} className="text-xs text-gray-500 hover:text-blue-500">↑</button>
-        <button type="button" onClick={onMoveDown} className="text-xs text-gray-500 hover:text-blue-500">↓</button>
+        <button type="button" onClick={onMoveUp} className="text-xs text-gray-500 hover:text-teal-500">↑</button>
+        <button type="button" onClick={onMoveDown} className="text-xs text-gray-500 hover:text-teal-500">↓</button>
         <button type="button" onClick={onRemove} className="text-xs text-red-500 hover:text-red-400">Delete</button>
       </div>
     </div>
@@ -96,7 +96,7 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
               </div>
             ))}
             <div className="flex items-center gap-2">
-              <button type="button" className="text-xs text-blue-500" onClick={() => onChange({ options: [...opts, `Option ${opts.length + 1}`] })}>+ Option</button>
+              <button type="button" className="text-xs text-teal-500" onClick={() => onChange({ options: [...opts, `Option ${opts.length + 1}`] })}>+ Option</button>
               <label className="text-xs text-gray-600 flex items-center gap-1">
                 <input type="checkbox" checked={!!it.otherOption} onChange={(e) => onChange({ otherOption: e.target.checked })} /> Include "Other"
               </label>

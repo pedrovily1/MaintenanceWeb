@@ -30,7 +30,7 @@ export const ProcedureSelector: React.FC<ProcedureSelectorProps> = ({ onSelect, 
           <input
             type="text"
             placeholder="Search procedures..."
-            className="w-full pl-10 pr-4 py-2 border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
@@ -44,9 +44,9 @@ export const ProcedureSelector: React.FC<ProcedureSelectorProps> = ({ onSelect, 
             <button
               key={proc.id}
               onClick={() => onSelect(proc.id)}
-              className="w-full flex items-center p-3 text-left hover:bg-blue-50 rounded-md transition-colors group"
+              className="w-full flex items-center p-3 text-left hover:bg-teal-50 rounded-md transition-colors group"
             >
-              <div className="h-10 w-10 bg-sky-100 rounded-lg flex items-center justify-center text-blue-500 mr-3 group-hover:bg-blue-100 transition-colors">
+              <div className="h-10 w-10 bg-teal-100 rounded-lg flex items-center justify-center text-teal-500 mr-3 group-hover:bg-teal-100 transition-colors">
                 <ClipboardList size={20} />
               </div>
               <div className="flex-1 min-w-0">

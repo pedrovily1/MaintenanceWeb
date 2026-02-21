@@ -138,7 +138,7 @@ export const CalendarView = () => {
     return (
       <div key={idx} className={`border border-[var(--border)] p-1 min-h-[96px] ${isOtherMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'}`}>
         <div className="flex items-center justify-between text-xs mb-1">
-          <span className={`font-medium ${isSameDay(d, todayUTC) ? 'text-blue-600' : ''}`}>{d.getUTCDate()}</span>
+          <span className={`font-medium ${isSameDay(d, todayUTC) ? 'text-teal-600' : ''}`}>{d.getUTCDate()}</span>
           {mode === 'week' && <span className="text-gray-400">{d.toLocaleDateString(undefined, { weekday: 'short', timeZone: 'UTC' })}</span>}
         </div>
 
@@ -155,7 +155,7 @@ export const CalendarView = () => {
                 setSelectedId(wo.id);
               }
             }}
-            className={`w-full text-left mb-1 px-1.5 py-0.5 rounded text-[11px] border ${o.priority === 'High' ? 'bg-red-50 border-red-200 text-red-600' : o.priority === 'Medium' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-sky-50 border-sky-200 text-sky-700'}`}
+            className={`w-full text-left mb-1 px-1.5 py-0.5 rounded text-[11px] border ${o.priority === 'High' ? 'bg-red-50 border-red-200 text-red-600' : o.priority === 'Medium' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-teal-50 border-teal-200 text-teal-700'}`}
             title={o.title}
           >
             <span className="font-semibold mr-1">{o.title}</span>
@@ -165,7 +165,7 @@ export const CalendarView = () => {
 
         {items.length > showCount && !expanded && (
           <button
-            className="text-[11px] text-blue-600 hover:text-blue-500"
+            className="text-[11px] text-teal-600 hover:text-teal-500"
             onClick={() => setExpandedDays(prev => ({ ...prev, [dateISO]: true }))}
           >
             +{items.length - showCount} more
@@ -173,7 +173,7 @@ export const CalendarView = () => {
         )}
         {expanded && (
           <button
-            className="text-[11px] text-blue-600 hover:text-blue-500"
+            className="text-[11px] text-teal-600 hover:text-teal-500"
             onClick={() => setExpandedDays(prev => ({ ...prev, [dateISO]: false }))}
           >
             Show less
@@ -193,13 +193,13 @@ export const CalendarView = () => {
           </div>
           <div className="inline-flex border border-[var(--border)] rounded overflow-hidden">
             <button
-              className={`px-3 py-1 text-sm ${mode === 'month' ? 'bg-blue-50 text-blue-600' : ''}`}
+              className={`px-3 py-1 text-sm ${mode === 'month' ? 'bg-teal-50 text-teal-600' : ''}`}
               onClick={() => setMode('month')}
             >
               Month
             </button>
             <button
-              className={`px-3 py-1 text-sm border-l border-[var(--border)] ${mode === 'week' ? 'bg-blue-50 text-blue-600' : ''}`}
+              className={`px-3 py-1 text-sm border-l border-[var(--border)] ${mode === 'week' ? 'bg-teal-50 text-teal-600' : ''}`}
               onClick={() => setMode('week')}
             >
               Week

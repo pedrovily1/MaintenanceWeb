@@ -154,7 +154,7 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
         {/* Footer */}
         <div className="px-4 py-3 border-t border-[var(--border)] bg-gray-50 flex items-center justify-end gap-2">
           <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
-          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
+          <button className="px-3 py-1 rounded bg-teal-600 text-white text-sm" onClick={handleSubmit}>Save</button>
         </div>
       </div>
     </div>

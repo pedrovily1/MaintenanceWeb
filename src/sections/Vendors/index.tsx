@@ -57,7 +57,7 @@ export const Vendors = () => {
             <button
               type="button"
               onClick={handleNewVendor}
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-teal-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-400 hover:border-teal-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
                 New Vendor
@@ -79,7 +79,7 @@ export const Vendors = () => {
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
                   alt="Icon"
-                  className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                  className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                 />
               </div>
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -94,7 +94,7 @@ export const Vendors = () => {
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
                   alt="Icon"
-                  className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                  className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                 />
               </div>
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -109,7 +109,7 @@ export const Vendors = () => {
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
                   alt="Icon"
-                  className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                  className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                 />
               </div>
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -124,7 +124,7 @@ export const Vendors = () => {
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
                   alt="Icon"
-                  className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                  className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                 />
               </div>
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">

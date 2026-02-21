@@ -146,7 +146,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
             </div>
 
             {wo.isRepeating && (
-              <div className="grid grid-cols-2 gap-3 pl-6 border-l-2 border-blue-500">
+              <div className="grid grid-cols-2 gap-3 pl-6 border-l-2 border-teal-500">
                 <div>
                   <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Frequency</label>
                   <select
@@ -180,7 +180,7 @@ export const WorkOrderModal = ({ workOrderId, onClose }: WorkOrderModalProps) =>
           {/* Attached Procedures */}
           <div className="flex items-center justify-between mt-2">
             <div className="text-sm font-medium">Procedures</div>
-            <button className="text-blue-600 text-sm hover:text-blue-500" onClick={() => setShowSelector(true)}>Add Procedure</button>
+            <button className="text-teal-600 text-sm hover:text-teal-500" onClick={() => setShowSelector(true)}>Add Procedure</button>
           </div>
 
           {(wo.procedureInstances || []).map((pi) => (

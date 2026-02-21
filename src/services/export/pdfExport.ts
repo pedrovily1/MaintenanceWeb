@@ -128,8 +128,8 @@ export const generateWorkOrderPDF = async (workOrders: WorkOrder[], options: Exp
   let yPos = 0;
 
   const drawPortalHeader = (withTitleBlock: boolean) => {
-    // Letterhead: centered, bold blue title with hairline divider
-    doc.setTextColor(30, 64, 175); // blue-700
+    // Letterhead: centered, bold teal title with hairline divider
+    doc.setTextColor(20, 184, 166); // teal-500 (#14B8A6)
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
     doc.text('Online Maintenance Web Portal', pageWidth / 2, headerTopY, { align: 'center' });

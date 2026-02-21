@@ -102,7 +102,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
               <input
                 type="text"
                 required
-                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                 value={name}
                 onChange={(e) => { setName(e.target.value); setError(''); }}
                 placeholder="e.g. ABC Electrical Services"
@@ -111,7 +111,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Trade</label>
               <select
-                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                 value={trade}
                 onChange={(e) => setTrade(e.target.value)}
               >
@@ -126,7 +126,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
                 <label className="block text-sm font-medium text-gray-700 mb-1">Contact Name</label>
                 <input
                   type="text"
-                  className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="e.g. John Smith"
@@ -136,7 +136,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                 <input
                   type="tel"
-                  className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="e.g. (555) 123-4567"
@@ -147,7 +147,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
                 type="email"
-                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="e.g. contact@vendor.com"
@@ -157,7 +157,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
               <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
               <input
                 type="text"
-                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="e.g. 123 Main St, City, State 12345"
@@ -166,7 +166,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
               <textarea
-                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500 min-h-[80px]"
+                className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500 min-h-[80px]"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Additional notes about this vendor..."
@@ -184,7 +184,7 @@ export const VendorModal: React.FC<VendorModalProps> = ({ isOpen, onClose, onSav
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 hover:bg-blue-400 rounded"
+              className="px-4 py-2 text-sm font-bold text-white bg-teal-500 hover:bg-teal-400 rounded"
             >
               {vendor ? 'Save Changes' : 'Create Vendor'}
             </button>

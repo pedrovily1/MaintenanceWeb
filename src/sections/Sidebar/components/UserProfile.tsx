@@ -39,7 +39,7 @@ export const UserProfile = () => {
             <img
               src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-18.svg"
               alt="Icon"
-              className={`text-blue-500 box-border caret-transparent shrink-0 h-3.5 w-3.5 mr-1 ${isActive ? 'opacity-100' : ''}`}
+              className={`text-teal-500 box-border caret-transparent shrink-0 h-3.5 w-3.5 mr-1 ${isActive ? 'opacity-100' : ''}`}
             />
             <div className="box-border caret-transparent fill-gray-600 shrink-0 stroke-gray-600">
               Switch User
@@ -60,7 +60,7 @@ export const UserProfile = () => {
         <img
           src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-19.svg"
           alt="Icon"
-          className={`hidden lg:block text-blue-500 box-border caret-transparent shrink-0 h-5 w-5 group-hover/profile:opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}`}
+          className={`hidden lg:block text-teal-500 box-border caret-transparent shrink-0 h-5 w-5 group-hover/profile:opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}`}
         />
       </div>
       <PinModal isOpen={isPinModalOpen} onClose={() => setIsPinModalOpen(false)} />

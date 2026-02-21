@@ -68,7 +68,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
             <input
               type="text"
               required
-              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. John Doe"
@@ -77,7 +77,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
             <select
-              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full border border-[var(--border)] rounded p-2 text-sm focus:outline-none focus:border-teal-500"
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
             >
@@ -92,7 +92,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
               type="password"
               pattern="\d{4,6}"
               required
-              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
+              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-teal-500`}
               value={pin}
               onChange={(e) => {
                 setPin(e.target.value.replace(/\D/g, '').slice(0, 6));
@@ -107,7 +107,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
               type="password"
               pattern="\d{4,6}"
               required
-              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-blue-500`}
+              className={`w-full border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 text-sm focus:outline-none focus:border-teal-500`}
               value={confirmPin}
               onChange={(e) => {
                 setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 6));
@@ -127,7 +127,7 @@ export const UserInviteModal: React.FC<UserInviteModalProps> = ({ isOpen, onClos
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 hover:bg-blue-400 rounded"
+              className="px-4 py-2 text-sm font-bold text-white bg-teal-500 hover:bg-teal-400 rounded"
             >
               Create User
             </button>

@@ -17,7 +17,7 @@ const COLORS = [
   'bg-teal-400',
   'bg-orange-400',
   'bg-purple-500',
-  'bg-blue-500',
+  'bg-teal-500',
   'bg-pink-500',
   'bg-green-500',
   'bg-yellow-500',
@@ -55,14 +55,14 @@ export const VendorList = ({ vendors, selectedVendorId, onSelectVendor }: Vendor
                 className="text-gray-600 text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center font-medium"
               >
                 Sort By:
-                <div className="text-blue-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-blue-500 font-medium">
-                  <span className="box-border caret-transparent block basis-[0%] grow stroke-blue-500 text-ellipsis text-nowrap overflow-hidden ml-1">
-                    <span className="font-medium box-border caret-transparent shrink-0 stroke-blue-500 text-nowrap">
+                <div className="text-teal-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-teal-500 font-medium">
+                  <span className="box-border caret-transparent block basis-[0%] grow stroke-teal-500 text-ellipsis text-nowrap overflow-hidden ml-1">
+                    <span className="font-medium box-border caret-transparent shrink-0 stroke-teal-500 text-nowrap">
                       Name
                     </span>
                     : Ascending Order
                   </span>
-                  <div className="box-border caret-transparent shrink-0 stroke-blue-500 ml-1 mb-1">
+                  <div className="box-border caret-transparent shrink-0 stroke-teal-500 ml-1 mb-1">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-27.svg"
                       alt="Icon"

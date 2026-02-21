@@ -37,7 +37,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                   </div>
                   <a
                     href="#"
-                    className="text-blue-500 text-sm box-border caret-transparent hover:text-blue-400"
+                    className="text-teal-500 text-sm box-border caret-transparent hover:text-teal-400"
                   >
                     View Conversation Information
                   </a>
@@ -97,7 +97,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                         <div className="box-border caret-transparent flex shrink-0 mb-1">
                           <a
                             href="#"
-                            className="font-semibold box-border caret-transparent hover:text-blue-500"
+                            className="font-semibold box-border caret-transparent hover:text-teal-500"
                           >
                             {message.authorName}
                           </a>
@@ -161,7 +161,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                 <div
                   role="textbox"
                   contentEditable
-                  className="relative bg-transparent box-border caret-transparent flex grow shrink-0 leading-5 max-h-[218px] min-h-[38px] break-words overflow-x-hidden overflow-y-auto w-full border border-[var(--border)] px-3 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid focus:outline-none focus:border-blue-500"
+                  className="relative bg-transparent box-border caret-transparent flex grow shrink-0 leading-5 max-h-[218px] min-h-[38px] break-words overflow-x-hidden overflow-y-auto w-full border border-[var(--border)] px-3 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid focus:outline-none focus:border-teal-500"
                   data-placeholder="Write a message…"
                 >
                   <p className="box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[20.0004px]">
@@ -176,7 +176,7 @@ export const MessageThread = ({ conversationName, conversationAvatarUrl, message
                 </div>
                 <button
                   type="submit"
-                  className="relative text-white font-bold items-center bg-blue-500 caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+                  className="relative text-white font-bold items-center bg-teal-500 caret-transparent flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-400 hover:border-teal-400"
                 >
                   Send
                 </button>

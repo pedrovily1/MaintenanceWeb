@@ -99,7 +99,7 @@ export const Parts = () => {
               <button
                 type="button"
                 onClick={() => setShowNewEditor(true)}
-                className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-md border-solid hover:bg-blue-400 hover:border-blue-400"
+                className="relative text-white font-bold items-center bg-teal-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-md border-solid hover:bg-teal-400 hover:border-teal-400"
               >
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-22.svg"
@@ -136,7 +136,7 @@ export const Parts = () => {
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
                       alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                      className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -157,7 +157,7 @@ export const Parts = () => {
                   onClick={() => { setShowTypeMenu(v => !v); setShowLocationMenu(false); }}
                   className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
                     filterPartType
-                      ? 'bg-blue-50 border-blue-400 text-blue-700'
+                      ? 'bg-teal-50 border-teal-400 text-teal-700'
                       : 'bg-white border-[var(--border)] hover:border-neutral-300'
                   }`}
                 >
@@ -165,7 +165,7 @@ export const Parts = () => {
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
                       alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                      className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -185,7 +185,7 @@ export const Parts = () => {
                       <button
                         key={t}
                         type="button"
-                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterPartType === t ? 'font-semibold text-blue-600' : ''}`}
+                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterPartType === t ? 'font-semibold text-teal-600' : ''}`}
                         onClick={() => { setFilterPartType(t); setShowTypeMenu(false); }}
                       >
                         {t}
@@ -202,7 +202,7 @@ export const Parts = () => {
                   onClick={() => { setShowLocationMenu(v => !v); setShowTypeMenu(false); }}
                   className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
                     filterLocationId
-                      ? 'bg-blue-50 border-blue-400 text-blue-700'
+                      ? 'bg-teal-50 border-teal-400 text-teal-700'
                       : 'bg-white border-[var(--border)] hover:border-neutral-300'
                   }`}
                 >
@@ -210,7 +210,7 @@ export const Parts = () => {
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
                       alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+                      className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
                     />
                   </div>
                   <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
@@ -230,7 +230,7 @@ export const Parts = () => {
                       <button
                         key={loc.id}
                         type="button"
-                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterLocationId === loc.id ? 'font-semibold text-blue-600' : ''}`}
+                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterLocationId === loc.id ? 'font-semibold text-teal-600' : ''}`}
                         onClick={() => { setFilterLocationId(loc.id); setShowLocationMenu(false); }}
                       >
                         {loc.name}
@@ -250,7 +250,7 @@ export const Parts = () => {
                     setFilterLocationId('');
                     setSearch('');
                   }}
-                  className="text-xs text-blue-500 hover:text-blue-400 px-1"
+                  className="text-xs text-teal-500 hover:text-teal-400 px-1"
                 >
                   Clear filters
                 </button>

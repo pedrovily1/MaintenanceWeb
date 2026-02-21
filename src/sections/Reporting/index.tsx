@@ -161,7 +161,7 @@ export const Reporting = () => {
             </div>
             <button
               type="button"
-              className="text-blue-500 font-medium items-center bg-transparent caret-transparent flex shrink-0 justify-center text-center px-2 py-1 rounded-bl rounded-br rounded-tl rounded-tr hover:bg-gray-100"
+              className="text-teal-500 font-medium items-center bg-transparent caret-transparent flex shrink-0 justify-center text-center px-2 py-1 rounded-bl rounded-br rounded-tl rounded-tr hover:bg-gray-100"
               onClick={() => {
                 const start = window.prompt("Enter Start Date (YYYY-MM-DD):", dateRange.start.toISOString().split('T')[0]);
                 const end = window.prompt("Enter End Date (YYYY-MM-DD):", dateRange.end.toISOString().split('T')[0]);
@@ -179,13 +179,13 @@ export const Reporting = () => {
             </div>
             <button
               type="button"
-              className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-teal-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-teal-400 hover:border-teal-400"
             >
               Export
             </button>
             <button
               type="button"
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-teal-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-400 hover:border-teal-400"
             >
               Build report
             </button>
@@ -340,7 +340,7 @@ export const Reporting = () => {
               <div className="text-sm mb-2">Completion Trend (Sample Data)</div>
               <div className="flex items-end gap-2 h-32">
                  {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
-                   <div key={i} className="w-8 bg-blue-200" style={{ height: `${h}%` }}></div>
+                   <div key={i} className="w-8 bg-teal-200" style={{ height: `${h}%` }}></div>
                  ))}
               </div>
             </div>
@@ -351,13 +351,13 @@ export const Reporting = () => {
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-lg hover:text-blue-400"
+                  className="text-teal-500 font-medium text-lg hover:text-teal-400"
                 >
                   Work Orders by Type
                 </button>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
+                  className="text-teal-500 font-medium text-sm hover:text-teal-400"
                 >
                   Add to Dashboard
                 </button>
@@ -372,7 +372,7 @@ export const Reporting = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold">{metrics.byType.Reactive}</div>
-                    <div className="text-blue-500 border border-blue-500 px-2 py-1 rounded text-xs">
+                    <div className="text-teal-500 border border-teal-500 px-2 py-1 rounded text-xs">
                       Reactive
                     </div>
                   </div>
@@ -399,7 +399,7 @@ export const Reporting = () => {
               <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-gray-400">
                 <div className="flex gap-1 items-end h-32">
                   <div className="w-12 bg-teal-400" style={{ height: `${metrics.preventiveRatio}%` }}></div>
-                  <div className="w-12 bg-blue-400" style={{ height: `${100 - metrics.preventiveRatio}%` }}></div>
+                  <div className="w-12 bg-teal-400" style={{ height: `${100 - metrics.preventiveRatio}%` }}></div>
                 </div>
               </div>
             </div>
@@ -408,13 +408,13 @@ export const Reporting = () => {
               <div className="flex items-center justify-between mb-4">
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-lg hover:text-blue-400"
+                  className="text-teal-500 font-medium text-lg hover:text-teal-400"
                 >
                   Non-Repeating vs. Repeating
                 </button>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
+                  className="text-teal-500 font-medium text-sm hover:text-teal-400"
                 >
                   Add to Dashboard
                 </button>
@@ -445,7 +445,7 @@ export const Reporting = () => {
                 {filteredData.length > 0 ? (
                   <div className="flex gap-1 items-end h-32">
                     <div className="w-12 bg-gray-300" style={{ height: `${100 - metrics.repeatingRatio}%` }}></div>
-                    <div className="w-12 bg-blue-300" style={{ height: `${metrics.repeatingRatio}%` }}></div>
+                    <div className="w-12 bg-teal-300" style={{ height: `${metrics.repeatingRatio}%` }}></div>
                   </div>
                 ) : "No data"}
               </div>
@@ -458,7 +458,7 @@ export const Reporting = () => {
                 <h4 className="font-medium text-lg">Status</h4>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
+                  className="text-teal-500 font-medium text-sm hover:text-teal-400"
                 >
                   Add to Dashboard
                 </button>
@@ -490,7 +490,7 @@ export const Reporting = () => {
                 <h4 className="font-medium text-lg">Priority</h4>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
+                  className="text-teal-500 font-medium text-sm hover:text-teal-400"
                 >
                   Add to Dashboard
                 </button>
@@ -537,7 +537,7 @@ export const Reporting = () => {
                         <td className="py-2">{wo.title}</td>
                         <td className="py-2">
                            <span className={`px-2 py-1 rounded text-xs ${
-                             wo.status === 'Done' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                             wo.status === 'Done' ? 'bg-green-100 text-green-800' : 'bg-teal-100 text-teal-800'
                            }`}>
                              {wo.status}
                            </span>
@@ -599,14 +599,14 @@ export const Reporting = () => {
             </div>
           </div>
 
-          <div className="bg-sky-50 border border-blue-200 rounded-lg p-6 text-center">
+          <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 text-center">
             <p className="text-lg font-semibold mb-2">Looking for something else?</p>
             <p className="text-gray-600 mb-4">
               We would love to hear from you, share all your needs and suggestions for Reporting Dashboard.
             </p>
             <button
               type="button"
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 inline-flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-teal-500 caret-transparent gap-x-1 inline-flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-400 hover:border-teal-400"
             >
               Send Suggestions
             </button>

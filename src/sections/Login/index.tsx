@@ -23,13 +23,13 @@ export const Login = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-[#111826] to-[#0B0F14] z-0" />
       
       {/* Subtle radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] z-0 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-[120px] z-0 pointer-events-none" />
 
       {/* Logo Area */}
       <div className="relative z-10 mb-8 flex flex-col items-center">
         <div className="relative translate-x-16">
-          {/* Soft blue glow behind logo */}
-          <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full" />
+          {/* Soft accent glow behind logo */}
+          <div className="absolute inset-0 bg-teal-400/20 blur-xl rounded-full" />
           <img src="/logo.svg" alt="OMP Logo" className="h-20 w-90 relative z-5" />
         </div>
       </div>
@@ -53,7 +53,7 @@ export const Login = () => {
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#0B0F14] border border-white/10 rounded px-10 py-3 text-[#E6EAF2] placeholder-[#9AA4B2] focus:outline-none focus:border-[#2F6BFF] transition-colors"
+                className="w-full bg-[#0B0F14] border border-white/10 rounded px-10 py-3 text-[#E6EAF2] placeholder-[#9AA4B2] focus:outline-none focus:border-[var(--accent)] transition-colors"
                 required
               />
             </div>
@@ -67,7 +67,7 @@ export const Login = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0B0F14] border border-white/10 rounded px-10 py-3 text-[#E6EAF2] placeholder-[#9AA4B2] focus:outline-none focus:border-[#2F6BFF] transition-colors"
+                className="w-full bg-[#0B0F14] border border-white/10 rounded px-10 py-3 text-[#E6EAF2] placeholder-[#9AA4B2] focus:outline-none focus:border-[var(--accent)] transition-colors"
                 required
               />
               <button
@@ -82,17 +82,17 @@ export const Login = () => {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center space-x-2 cursor-pointer group">
-              <input type="checkbox" className="w-4 h-4 bg-[#0B0F14] border-white/10 rounded accent-[#2F6BFF]" />
+              <input type="checkbox" className="w-4 h-4 bg-[#0B0F14] border-white/10 rounded accent-[var(--accent)]" />
               <span className="text-sm text-[#9AA4B2] group-hover:text-[#E6EAF2] transition-colors">Remember Me</span>
             </label>
-            <button type="button" className="text-sm text-[#9AA4B2] hover:text-[#2F6BFF] transition-colors">
+            <button type="button" className="text-sm text-[#9AA4B2] hover:text-[var(--accent)] transition-colors">
               Forgot Password?
             </button>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#2F6BFF] hover:bg-[#4d82ff] text-white font-bold py-3 rounded transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]"
+            className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-bold py-3 rounded transition-all shadow-lg shadow-teal-500/20 active:scale-[0.98]"
           >
             Log In
           </button>
@@ -100,7 +100,7 @@ export const Login = () => {
 
         <div className="mt-8 pt-6 border-t border-white/5 text-center">
           <p className="text-sm text-[#9AA4B2]">
-            Don't have an account? <button className="text-[#2F6BFF] hover:underline">Sign Up</button>
+            Don't have an account? <button className="text-[var(--accent)] hover:underline">Sign Up</button>
           </p>
         </div>
       </div>

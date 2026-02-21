@@ -53,17 +53,17 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
         <div className="flex items-center gap-3 grow">
           <span className="text-[11px] font-bold text-slate-400 tracking-wider whitespace-nowrap bg-slate-200/50 px-1.5 py-0.5 rounded">SECTION {index + 1}</span>
           <input
-            className="font-semibold text-sm text-gray-800 uppercase tracking-tight bg-transparent outline-none w-full placeholder:text-gray-300 border-b border-transparent focus:border-blue-500 transition-colors"
+            className="font-semibold text-sm text-gray-800 uppercase tracking-tight bg-transparent outline-none w-full placeholder:text-gray-300 border-b border-transparent focus:border-teal-500 transition-colors"
             placeholder="UNTITLED SECTION"
             value={section.title}
             onChange={(e) => onRename(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-2 ml-4">
-          <button type="button" onClick={(e) => onMoveUp(e)} className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-blue-500 transition-colors" title="Move Up">
+          <button type="button" onClick={(e) => onMoveUp(e)} className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-teal-500 transition-colors" title="Move Up">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
           </button>
-          <button type="button" onClick={(e) => onMoveDown(e)} className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-blue-500 transition-colors" title="Move Down">
+          <button type="button" onClick={(e) => onMoveDown(e)} className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-teal-500 transition-colors" title="Move Down">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div className="w-px h-4 bg-gray-300 mx-1"></div>
@@ -80,7 +80,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
             onDragStart={(e) => handleDragStart(e, idx)}
             onDrop={(e) => handleDrop(e, idx)}
             onDragOver={handleDragOver}
-            className="rounded border border-transparent hover:border-blue-200"
+            className="rounded border border-transparent hover:border-teal-200"
           >
             <ItemEditor
               item={item}
@@ -98,7 +98,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
                 key={kind}
                 type="button"
                 onClick={() => onAddItem(kind)}
-                className="text-xs border border-[var(--border)] rounded px-2 py-1 text-gray-700 hover:border-blue-400 hover:text-blue-500"
+                className="text-xs border border-[var(--border)] rounded px-2 py-1 text-gray-700 hover:border-teal-400 hover:text-teal-500"
               >
                 + {kind}
               </button>

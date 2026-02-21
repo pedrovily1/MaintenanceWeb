@@ -402,7 +402,7 @@ export const WorkOrderList = () => {
                               <button
                                 title="Copy Link"
                                 type="button"
-                                className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-blue-400"
+                                className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded-[50%] hover:text-teal-400"
                               >
                                 <span className="box-border caret-transparent flex text-nowrap">
                                   <img
@@ -418,7 +418,7 @@ export const WorkOrderList = () => {
                                   <img
                                     src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-36.svg"
                                     alt="Icon"
-                                    className="text-blue-500 box-border caret-transparent h-3.5 w-3.5"
+                                    className="text-teal-500 box-border caret-transparent h-3.5 w-3.5"
                                   />
                                   <span className="text-gray-600 text-[11.9994px] box-border caret-transparent block tracking-[-0.2px] leading-[14.3993px]">
                                     {selectedWorkOrder.workType}
@@ -558,7 +558,7 @@ export const WorkOrderList = () => {
                                 {(() => {
                                   const cat = getCategoryById(selectedWorkOrder.categoryId);
                                   return cat ? (
-                                    <span className={`text-blue-500 text-[11px] font-bold uppercase tracking-tighter bg-sky-50 px-1 py-0.5 rounded border border-sky-100 ${!cat.isActive ? 'opacity-60' : ''}`}>
+                                    <span className={`text-teal-500 text-[11px] font-bold uppercase tracking-tighter bg-teal-50 px-1 py-0.5 rounded border border-teal-100 ${!cat.isActive ? 'opacity-60' : ''}`}>
                                       {cat.name}{!cat.isActive && ' (Archived)'}
                                     </span>
                                   ) : (
@@ -628,7 +628,7 @@ export const WorkOrderList = () => {
                             <button
                               type="button"
                               onClick={() => setShowProcedureSelector(true)}
-                              className="text-blue-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:text-blue-400 transition-colors"
+                              className="text-teal-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:text-teal-400 transition-colors"
                             >
                               <Plus size={14} /> Add Procedure
                             </button>
@@ -655,7 +655,7 @@ export const WorkOrderList = () => {
 
                             {(selectedWorkOrder.procedureInstances || []).map((pi, index) => (
                               <div key={pi.id} className="border border-[var(--border)] rounded-lg overflow-hidden bg-white shadow-sm">
-                                <div className="bg-blue-500 px-4 py-3 flex items-center justify-between">
+                                <div className="bg-teal-500 px-4 py-3 flex items-center justify-between">
                                   <div className="flex items-center gap-3 text-white">
                                     <div className="flex flex-col gap-0.5 mr-1">
                                        <button

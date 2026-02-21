@@ -75,7 +75,7 @@ export const LocationTreeSelector: React.FC<Props> = ({
         className={`w-full border rounded px-2 py-1 text-sm text-left flex items-center justify-between gap-1 ${
           disabled
             ? 'bg-gray-100 text-gray-400 border-[var(--border)] cursor-not-allowed'
-            : 'border-[var(--border)] hover:border-blue-400 cursor-pointer'
+            : 'border-[var(--border)] hover:border-teal-400 cursor-pointer'
         }`}
       >
         <span className="truncate">{displayValue}</span>
@@ -113,8 +113,8 @@ export const LocationTreeSelector: React.FC<Props> = ({
                 setOpen(false);
                 setSearch('');
               }}
-              className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 ${
-                !value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-500 italic'
+              className={`w-full text-left px-3 py-2 text-sm hover:bg-teal-50 ${
+                !value ? 'bg-teal-50 text-teal-600 font-medium' : 'text-gray-500 italic'
               }`}
             >
               No Location
@@ -129,8 +129,8 @@ export const LocationTreeSelector: React.FC<Props> = ({
                   setOpen(false);
                   setSearch('');
                 }}
-                className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 flex items-center gap-1 ${
-                  value === node.id ? 'bg-blue-50 text-blue-600 font-medium' : ''
+                className={`w-full text-left px-3 py-2 text-sm hover:bg-teal-50 flex items-center gap-1 ${
+                  value === node.id ? 'bg-teal-50 text-teal-600 font-medium' : ''
                 }`}
                 style={{ paddingLeft: `${12 + node.depth * 20}px` }}
               >

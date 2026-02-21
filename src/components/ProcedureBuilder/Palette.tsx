@@ -27,7 +27,7 @@ export const Palette: React.FC<PaletteProps> = ({ onAddItem, onAddSection }) => 
     <div className="bg-white border border-[var(--border)] rounded-lg p-3">
       <div className="flex items-center justify-between mb-2">
         <div className="text-sm font-semibold">Add Item</div>
-        <button type="button" onClick={onAddSection} className="text-blue-500 text-sm font-medium hover:text-blue-400">+ Section</button>
+        <button type="button" onClick={onAddSection} className="text-teal-500 text-sm font-medium hover:text-teal-400">+ Section</button>
       </div>
       <div className="grid grid-cols-2 gap-2">
         {addButtons.map(btn => (
@@ -35,7 +35,7 @@ export const Palette: React.FC<PaletteProps> = ({ onAddItem, onAddSection }) => 
             key={btn.kind}
             type="button"
             onClick={() => onAddItem(btn.kind)}
-            className="border border-[var(--border)] rounded px-2 py-1 text-xs text-gray-700 hover:border-blue-400 hover:text-blue-500 text-left"
+            className="border border-[var(--border)] rounded px-2 py-1 text-xs text-gray-700 hover:border-teal-400 hover:text-teal-500 text-left"
           >
             {btn.label}
           </button>

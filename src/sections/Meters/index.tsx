@@ -69,7 +69,7 @@ export const Meters = () => {
             </div>
             <button
               type="button"
-              className="relative text-blue-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-teal-500 font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:text-teal-400 hover:border-teal-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
                 Manage Integrations
@@ -78,7 +78,7 @@ export const Meters = () => {
             <button
               type="button"
               onClick={startNew}
-              className="relative text-white font-bold items-center bg-blue-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-blue-400 hover:border-blue-400"
+              className="relative text-white font-bold items-center bg-teal-500 caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-400 hover:border-teal-400"
             >
               <span className="box-border caret-transparent flex shrink-0 text-nowrap">
                 New Meter
@@ -94,7 +94,7 @@ export const Meters = () => {
           <div className="box-border caret-transparent flex basis-[0%] grow gap-x-2">
             <button
               type="button"
-              className="items-center bg-sky-100 text-blue-500 caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-blue-500 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-sky-200"
+              className="items-center bg-teal-100 text-teal-500 caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-teal-500 px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-teal-200"
             >
               <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
                 Type

@@ -20,7 +20,7 @@ export const ConversationList = ({ conversations, selectedConversationId, onSele
       <div className="border-b-zinc-200 border-l-neutral-800 border-r-neutral-800 border-t-neutral-800 box-border caret-transparent flex shrink-0 flex-wrap border-b">
         <button
           type="button"
-          className="text-blue-500 font-semibold bg-transparent border-b-blue-500 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b"
+          className="text-teal-500 font-semibold bg-transparent border-b-teal-500 border-l-neutral-500/30 border-r-neutral-500/30 border-t-neutral-500/30 caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b"
         >
           <div className="items-center box-border caret-transparent flex shrink-0 justify-center">
             <span className="box-border caret-transparent block text-ellipsis text-nowrap overflow-hidden">

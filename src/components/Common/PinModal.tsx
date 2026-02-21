@@ -42,7 +42,7 @@ export const PinModal: React.FC<PinModalProps> = ({ isOpen, onClose }) => {
             <input
               type="password"
               autoFocus
-              className={`w-32 text-center text-2xl tracking-[0.5em] border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 focus:outline-none focus:border-blue-500`}
+              className={`w-32 text-center text-2xl tracking-[0.5em] border ${error ? 'border-red-500' : 'border-[var(--border)]'} rounded p-2 focus:outline-none focus:border-teal-500`}
               value={pin}
               onChange={(e) => {
                 setPin(e.target.value.replace(/\D/g, '').slice(0, 6));
@@ -60,7 +60,7 @@ export const PinModal: React.FC<PinModalProps> = ({ isOpen, onClose }) => {
             <button
               type="submit"
               disabled={pin.length < 4}
-              className={`w-full py-2.5 text-sm font-bold text-white rounded-md transition-colors ${pin.length < 4 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-400'}`}
+              className={`w-full py-2.5 text-sm font-bold text-white rounded-md transition-colors ${pin.length < 4 ? 'bg-gray-300 cursor-not-allowed' : 'bg-teal-500 hover:bg-teal-400'}`}
             >
               Confirm
             </button>

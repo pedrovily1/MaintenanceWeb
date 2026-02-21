@@ -17,7 +17,7 @@ export const LocationSelector = () => {
         <img
           src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-3.svg"
           alt="Icon"
-          className="text-blue-500 box-border caret-transparent shrink-0 h-5 w-5"
+          className="text-teal-500 box-border caret-transparent shrink-0 h-5 w-5"
         />
       </div>
     </button>

@@ -39,7 +39,7 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
               <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 flex-wrap gap-y-2 ml-auto">
                 <button
                   type="button"
-                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-blue-500 px-3 rounded text-blue-500 hover:text-blue-400 hover:border-blue-400"
+                  className="relative font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] break-words gap-y-1 text-center text-nowrap border border-teal-500 px-3 rounded text-teal-500 hover:text-teal-400 hover:border-teal-400"
                 >
                   <span className="box-border caret-transparent flex shrink-0 break-words text-nowrap">
                     Edit
@@ -47,7 +47,7 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
                 </button>
                 <button
                   type="button"
-                  className="relative text-blue-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-blue-400"
+                  className="relative text-teal-500 font-bold items-center aspect-square bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap overflow-hidden px-2 rounded hover:text-teal-400"
                 >
                   <span className="text-slate-500 box-border caret-transparent flex shrink-0 text-nowrap hover:text-gray-600">
                     <img
@@ -279,7 +279,7 @@ export const ProcedureDetail = ({ procedureId }: ProcedureDetailProps) => {
           <div className="absolute box-border caret-transparent shrink-0 translate-x-[-50.0%] z-[3] left-2/4 bottom-6">
             <button
               type="button"
-              className="relative text-blue-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-blue-500 px-4 rounded-3xl border-solid hover:text-blue-400 hover:border-blue-400"
+              className="relative text-teal-500 font-bold items-center bg-white shadow-[rgba(30,36,41,0.16)_0px_4px_12px_0px] caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-teal-500 px-4 rounded-3xl border-solid hover:text-teal-400 hover:border-teal-400"
             >
               <img
                 src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-55.svg"

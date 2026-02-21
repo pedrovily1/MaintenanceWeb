@@ -19,7 +19,7 @@ export const FilterButtons = () => {
             <img
               src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
               alt="Icon"
-              className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
+              className="text-teal-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
             />
           </div>
           <div

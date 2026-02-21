@@ -279,7 +279,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
                         value={newPartQty}
                         onChange={e => setNewPartQty(Math.max(1, Number(e.target.value)))}
                       />
-                      <button type="button" onClick={addEditorPart} className="text-blue-500 text-xs font-bold px-2 hover:text-blue-400 border border-blue-500 rounded">Add</button>
+                      <button type="button" onClick={addEditorPart} className="text-teal-500 text-xs font-bold px-2 hover:text-teal-400 border border-teal-500 rounded">Add</button>
                     </div>
                   </div>
                 )}
@@ -294,7 +294,7 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
         {/* Footer */}
         <div className="px-4 py-3 border-t border-[var(--border)] bg-[var(--panel-2)] flex items-center justify-end gap-2">
           <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
-          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
+          <button className="px-3 py-1 rounded bg-teal-600 text-white text-sm" onClick={handleSubmit}>Save</button>
         </div>
       </div>
     </div>

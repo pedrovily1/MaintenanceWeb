@@ -54,7 +54,7 @@ export const AssetList = ({ assets, selectedAssetId, onSelectAsset }: AssetListP
                     title={asset.name}
                     className="text-[16.0006px] font-semibold items-center box-border caret-transparent flex shrink-0 h-12 justify-center tracking-[-0.2px] w-12 border border-[var(--border)] overflow-hidden rounded-lg border-solid"
                   >
-                    <span className="text-blue-500 box-border caret-transparent flex shrink-0">
+                    <span className="text-teal-500 box-border caret-transparent flex shrink-0">
                       <img
                         src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                         alt="Icon"

@@ -49,14 +49,14 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
                 className="text-gray-600 text-sm items-center bg-transparent caret-transparent flex shrink-0 leading-[16.8px] max-w-full text-center"
               >
                 Sort By:
-                <div className="text-blue-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-blue-500">
-                  <span className="box-border caret-transparent block basis-[0%] grow stroke-blue-500 text-ellipsis text-nowrap overflow-hidden ml-1">
-                    <span className="font-semibold box-border caret-transparent shrink-0 stroke-blue-500 text-nowrap">
+                <div className="text-teal-500 items-center box-border caret-transparent flex basis-[0%] grow stroke-teal-500">
+                  <span className="box-border caret-transparent block basis-[0%] grow stroke-teal-500 text-ellipsis text-nowrap overflow-hidden ml-1">
+                    <span className="font-semibold box-border caret-transparent shrink-0 stroke-teal-500 text-nowrap">
                       Name
                     </span>
                     : Ascending Order
                   </span>
-                  <div className="box-border caret-transparent shrink-0 stroke-blue-500 ml-1 mb-1">
+                  <div className="box-border caret-transparent shrink-0 stroke-teal-500 ml-1 mb-1">
                     <img
                       src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-27.svg"
                       alt="Icon"
@@ -83,12 +83,12 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
           >
             <div className="relative box-border caret-transparent shrink-0 ml-4 mr-3">
               <div className={`items-center box-border caret-transparent flex shrink-0 h-12 justify-center w-12 border rounded-lg ${
-                location.depth > 0 ? 'bg-blue-50 border-blue-200' : 'bg-sky-100 border-blue-300'
+                location.depth > 0 ? 'bg-teal-50 border-teal-200' : 'bg-teal-100 border-teal-300'
               }`}>
                 <img
                   src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-2.svg"
                   alt="Icon"
-                  className={`text-blue-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedLocationId === location.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
+                  className={`text-teal-500 box-border caret-transparent shrink-0 h-[18px] w-[18px] transition-opacity ${selectedLocationId === location.id ? 'opacity-100' : 'group-hover:opacity-100'}`}
                 />
               </div>
             </div>
@@ -114,7 +114,7 @@ export const LocationList = ({ locations, selectedLocationId, onSelectLocation }
               )}
               {location.subLocationsCount > 0 && (
                 <div className="items-center box-border caret-transparent flex shrink-0 my-1">
-                  <span className="text-blue-500 text-[13px] box-border caret-transparent flex items-center gap-1 opacity-90">
+                  <span className="text-teal-500 text-[13px] box-border caret-transparent flex items-center gap-1 opacity-90">
                     {location.subLocationsCount} Sub-Locations
                   </span>
                 </div>

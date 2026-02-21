@@ -50,7 +50,7 @@ export const WorkOrderCard = ({
               style={{ backgroundImage: `url('${assetImageUrl}')` }}
             ></figure>
           ) : (
-            <span className="text-blue-500">
+            <span className="text-teal-500">
               <img src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-7.svg" alt="Asset" className="h-6 w-6" />
             </span>
           )}
@@ -111,9 +111,9 @@ export const WorkOrderCard = ({
           {/* Status Badge */}
           <div className="relative box-border caret-transparent shrink-0">
             <div className={`text-[11px] font-medium items-center flex shrink-0 leading-none px-2 py-1 rounded ${
-              status === 'Open' ? 'bg-sky-100 text-blue-600' : 
+              status === 'Open' ? 'bg-teal-100 text-teal-600' : 
               status === 'Done' ? 'bg-teal-100 text-teal-600' : 
-              status === 'In Progress' ? 'bg-blue-100 text-blue-600' :
+              status === 'In Progress' ? 'bg-teal-100 text-teal-600' :
               status === 'On Hold' ? 'bg-yellow-100 text-yellow-600' :
               'bg-gray-100 text-gray-600'
             }`}>
