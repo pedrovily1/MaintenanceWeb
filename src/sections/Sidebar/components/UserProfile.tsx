@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 import { useUserStore } from "@/store/useUserStore";
-import { PinModal } from "@/components/Common/PinModal";
+import { supabase } from "@/lib/supabase";
 
 export const UserProfile = () => {
   const { activeUser } = useUserStore();
-  const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const isActive = window.location.hash === '#settings';
-  
-  const handleLogout = (e: React.MouseEvent) => {
+
+  const handleLogout = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    localStorage.removeItem("omp-auth");
-    window.location.reload();
+    await supabase.auth.signOut();
   };
 
   return (
     <div className="box-border caret-transparent shrink-0 w-full group/profile">
       <div
-        onClick={() => setIsPinModalOpen(true)}
-        className={`relative items-center cursor-pointer caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600 text-center w-full mt-2 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
+        className={`relative items-center caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600 text-center w-full mt-2 rounded-bl rounded-br rounded-tl rounded-tr justify-center lg:justify-start ${
           isActive ? 'bg-[var(--panel)] text-[var(--accent)] opacity-100' : 'bg-transparent hover:bg-[var(--panel)] opacity-65 hover:opacity-100'
         }`}
-        title="Switch User"
       >
         <div 
           className="items-center bg-[var(--panel)] bg-cover box-border caret-transparent flex fill-gray-600 shrink-0 h-8 justify-center stroke-gray-600 w-8 bg-center rounded-[50%]"
@@ -33,16 +29,6 @@ export const UserProfile = () => {
           <div className="items-center box-border caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600">
             <div className="font-medium box-border caret-transparent fill-gray-600 stroke-gray-600 text-left text-ellipsis text-nowrap overflow-hidden">
               {activeUser?.fullName || 'Admin'}
-            </div>
-          </div>
-          <div className="text-gray-600 items-center box-border caret-transparent flex fill-gray-600 shrink-0 stroke-gray-600">
-            <img
-              src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-18.svg"
-              alt="Icon"
-              className={`text-accent box-border caret-transparent shrink-0 h-3.5 w-3.5 mr-1 ${isActive ? 'opacity-100' : ''}`}
-            />
-            <div className="box-border caret-transparent fill-gray-600 shrink-0 stroke-gray-600">
-              Switch User
             </div>
           </div>
         </div>
@@ -63,7 +49,6 @@ export const UserProfile = () => {
           className={`hidden lg:block text-accent box-border caret-transparent shrink-0 h-5 w-5 group-hover/profile:opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}`}
         />
       </div>
-      <PinModal isOpen={isPinModalOpen} onClose={() => setIsPinModalOpen(false)} />
     </div>
   );
 };

@@ -15,7 +15,6 @@ import { Settings } from "@/sections/Settings";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 import { supabase } from "@/lib/supabase";
 
-
 type View =
     | "workorders"
     | "reporting"
@@ -31,41 +30,36 @@ type View =
 
 export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
-  const { ensureActiveRecurringInstances } = useWorkOrderStore();
   const [isAuthed, setIsAuthed] = useState(false);
 
+  const { ensureActiveRecurringInstances } = useWorkOrderStore();
+
+  // 🔐 Supabase auth listener (single source of truth)
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
+    const { data: subscription } = supabase.auth.onAuthStateChange(
         (_event, session) => {
           setIsAuthed(!!session);
         }
     );
 
+    // Initial session check on app load
     supabase.auth.getSession().then(({ data }) => {
       setIsAuthed(!!data.session);
     });
 
     return () => {
-      listener.subscription.unsubscribe();
+      subscription.subscription.unsubscribe();
     };
   }, []);
 
-  /*useEffect(() => {
-     Sync auth state if localStorage changes (e.g. from other tabs or our own Login/Logout)
-    const checkAuth = () => {
-      setIsAuthed(localStorage.getItem("omp-auth") === "true");
-    };
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
-  }, []);
-*/
-
+  // ⚙️ Only run recurring logic when authenticated
   useEffect(() => {
     if (isAuthed) {
       ensureActiveRecurringInstances();
     }
-  }, [ensureActiveRecurringInstances, isAuthed]);
+  }, [isAuthed, ensureActiveRecurringInstances]);
 
+  // 🔁 Hash-based navigation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "") as View;
@@ -120,6 +114,7 @@ export const App = () => {
     }
   };
 
+  // 🚪 Gate everything behind auth
   if (!isAuthed) {
     return <Login />;
   }
@@ -127,7 +122,6 @@ export const App = () => {
   return (
       <div className="flex h-screen w-full overflow-hidden bg-[var(--bg)] text-[var(--text)]">
         <Sidebar currentView={currentView} />
-
         <main className="flex min-w-0 flex-1 overflow-hidden bg-[var(--panel-2)] bg-radial-gradient">
           {renderView()}
         </main>

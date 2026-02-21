@@ -18,9 +18,6 @@ export const Login = () => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: {
-        shouldCreateUser: false,
-      },
     });
 
     if (error) {
