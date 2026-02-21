@@ -102,6 +102,8 @@ export interface WorkOrder {
   sections: WorkOrderSection[];
   // Attached procedures
   procedureInstances?: ProcedureInstance[];
+  /** Parts consumed by this work order (deducted from inventory on completion) */
+  parts?: import('./part').WorkOrderPart[];
   attachments: Attachment[]; // Global attachments
   createdAt: string;
   updatedAt: string;

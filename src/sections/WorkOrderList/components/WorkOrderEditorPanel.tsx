@@ -3,6 +3,9 @@ import { WorkOrder, WorkOrderStatus, WorkOrderPriority } from '@/types/workOrder
 import { useAssetStore } from '@/store/useAssetStore';
 import { LocationTreeSelector } from '@/components/LocationTreeSelector';
 import { getLocationSync } from '@/store/useLocationStore';
+import { usePartStore } from '@/store/usePartStore';
+import { getTotalStock } from '@/types/part';
+import type { WorkOrderPart } from '@/types/part';
 
 export type WorkOrderEditorValue = Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'>;
 
@@ -31,9 +34,48 @@ const empty: WorkOrderEditorValue = {
 
 export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSubmit }) => {
   const { assets } = useAssetStore();
+  const { parts } = usePartStore();
   const base = useMemo(() => ({ ...empty, ...initial }), [initial]);
   const [value, setValue] = useState<WorkOrderEditorValue>(base);
   const [errors, setErrors] = useState<{ title?: string }>({});
+  const [newPartId, setNewPartId] = useState('');
+  const [newPartLocId, setNewPartLocId] = useState('');
+  const [newPartQty, setNewPartQty] = useState(1);
+  const [partAddError, setPartAddError] = useState<string | null>(null);
+
+  const selectedPart = parts.find(p => p.id === newPartId);
+
+  const addEditorPart = () => {
+    if (!newPartId) { setPartAddError('Select a part.'); return; }
+    if (!newPartLocId) { setPartAddError('Select a location.'); return; }
+    if (newPartQty <= 0) { setPartAddError('Quantity must be > 0.'); return; }
+    const part = parts.find(p => p.id === newPartId);
+    if (!part) return;
+    const inv = part.inventory.find(i => i.locationId === newPartLocId);
+    if (!inv) { setPartAddError('Part not stocked at this location.'); return; }
+    if (inv.quantity < newPartQty) {
+      setPartAddError(`Only ${inv.quantity} ${part.unit || 'unit(s)'} available.`);
+      return;
+    }
+    const wop: WorkOrderPart = {
+      partId: part.id,
+      partName: part.name,
+      locationId: inv.locationId,
+      locationName: inv.locationName,
+      quantityUsed: newPartQty,
+      consumed: false,
+    };
+    const existing = (value.parts || []);
+    if (existing.some(p => p.partId === wop.partId && p.locationId === wop.locationId)) {
+      setPartAddError('Already added.'); return;
+    }
+    set({ parts: [...existing, wop] });
+    setNewPartId(''); setNewPartLocId(''); setNewPartQty(1); setPartAddError(null);
+  };
+
+  const removeEditorPart = (partId: string, locationId: string) => {
+    set({ parts: (value.parts || []).filter(p => !(p.partId === partId && p.locationId === locationId)) });
+  };
 
   React.useEffect(() => {
     setValue(base);
@@ -166,6 +208,85 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
                 onChange={(e) => set({ description: e.target.value })}
                 className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm min-h-[100px]"
               />
+            </div>
+
+            {/* Parts */}
+            <div className="col-span-2">
+              <label className="block text-xs text-gray-500 mb-2 font-semibold uppercase tracking-wide">
+                Parts
+              </label>
+              {(value.parts || []).length > 0 && (
+                <div className="border border-[var(--border)] rounded overflow-hidden mb-2">
+                  <table className="w-full text-xs">
+                    <thead className="bg-[var(--panel-2)] border-b border-[var(--border)]">
+                      <tr>
+                        <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Part</th>
+                        <th className="text-left px-2 py-1 font-medium text-[var(--muted)] uppercase">Location</th>
+                        <th className="text-center px-2 py-1 font-medium text-[var(--muted)] uppercase">Qty</th>
+                        <th className="px-2 py-1"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(value.parts || []).map(wop => (
+                        <tr key={`${wop.partId}-${wop.locationId}`} className={`border-b border-[var(--border)] last:border-0 ${wop.consumed ? 'opacity-60' : ''}`}>
+                          <td className="px-2 py-1 font-medium">{wop.partName}</td>
+                          <td className="px-2 py-1 text-gray-500">{wop.locationName}</td>
+                          <td className="px-2 py-1 text-center">{wop.quantityUsed}</td>
+                          <td className="px-2 py-1 text-center">
+                            {wop.consumed ? (
+                              <span className="text-[9px] text-green-600 font-bold uppercase">Consumed</span>
+                            ) : (
+                              <button type="button" onClick={() => removeEditorPart(wop.partId, wop.locationId)} className="text-red-400 hover:text-red-600 text-xs">✕</button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              <div className="border border-dashed border-[var(--border)] rounded p-2 space-y-2">
+                <select
+                  className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
+                  value={newPartId}
+                  onChange={e => { setNewPartId(e.target.value); setNewPartLocId(''); setPartAddError(null); }}
+                >
+                  <option value="">Add a part…</option>
+                  {parts.map(p => {
+                    const total = getTotalStock(p);
+                    return <option key={p.id} value={p.id}>{p.name} ({total} available)</option>;
+                  })}
+                </select>
+                {selectedPart && (
+                  <div className="grid grid-cols-2 gap-2">
+                    <select
+                      className="w-full border border-[var(--border)] rounded px-2 py-1 text-sm"
+                      value={newPartLocId}
+                      onChange={e => setNewPartLocId(e.target.value)}
+                    >
+                      <option value="">Select location…</option>
+                      {selectedPart.inventory.map(inv => (
+                        <option key={inv.locationId} value={inv.locationId}>
+                          {inv.locationName} ({inv.quantity} in stock)
+                        </option>
+                      ))}
+                    </select>
+                    <div className="flex gap-1">
+                      <input
+                        type="number"
+                        min={1}
+                        className="flex-1 border border-[var(--border)] rounded px-2 py-1 text-sm"
+                        value={newPartQty}
+                        onChange={e => setNewPartQty(Math.max(1, Number(e.target.value)))}
+                      />
+                      <button type="button" onClick={addEditorPart} className="text-blue-500 text-xs font-bold px-2 hover:text-blue-400 border border-blue-500 rounded">Add</button>
+                    </div>
+                  </div>
+                )}
+                {partAddError && (
+                  <div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded px-2 py-1">{partAddError}</div>
+                )}
+              </div>
             </div>
           </div>
         </div>
