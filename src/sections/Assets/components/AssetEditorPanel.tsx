@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useSiteStore } from '@/store/useSiteStore';
 import type { Asset, AssetStatus, AssetCriticality } from '@/types/asset';
 import { AssetAttachments } from './AssetAttachments';
 import type { Attachment } from '@/types/workOrder';
@@ -36,6 +37,7 @@ const empty: AssetEditorValue = {
 };
 
 export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSubmit }) => {
+  const { activeSiteId } = useSiteStore();
   const base = useMemo(() => ({ ...empty, ...initial }), [initial]);
   const [value, setValue] = useState<AssetEditorValue>(base);
   const [errors, setErrors] = useState<{ name?: string; status?: string }>({});
@@ -163,7 +165,7 @@ export const AssetEditorPanel: React.FC<Props> = ({ open, initial, onClose, onSu
         {/* Footer */}
         <div className="px-4 py-3 border-t border-[var(--border)] bg-gray-50 flex items-center justify-end gap-2">
           <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
-          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
+          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed" onClick={handleSubmit} disabled={!activeSiteId}>Save</button>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSiteStore } from '@/store/useSiteStore';
 import { Category } from '@/types/category';
 
 const ICON_OPTIONS = [
@@ -29,6 +30,7 @@ interface CategoryModalProps {
 }
 
 export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, onSave, category }) => {
+  const { activeSiteId } = useSiteStore();
   const [name, setName] = useState('');
   const [icon, setIcon] = useState(ICON_OPTIONS[0].value);
   const [color, setColor] = useState(COLOR_OPTIONS[0].value);
@@ -136,7 +138,8 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-bold text-white bg-accent hover:bg-accent-hover rounded"
+              disabled={!activeSiteId}
+              className="px-4 py-2 text-sm font-bold text-white bg-accent hover:bg-accent-hover rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {category ? 'Save Changes' : 'Create Category'}
             </button>

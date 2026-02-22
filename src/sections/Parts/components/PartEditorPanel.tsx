@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSiteStore } from '@/store/useSiteStore';
 import { Part, PartType, PartInventory } from '@/types/part';
 import { useLocationStore } from '@/store/useLocationStore';
 import { ImageUpload } from '@/components/ImageUpload';
@@ -23,6 +24,7 @@ const EMPTY: Omit<Part, 'id' | 'createdAt' | 'updatedAt'> = {
 };
 
 export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditorPanelProps) => {
+  const { activeSiteId } = useSiteStore();
   const { locations } = useLocationStore();
   const [form, setForm] = useState<Omit<Part, 'id' | 'createdAt' | 'updatedAt'>>(EMPTY);
   const [newLocId, setNewLocId] = useState('');
@@ -111,7 +113,8 @@ export const PartEditorPanel = ({ open, initial, onClose, onSubmit }: PartEditor
             <button
               type="button"
               onClick={handleSubmit}
-              className="bg-accent text-white border border-accent px-3 py-1 rounded text-sm hover:bg-accent-hover transition-colors"
+              disabled={!activeSiteId}
+              className="bg-accent text-white border border-accent px-3 py-1 rounded text-sm hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {initial ? 'Save' : 'Create'}
             </button>
