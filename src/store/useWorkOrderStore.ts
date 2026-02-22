@@ -12,7 +12,6 @@ const notify = () => {
 
 export const useWorkOrderStore = () => {
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>(globalWorkOrders);
-  const { activeSiteId, activeUserId } = useSiteStore();
 
   useEffect(() => {
     const l = () => setWorkOrders([...globalWorkOrders]);
@@ -36,6 +35,7 @@ export const useWorkOrderStore = () => {
         console.error("Supabase error fetching work orders:", error);
         globalWorkOrders = [];
       } else {
+        console.log('[loadWorkOrders] fetched:', data?.length, 'rows', data);
         globalWorkOrders = data as WorkOrder[];
       }
       notify();
@@ -66,11 +66,9 @@ export const useWorkOrderStore = () => {
       attachments: wo.attachments || [],
     } as WorkOrder;
 
-    // Optimistic update
     globalWorkOrders = [tempWO, ...globalWorkOrders];
     notify();
 
-    // Actual insert
     (async () => {
       try {
         const { data: lastWO, error: fetchError } = await supabase
@@ -108,9 +106,9 @@ export const useWorkOrderStore = () => {
           status: wo.status || 'Open',
           priority: wo.priority || 'Medium',
           due_date: wo.dueDate,
-          start_date: wo.startDate,
-          asset_id: wo.assetId,
-          location_id: wo.locationId,
+          start_date: wo.startDate || null,
+          asset_id: wo.assetId || null,
+          location_id: wo.locationId || null,
           work_type: wo.workType,
           work_order_number: workOrderNumber,
           created_by_user_id: activeUserId,
@@ -143,7 +141,6 @@ export const useWorkOrderStore = () => {
     return tempWO;
   }, []);
 
-
   const updateWorkOrder = useCallback((id: string, updates: Partial<WorkOrder>) => {
     const originalWO = globalWorkOrders.find(wo => wo.id === id);
     if (!originalWO) return;
@@ -155,12 +152,28 @@ export const useWorkOrderStore = () => {
 
     (async () => {
       try {
+        const dbUpdates: Record<string, any> = {
+          updated_at: new Date().toISOString()
+        };
+        if (updates.title !== undefined) dbUpdates.title = updates.title;
+        if (updates.description !== undefined) dbUpdates.description = updates.description;
+        if (updates.status !== undefined) dbUpdates.status = updates.status;
+        if (updates.priority !== undefined) dbUpdates.priority = updates.priority;
+        if (updates.workType !== undefined) dbUpdates.work_type = updates.workType;
+        if (updates.startDate !== undefined) dbUpdates.start_date = updates.startDate || null;
+        if (updates.dueDate !== undefined) dbUpdates.due_date = updates.dueDate || null;
+        if (updates.completedAt !== undefined) dbUpdates.completed_at = updates.completedAt || null;
+        if (updates.assetId !== undefined) dbUpdates.asset_id = updates.assetId || null;
+        if (updates.locationId !== undefined) dbUpdates.location_id = updates.locationId || null;
+        if (updates.categoryId !== undefined) dbUpdates.category_id = updates.categoryId || null;
+        if (updates.vendorId !== undefined) dbUpdates.vendor_id = updates.vendorId || null;
+        if (updates.assignedTo !== undefined) dbUpdates.assigned_to_text = updates.assignedTo || null;
+        if (updates.assignedToUserId !== undefined) dbUpdates.assigned_to_user_id = updates.assignedToUserId || null;
+        if (updates.isRepeating !== undefined) dbUpdates.is_repeating = updates.isRepeating;
+
         const { data, error } = await supabase
             .from('work_orders')
-            .update({
-              ...updates,
-              updated_at: new Date().toISOString()
-            })
+            .update(dbUpdates)
             .eq('id', id)
             .select()
             .single();

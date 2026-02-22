@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { DEFAULT_SECTIONS } from "@/utils/defaultSections";
+import { useSiteStore } from "@/store/useSiteStore";
 import { WorkOrder } from "@/types/workOrder";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import { useVendorStore } from "@/store/useVendorStore";
@@ -21,9 +21,9 @@ interface WorkOrderCreatePanelProps {
 }
 
 // NOTE: This panel reuses the same visual language as the detail pane (spacing, typography, borders)
-// It is lightweight and controlled by the parent to preserve partially entered data if user navigates away.
 export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: WorkOrderCreatePanelProps) => {
-  const { activeCategories, getCategoryById } = useCategoryStore();
+  const { activeCategories } = useCategoryStore();
+  const { activeSiteId } = useSiteStore();
   const { activeVendors } = useVendorStore();
   const { assets } = useAssetStore();
   const { parts } = usePartStore();
@@ -109,7 +109,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                 </button>
                 <button
                   type="button"
-                  disabled={!isValid}
+                  disabled={!isValid || !activeSiteId}
                   onClick={() => onCreate(value)}
                   className={`relative font-bold items-center caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] text-center text-nowrap border px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid transition-colors ${isValid ? 'text-white bg-accent border-accent hover:bg-accent-hover hover:border-accent-hover cursor-pointer' : 'text-gray-400 bg-gray-200 border-[var(--border)] cursor-not-allowed'}`}
                 >
@@ -242,7 +242,6 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                       onChange={(e) => {
                         const selectedAsset = assets.find(a => a.id === e.target.value);
                         if (selectedAsset) {
-                          // Auto-sync location from asset
                           const loc = selectedAsset.locationId ? getLocationSync(selectedAsset.locationId) : undefined;
                           onChange({
                             assetId: selectedAsset.id,
@@ -499,7 +498,6 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
                           value={value.schedule?.startDate || value.startDate || ''}
                           onChange={(e) => {
                             update('schedule', { ...value.schedule, startDate: e.target.value });
-                            // Also sync main startDate for consistency if needed
                             update('startDate', e.target.value);
                           }}
                         />
@@ -525,6 +523,7 @@ export const WorkOrderCreatePanel = ({ value, onChange, onCancel, onCreate }: Wo
 export const buildDefaultDraft = (overrides?: Partial<DraftWorkOrder>): DraftWorkOrder => ({
   title: "",
   description: "",
+  createdByUserId: '',
   status: 'Open',
   priority: 'Medium',
   startDate: new Date().toISOString().split('T')[0],

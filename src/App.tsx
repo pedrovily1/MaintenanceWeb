@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
 import { Login } from "@/sections/Login";
@@ -23,7 +23,6 @@ import { useProcedureStore } from "@/store/useProcedureStore";
 import { useVendorStore } from "@/store/useVendorStore";
 import { useMeterStore } from "@/store/useMeterStore";
 import { supabase } from "@/lib/supabase";
-import { useBootstrapSession } from "@/hooks/useBootstrapSession";
 
 type View =
     | "workorders"
@@ -41,7 +40,9 @@ type View =
 export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
   const [isAuthed, setIsAuthed] = useState(false);
-  useBootstrapSession();
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const hasBootstrapped = useRef(false);
 
   const { loadWorkOrders } = useWorkOrderStore();
   const { loadLocations } = useLocationStore();
@@ -55,9 +56,9 @@ export const App = () => {
   const { setActiveSiteId, setActiveUserId, setIsBootstrapping } = useSiteStore();
 
   const resolveSiteAndLoadData = useCallback(async (userId: string) => {
+    console.log("[App] resolveSiteAndLoadData called for user:", userId);
     setIsBootstrapping(true);
     try {
-      console.log("Resolving site for user:", userId);
       setActiveUserId(userId);
 
       const { data, error } = await supabase
@@ -67,67 +68,89 @@ export const App = () => {
           .limit(1)
           .maybeSingle();
 
-      console.log('[user_sites] query result:', { data, error });
+      console.log("[App] user_sites query result:", { data, error });
 
       if (error) {
-        console.error("Error resolving site:", error);
+        console.error("[App] Error resolving site:", error);
         return;
       }
 
       if (data?.site_id) {
-        console.log("Resolved site ID:", data.site_id);
+        console.log("[App] Resolved site ID:", data.site_id);
         setActiveSiteId(data.site_id);
-        console.log('[App] Bootstrap complete:', { activeUserId: userId, activeSiteId: data.site_id });
 
-        loadWorkOrders(data.site_id);
-        loadLocations(data.site_id);
-        loadAssets(data.site_id);
-        loadParts(data.site_id);
-        loadCategories(data.site_id);
-        loadUsers(data.site_id);
-        loadProcedures(data.site_id);
-        loadVendors(data.site_id);
-        loadMeters(data.site_id);
+        console.log("[App] Loading all store data for site:", data.site_id);
+        await Promise.all([
+          loadWorkOrders(data.site_id),
+          loadLocations(data.site_id),
+          loadAssets(data.site_id),
+          loadParts(data.site_id),
+          loadCategories(data.site_id),
+          loadUsers(data.site_id),
+          loadProcedures(data.site_id),
+          loadVendors(data.site_id),
+          loadMeters(data.site_id),
+        ]);
+        console.log("[App] All store data loaded successfully");
       } else {
-        console.warn("No site found for user:", userId);
+        console.warn("[App] No site found for user:", userId);
         setActiveSiteId(null);
       }
     } catch (err) {
-      console.error("Failed to resolve site and load data:", err);
+      console.error("[App] Failed to resolve site and load data:", err);
     } finally {
       setIsBootstrapping(false);
+      console.log("[App] Bootstrap finished, isBootstrapping set to false");
     }
   }, [setActiveSiteId, setActiveUserId, setIsBootstrapping, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors, loadMeters]);
 
+  // Keep a stable ref to the latest resolveSiteAndLoadData
+  const resolveSiteAndLoadDataRef = useRef(resolveSiteAndLoadData);
+  resolveSiteAndLoadDataRef.current = resolveSiteAndLoadData;
+
+  // Stable subscription — no deps, never tears down and re-subscribes
   useEffect(() => {
+    console.log("[App] Setting up auth subscription (once)");
+
     const { data: subscription } = supabase.auth.onAuthStateChange(
         async (event, session) => {
-          if (event === 'TOKEN_REFRESHED') return;
+          console.log("[App] Auth event:", event, "| session:", !!session, "| hasBootstrapped:", hasBootstrapped.current);
+
+          if (event === "TOKEN_REFRESHED") {
+            console.log("[App] Token refreshed — skipping");
+            return;
+          }
+
           setIsAuthed(!!session);
-          if (session?.user) {
-            await resolveSiteAndLoadData(session.user.id);
-          } else {
+          setAuthChecked(true);
+
+          if (!session?.user) {
+            console.log("[App] No session — resetting state");
+            hasBootstrapped.current = false;
             setActiveSiteId(null);
             setActiveUserId(null);
             setIsBootstrapping(false);
+            return;
+          }
+
+          if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
+            if (!hasBootstrapped.current) {
+              hasBootstrapped.current = true;
+              // Defer — don't block the auth callback
+              setTimeout(() => {
+                console.log("[App] Deferred bootstrap for user:", session.user.id);
+                resolveSiteAndLoadDataRef.current(session.user.id);
+              }, 0);
+            }
           }
         }
     );
 
-    supabase.auth.getSession().then(async ({ data }) => {
-      const session = data.session;
-      setIsAuthed(!!session);
-      if (session?.user) {
-        await resolveSiteAndLoadData(session.user.id);
-      } else {
-        setIsBootstrapping(false);
-      }
-    });
-
     return () => {
+      console.log("[App] Tearing down auth subscription");
       subscription.subscription.unsubscribe();
     };
-  }, [resolveSiteAndLoadData]);
+  }, []); // empty deps — stable subscription
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -160,6 +183,12 @@ export const App = () => {
       default: return <MainContent />;
     }
   };
+
+  console.log("[App] Render — authChecked:", authChecked, "| isAuthed:", isAuthed, "| currentView:", currentView);
+
+  if (!authChecked) {
+    return null;
+  }
 
   if (!isAuthed) {
     return <Login />;

@@ -65,15 +65,14 @@ export const useAssetStore = () => {
             status: asset.status,
             criticality: asset.criticality,
             asset_tag: asset.assetTag,
-            location_id: asset.locationId,
-            location_name: asset.locationName,
-            parent_asset_id: asset.parentAssetId,
+            location_id: asset.locationId || null,
+            parent_asset_id: asset.parentAssetId || null,
             category: asset.category,
             manufacturer: asset.manufacturer,
             model: asset.model,
             serial_number: asset.serialNumber,
-            install_date: asset.installDate,
-            warranty_end: asset.warrantyEnd,
+            install_date: asset.installDate || null,
+            warranty_end: asset.warrantyEnd || null,
             image_url: asset.imageUrl,
             notes: asset.notes,
           })
@@ -109,19 +108,18 @@ export const useAssetStore = () => {
         if (updates.name !== undefined) dbUpdates.name = updates.name;
         if (updates.description !== undefined) dbUpdates.description = updates.description;
         if (updates.status !== undefined) dbUpdates.status = updates.status;
-        if (updates.criticality !== undefined) dbUpdates.criticality = updates.criticality;
-        if (updates.assetTag !== undefined) dbUpdates.asset_tag = updates.assetTag;
-        if (updates.locationId !== undefined) dbUpdates.location_id = updates.locationId;
-        if (updates.locationName !== undefined) dbUpdates.location_name = updates.locationName;
-        if (updates.parentAssetId !== undefined) dbUpdates.parent_asset_id = updates.parentAssetId;
-        if (updates.category !== undefined) dbUpdates.category = updates.category;
-        if (updates.manufacturer !== undefined) dbUpdates.manufacturer = updates.manufacturer;
-        if (updates.model !== undefined) dbUpdates.model = updates.model;
-        if (updates.serialNumber !== undefined) dbUpdates.serial_number = updates.serialNumber;
-        if (updates.installDate !== undefined) dbUpdates.install_date = updates.installDate;
-        if (updates.warrantyEnd !== undefined) dbUpdates.warranty_end = updates.warrantyEnd;
-        if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl;
-        if (updates.notes !== undefined) dbUpdates.notes = updates.notes;
+        if (updates.criticality !== undefined) dbUpdates.criticality = updates.criticality || null;
+        if (updates.assetTag !== undefined) dbUpdates.asset_tag = updates.assetTag || null;
+        if (updates.locationId !== undefined) dbUpdates.location_id = updates.locationId || null;
+        if (updates.parentAssetId !== undefined) dbUpdates.parent_asset_id = updates.parentAssetId || null;
+        if (updates.category !== undefined) dbUpdates.category = updates.category || null;
+        if (updates.manufacturer !== undefined) dbUpdates.manufacturer = updates.manufacturer || null;
+        if (updates.model !== undefined) dbUpdates.model = updates.model || null;
+        if (updates.serialNumber !== undefined) dbUpdates.serial_number = updates.serialNumber || null;
+        if (updates.installDate !== undefined) dbUpdates.install_date = updates.installDate || null;
+        if (updates.warrantyEnd !== undefined) dbUpdates.warranty_end = updates.warrantyEnd || null;
+        if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl || null;
+        if (updates.notes !== undefined) dbUpdates.notes = updates.notes || null;
 
         const { error } = await supabase
           .from('assets')
@@ -148,6 +146,7 @@ export const useAssetStore = () => {
           .from('assets')
           .delete()
           .eq('id', id);
+        console.log('[deleteAsset] result:', { id, error });
 
         if (error) throw error;
       } catch (error) {

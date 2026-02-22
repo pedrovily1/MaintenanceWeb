@@ -102,7 +102,6 @@ export const WorkOrderEditorPanel: React.FC<Props> = ({ open, initial, onClose, 
   const handleAssetChange = (assetId: string) => {
     const selectedAsset = assets.find(a => a.id === assetId);
     if (selectedAsset) {
-      // Auto-sync location from asset
       const loc = selectedAsset.locationId ? getLocationSync(selectedAsset.locationId) : undefined;
       set({
         assetId: selectedAsset.id,
