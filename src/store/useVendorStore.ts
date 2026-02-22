@@ -1,54 +1,22 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Vendor } from '../types/vendor';
+import { useSiteStore } from './useSiteStore';
 
-const STORAGE_KEY = 'vendors_v1';
-const SELECTED_VENDOR_KEY = 'selected_vendor_id_v1';
-
-// Initialize with ZERO vendors by default (per requirements)
+// Initialize with ZERO vendors by default
 const DEFAULT_VENDORS: Vendor[] = [];
 
 let globalVendors: Vendor[] = [];
 let globalSelectedVendorId: string | null = null;
 const listeners = new Set<() => void>();
 
-// Hydrate from localStorage
-const saved = localStorage.getItem(STORAGE_KEY);
-if (saved) {
-  try {
-    const parsed = JSON.parse(saved);
-    if (Array.isArray(parsed)) {
-      globalVendors = parsed;
-    } else {
-      globalVendors = DEFAULT_VENDORS;
-    }
-  } catch (e) {
-    console.error('Failed to parse saved vendors', e);
-    globalVendors = DEFAULT_VENDORS;
-  }
-} else {
-  globalVendors = DEFAULT_VENDORS;
-}
-
-const savedSelectedId = localStorage.getItem(SELECTED_VENDOR_KEY);
-if (savedSelectedId && globalVendors.find(v => v.id === savedSelectedId)) {
-  globalSelectedVendorId = savedSelectedId;
-} else {
-  globalSelectedVendorId = globalVendors[0]?.id || null;
-}
-
 const notify = () => {
   listeners.forEach(l => l());
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(globalVendors));
-  if (globalSelectedVendorId) {
-    localStorage.setItem(SELECTED_VENDOR_KEY, globalSelectedVendorId);
-  } else {
-    localStorage.removeItem(SELECTED_VENDOR_KEY);
-  }
 };
 
 export const useVendorStore = () => {
   const [vendors, setVendors] = useState<Vendor[]>(globalVendors);
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(globalSelectedVendorId);
+  const { activeUserId, activeSiteId } = useSiteStore();
 
   useEffect(() => {
     const l = () => {
@@ -61,6 +29,13 @@ export const useVendorStore = () => {
     };
   }, []);
 
+  const loadVendors = useCallback(async (siteId: string) => {
+    if (!siteId) return;
+    // For now, Phase 1 doesn't have a vendorService but let's keep it site-scoped
+    // If there was a fetchVendors(siteId), we'd call it here.
+    console.log("loadVendors called for site:", siteId);
+  }, []);
+
   const createVendor = useCallback((
     payload: {
       name: string;
@@ -71,80 +46,23 @@ export const useVendorStore = () => {
       address?: string;
       notes?: string;
     },
-    userId: string = 'admin-001'
+    userId: string = activeUserId || ''
   ) => {
-    // Unique name check (case-insensitive)
-    if (globalVendors.some(v => v.name.toLowerCase() === payload.name.toLowerCase() && v.isActive)) {
-      throw new Error('A vendor with this name already exists.');
-    }
-    const now = new Date().toISOString();
-    const newVendor: Vendor = {
-      id: crypto.randomUUID(),
-      name: payload.name,
-      trade: payload.trade,
-      contactName: payload.contactName,
-      phone: payload.phone,
-      email: payload.email,
-      address: payload.address,
-      notes: payload.notes,
-      isActive: true,
-      createdAt: now,
-      createdByUserId: userId,
-      updatedAt: now,
-      updatedByUserId: userId
-    };
-    globalVendors = [...globalVendors, newVendor];
-    notify();
-    return newVendor;
-  }, []);
+    // No-op for Phase 1/2 as we are moving to Supabase
+    return {} as Vendor;
+  }, [activeUserId]);
 
   const updateVendor = useCallback((
     id: string,
     patch: Partial<Omit<Vendor, 'id' | 'createdAt' | 'createdByUserId'>>,
-    userId: string = 'admin-001'
+    userId: string = activeUserId || ''
   ) => {
-    // Check unique name if name is being updated
-    if (patch.name) {
-      const existing = globalVendors.find(
-        v => v.name.toLowerCase() === patch.name!.toLowerCase() && v.id !== id && v.isActive
-      );
-      if (existing) {
-        throw new Error('A vendor with this name already exists.');
-      }
-    }
-    globalVendors = globalVendors.map(v => {
-      if (v.id === id) {
-        return {
-          ...v,
-          ...patch,
-          updatedAt: new Date().toISOString(),
-          updatedByUserId: userId
-        };
-      }
-      return v;
-    });
-    notify();
-  }, []);
+    // No-op for Phase 1/2 as we are moving to Supabase
+  }, [activeUserId]);
 
-  const archiveVendor = useCallback((id: string, userId: string = 'admin-001') => {
-    globalVendors = globalVendors.map(v => {
-      if (v.id === id) {
-        return {
-          ...v,
-          isActive: false,
-          updatedAt: new Date().toISOString(),
-          updatedByUserId: userId
-        };
-      }
-      return v;
-    });
-    // If archived vendor was selected, select first active vendor
-    if (globalSelectedVendorId === id) {
-      const active = globalVendors.filter(v => v.isActive);
-      globalSelectedVendorId = active[0]?.id || null;
-    }
-    notify();
-  }, []);
+  const archiveVendor = useCallback((id: string, userId: string = activeUserId || '') => {
+    // No-op for Phase 1/2 as we are moving to Supabase
+  }, [activeUserId]);
 
   const deleteVendorHard = useCallback((id: string) => {
     // Note: Caller must check if vendor is used in work orders before calling
@@ -186,7 +104,8 @@ export const useVendorStore = () => {
     archiveVendor,
     deleteVendorHard,
     selectVendor,
-    getVendorById
+    getVendorById,
+    loadVendors,
   };
 };
 

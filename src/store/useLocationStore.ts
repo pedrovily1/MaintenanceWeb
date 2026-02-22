@@ -1,83 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Location } from '@/types/location';
-
-const STORAGE_KEY = 'locations_v1';
-
-const SEED_DATA: Location[] = [
-  {
-    id: '2687779',
-    name: 'General',
-    description: 'This is the default location. When you create assets without assigning a location they will be placed here.',
-    address: '',
-    parentLocationId: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '3368477',
-    name: 'General Storage',
-    description: '',
-    address: '',
-    parentLocationId: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2698783',
-    name: 'Slovakia',
-    description: '',
-    address: 'Airbase CSA 1, Sliac, 96231, Slovakia',
-    parentLocationId: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2698784',
-    name: 'Main Building',
-    description: 'Main building complex',
-    address: '',
-    parentLocationId: '2698783',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2698785',
-    name: 'Generator Room',
-    description: 'Emergency power equipment room',
-    address: '',
-    parentLocationId: '2698783',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2698786',
-    name: 'Lobby',
-    description: 'Main entrance lobby',
-    address: '',
-    parentLocationId: '2698783',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+import { fetchLocations } from '@/services/locationService';
 
 let globalLocations: Location[] = [];
 const listeners = new Set<() => void>();
 
-// Load from localStorage
-const saved = localStorage.getItem(STORAGE_KEY);
-if (saved) {
-  try {
-    globalLocations = JSON.parse(saved);
-  } catch {
-    globalLocations = SEED_DATA;
-  }
-} else {
-  globalLocations = SEED_DATA;
-}
-
 const notify = () => {
   listeners.forEach(l => l());
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(globalLocations));
 };
 
 /** Get all descendant location IDs (recursive) for a given locationId */
@@ -111,36 +40,30 @@ export const useLocationStore = () => {
     return () => { listeners.delete(l); };
   }, []);
 
+  const loadLocations = useCallback(async (siteId: string) => {
+    if (!siteId) return;
+    try {
+      const data = await fetchLocations(siteId);
+      globalLocations = data;
+      notify();
+    } catch (error) {
+      console.error("Failed to load locations:", error);
+      globalLocations = [];
+      notify();
+    }
+  }, []);
+
   const addLocation = useCallback((loc: Omit<Location, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const now = new Date().toISOString();
-    const newLoc: Location = {
-      ...loc,
-      id: crypto.randomUUID(),
-      createdAt: now,
-      updatedAt: now,
-    };
-    globalLocations = [...globalLocations, newLoc];
-    notify();
-    return newLoc;
+    // No-op for Phase 1
+    return {} as Location;
   }, []);
 
   const updateLocation = useCallback((id: string, updates: Partial<Location>) => {
-    globalLocations = globalLocations.map(l =>
-      l.id === id ? { ...l, ...updates, updatedAt: new Date().toISOString() } : l
-    );
-    notify();
+    // No-op for Phase 1
   }, []);
 
   const deleteLocation = useCallback((id: string): { ok: boolean; reason?: string } => {
-    // Safety: check for sub-locations
-    const children = globalLocations.filter(l => l.parentLocationId === id);
-    if (children.length > 0) {
-      return { ok: false, reason: `Cannot delete: ${children.length} sub-location(s) exist. Reassign or delete them first.` };
-    }
-    // Safety checks for assets and work orders are done by the caller via
-    // the hasAssetsAtLocation / hasWorkOrdersAtLocation helpers below.
-    globalLocations = globalLocations.filter(l => l.id !== id);
-    notify();
+    // No-op for Phase 1
     return { ok: true };
   }, []);
 
@@ -158,6 +81,7 @@ export const useLocationStore = () => {
 
   return {
     locations,
+    loadLocations,
     addLocation,
     updateLocation,
     deleteLocation,

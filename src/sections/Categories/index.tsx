@@ -44,7 +44,7 @@ export const Categories = () => {
   };
 
   const handleSaveCategory = (data: { name: string; icon: string; color: string; description?: string }) => {
-    const userId = activeUser?.id || 'admin-001';
+    const userId = activeUser?.id || '4d6f298b-77dd-44ca-b3c8-0eaeade86bce';
     if (editingCategory) {
       updateCategory(editingCategory.id, data, userId);
     } else {
@@ -55,14 +55,14 @@ export const Categories = () => {
 
   const handleArchiveCategory = () => {
     if (selectedCategoryId) {
-      const userId = activeUser?.id || 'admin-001';
+      const userId = activeUser?.id || '4d6f298b-77dd-44ca-b3c8-0eaeade86bce';
       archiveCategory(selectedCategoryId, userId);
     }
   };
 
   const handleRestoreCategory = () => {
     if (selectedCategoryId) {
-      const userId = activeUser?.id || 'admin-001';
+      const userId = activeUser?.id || '4d6f298b-77dd-44ca-b3c8-0eaeade86bce';
       restoreCategory(selectedCategoryId, userId);
     }
   };

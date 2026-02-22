@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
 import { Login } from "@/sections/Login";
@@ -13,7 +13,16 @@ import { Users } from "@/sections/Users";
 import { Vendors } from "@/sections/Vendors";
 import { Settings } from "@/sections/Settings";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
+import { useLocationStore } from "@/store/useLocationStore";
+import { useAssetStore } from "@/store/useAssetStore";
+import { usePartStore } from "@/store/usePartStore";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import { useUserStore } from "@/store/useUserStore";
+import { useSiteStore } from "@/store/useSiteStore";
+import { useProcedureStore } from "@/store/useProcedureStore";
+import { useVendorStore } from "@/store/useVendorStore";
 import { supabase } from "@/lib/supabase";
+import { useBootstrapSession } from "@/hooks/useBootstrapSession";
 
 type View =
     | "workorders"
@@ -31,53 +40,93 @@ type View =
 export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
   const [isAuthed, setIsAuthed] = useState(false);
+  useBootstrapSession();
 
-  const { ensureActiveRecurringInstances } = useWorkOrderStore();
+  const { loadWorkOrders } = useWorkOrderStore();
+  const { loadLocations } = useLocationStore();
+  const { loadAssets } = useAssetStore();
+  const { loadParts } = usePartStore();
+  const { loadCategories } = useCategoryStore();
+  const { loadUsers } = useUserStore();
+  const { loadProcedures } = useProcedureStore();
+  const { loadVendors } = useVendorStore();
+  const { setActiveSiteId, setActiveUserId } = useSiteStore();
 
-  // 🔐 Supabase auth listener (single source of truth)
+  const resolveSiteAndLoadData = useCallback(async (userId: string) => {
+    try {
+      console.log("Resolving site for user:", userId);
+      setActiveUserId(userId);
+
+      const { data, error } = await supabase
+          .from("user_sites")
+          .select("site_id")
+          .eq("user_id", userId)
+          .limit(1)
+          .maybeSingle();
+
+      console.log('[user_sites] query result:', { data, error });
+
+      if (error) {
+        console.error("Error resolving site:", error);
+        return;
+      }
+
+      if (data?.site_id) {
+        console.log("Resolved site ID:", data.site_id);
+        setActiveSiteId(data.site_id);
+        console.log('[App] Bootstrap complete:', { activeUserId: userId, activeSiteId: data.site_id });
+
+        loadWorkOrders(data.site_id);
+        loadLocations(data.site_id);
+        loadAssets(data.site_id);
+        loadParts(data.site_id);
+        loadCategories(data.site_id);
+        loadUsers(data.site_id);
+        loadProcedures(data.site_id);
+        loadVendors(data.site_id);
+      } else {
+        console.warn("No site found for user:", userId);
+        setActiveSiteId(null);
+      }
+    } catch (err) {
+      console.error("Failed to resolve site and load data:", err);
+    }
+  }, [setActiveSiteId, setActiveUserId, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors]);
+
   useEffect(() => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
-        (_event, session) => {
+        async (event, session) => {
+          if (event === 'TOKEN_REFRESHED') return;
           setIsAuthed(!!session);
+          if (session?.user) {
+            await resolveSiteAndLoadData(session.user.id);
+          } else {
+            setActiveSiteId(null);
+            setActiveUserId(null);
+          }
         }
     );
 
-    // Initial session check on app load
-    supabase.auth.getSession().then(({ data }) => {
-      setIsAuthed(!!data.session);
+    supabase.auth.getSession().then(async ({ data }) => {
+      const session = data.session;
+      setIsAuthed(!!session);
+      if (session?.user) {
+        await resolveSiteAndLoadData(session.user.id);
+      }
     });
 
     return () => {
       subscription.subscription.unsubscribe();
     };
-  }, []);
+  }, [resolveSiteAndLoadData]);
 
-  // ⚙️ Only run recurring logic when authenticated
-  useEffect(() => {
-    if (isAuthed) {
-      ensureActiveRecurringInstances();
-    }
-  }, [isAuthed, ensureActiveRecurringInstances]);
-
-  // 🔁 Hash-based navigation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "") as View;
-
       const validViews: View[] = [
-        "workorders",
-        "reporting",
-        "assets",
-        "categories",
-        "parts",
-        "procedures",
-        "meters",
-        "locations",
-        "users",
-        "vendors",
-        "settings",
+        "workorders", "reporting", "assets", "categories", "parts",
+        "procedures", "meters", "locations", "users", "vendors", "settings",
       ];
-
       setCurrentView(validViews.includes(hash) ? hash : "workorders");
     };
 
@@ -88,33 +137,21 @@ export const App = () => {
 
   const renderView = () => {
     switch (currentView) {
-      case "reporting":
-        return <Reporting />;
-      case "assets":
-        return <Assets />;
-      case "categories":
-        return <Categories />;
-      case "parts":
-        return <Parts />;
-      case "procedures":
-        return <Procedures />;
-      case "meters":
-        return <Meters />;
-      case "locations":
-        return <Locations />;
-      case "users":
-        return <Users />;
-      case "vendors":
-        return <Vendors />;
-      case "settings":
-        return <Settings />;
+      case "reporting": return <Reporting />;
+      case "assets": return <Assets />;
+      case "categories": return <Categories />;
+      case "parts": return <Parts />;
+      case "procedures": return <Procedures />;
+      case "meters": return <Meters />;
+      case "locations": return <Locations />;
+      case "users": return <Users />;
+      case "vendors": return <Vendors />;
+      case "settings": return <Settings />;
       case "workorders":
-      default:
-        return <MainContent />;
+      default: return <MainContent />;
     }
   };
 
-  // 🚪 Gate everything behind auth
   if (!isAuthed) {
     return <Login />;
   }

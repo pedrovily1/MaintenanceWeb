@@ -1,71 +1,22 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { User } from '../types/user';
-
-const USERS_STORAGE_KEY = 'users_v1';
-const ACTIVE_USER_STORAGE_KEY = 'active_user_id_v1';
-
-const DEFAULT_ADMIN: User = {
-  id: 'admin-001',
-  fullName: 'Admin',
-  role: 'Administrator',
-  pin: '1234',
-  lastVisit: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-  isActive: true,
-  avatarUrl: 'https://app.getmaintainx.com/img/static/user_placeholders/RandomPicture4.png',
-};
+import { fetchUsers } from '@/services/userService';
+import { useSiteStore } from './useSiteStore';
 
 let globalUsers: User[] = [];
-let globalActiveUserId: string | null = null;
 const listeners = new Set<() => void>();
-
-// Hydrate from localStorage once
-const savedUsers = localStorage.getItem(USERS_STORAGE_KEY);
-if (savedUsers) {
-  try {
-    const parsed = JSON.parse(savedUsers);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      globalUsers = parsed;
-    } else {
-      globalUsers = [DEFAULT_ADMIN];
-    }
-  } catch (e) {
-    console.error('Failed to parse saved users', e);
-    globalUsers = [DEFAULT_ADMIN];
-  }
-} else {
-  globalUsers = [DEFAULT_ADMIN];
-}
-
-const savedActiveUserId = localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
-if (savedActiveUserId && globalUsers.find(u => u.id === savedActiveUserId)) {
-  globalActiveUserId = savedActiveUserId;
-} else {
-  globalActiveUserId = globalUsers[0]?.id || null;
-}
 
 const notify = () => {
   listeners.forEach(l => l());
-  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(globalUsers));
-  if (globalActiveUserId) {
-    localStorage.setItem(ACTIVE_USER_STORAGE_KEY, globalActiveUserId);
-  } else {
-    localStorage.removeItem(ACTIVE_USER_STORAGE_KEY);
-  }
 };
 
-/**
- * Hook for managing user state.
- * CMMS Style PIN-based user switching and ownership.
- */
 export const useUserStore = () => {
   const [users, setUsers] = useState<User[]>(globalUsers);
-  const [activeUserId, setActiveUserId] = useState<string | null>(globalActiveUserId);
+  const { activeUserId } = useSiteStore();
 
   useEffect(() => {
     const l = () => {
       setUsers([...globalUsers]);
-      setActiveUserId(globalActiveUserId);
     };
     listeners.add(l);
     return () => {
@@ -73,57 +24,45 @@ export const useUserStore = () => {
     };
   }, []);
 
-  const addUser = useCallback((user: Omit<User, 'id' | 'createdAt'>) => {
-    // Unique PIN check (CMMS requirement)
-    if (globalUsers.some(u => u.pin === user.pin)) {
-      throw new Error('PIN already in use. Each user must have a unique PIN.');
+  const loadUsers = useCallback(async (siteId: string) => {
+    if (!siteId) return;
+    try {
+      const data = await fetchUsers(siteId);
+      globalUsers = data;
+      notify();
+    } catch (error) {
+      console.error("Failed to load users:", error);
+      globalUsers = [];
+      notify();
     }
-    const newUser: User = {
-      ...user,
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-    };
-    globalUsers = [...globalUsers, newUser];
-    notify();
-    return newUser;
+  }, []);
+
+  const addUser = useCallback((user: Omit<User, 'id' | 'createdAt'>) => {
+    // No-op for Phase 1
+    return {} as User;
   }, []);
 
   const updateUser = useCallback((id: string, patch: Partial<User>) => {
-    globalUsers = globalUsers.map(u => (u.id === id ? { ...u, ...patch } : u));
-    notify();
+    // No-op for Phase 1
   }, []);
 
   const deleteUser = useCallback((id: string) => {
-    if (id === 'admin-001') return; // Protect default admin
-    globalUsers = globalUsers.filter(u => u.id !== id);
-    if (globalActiveUserId === id) {
-      globalActiveUserId = 'admin-001';
-    }
-    notify();
+    // No-op for Phase 1
   }, []);
 
   const authenticateByPin = useCallback((pin: string) => {
     const user = globalUsers.find(u => u.pin === pin && u.isActive);
     if (user) {
-      globalActiveUserId = user.id;
-      // Update lastVisit on successful PIN match
-      globalUsers = globalUsers.map(u => 
-        u.id === user.id 
-          ? { ...u, lastVisit: new Date().toISOString() } 
-          : u
-      );
-      notify();
+      // Note: In real app, we might want to update active user in SiteStore
+      // but for now we just return the user as this might be for local PIN auth
       return user;
     }
     return null;
   }, []);
 
   const setActiveUser = useCallback((id: string) => {
-    const user = globalUsers.find(u => u.id === id && u.isActive);
-    if (user) {
-      globalActiveUserId = id;
-      notify();
-    }
+    // This is now handled by useSiteStore.setActiveUserId in resolveSiteAndLoadData
+    console.log("setActiveUser called with:", id, " (handled by SiteStore)");
   }, []);
 
   const activeUser = useMemo(() => 
@@ -137,20 +76,16 @@ export const useUserStore = () => {
   }, []);
 
   return {
-    users, // for backward compatibility
+    users,
     allUsers,
     activeUser,
     activeUserId,
+    loadUsers,
     addUser,
     updateUser,
     deleteUser,
     authenticateByPin,
     setActiveUser,
     getUserById,
-    // Future Extension Points:
-    // - Role-based permissions: Use user.role to gate UI/Actions
-    // - Approval workflows: Link tasks to specific technician/admin roles
-    // - Multi-site users: Add siteId[] to User model
-    // - Backend authentication: Replace local storage with API calls
   };
 };

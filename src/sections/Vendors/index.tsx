@@ -13,9 +13,9 @@ export const Vendors = () => {
 
   const handleSave = (data: any) => {
     if (editingVendor) {
-      updateVendor(editingVendor, data, activeUserId || 'admin-001');
+      updateVendor(editingVendor, data, activeUserId || '4d6f298b-77dd-44ca-b3c8-0eaeade86bce');
     } else {
-      const newVendor = createVendor(data, activeUserId || 'admin-001');
+      const newVendor = createVendor(data, activeUserId || '4d6f298b-77dd-44ca-b3c8-0eaeade86bce');
       selectVendor(newVendor.id);
     }
     setIsModalOpen(false);
