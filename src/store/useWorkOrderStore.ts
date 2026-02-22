@@ -10,6 +10,31 @@ const notify = () => {
   listeners.forEach(l => l());
 };
 
+const mapRow = (row: any): WorkOrder => ({
+  ...row,
+  workOrderNumber: row.work_order_number,
+  workType: row.work_type,
+  startDate: row.start_date,
+  dueDate: row.due_date,
+  completedAt: row.completed_at,
+  assetId: row.asset_id,
+  assetName: row.asset_name_snapshot,
+  locationId: row.location_id,
+  locationName: row.location_name_snapshot,
+  categoryId: row.category_id,
+  vendorId: row.vendor_id,
+  assignedTo: row.assigned_to_text,
+  assignedToUserId: row.assigned_to_user_id,
+  isRepeating: row.is_repeating,
+  createdByUserId: row.created_by_user_id,
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+  sections: [],
+  attachments: [],
+  parts: [],
+  procedureInstances: [],
+});
+
 export const useWorkOrderStore = () => {
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>(globalWorkOrders);
 
@@ -36,7 +61,7 @@ export const useWorkOrderStore = () => {
         globalWorkOrders = [];
       } else {
         console.log('[loadWorkOrders] fetched:', data?.length, 'rows', data);
-        globalWorkOrders = data as WorkOrder[];
+        globalWorkOrders = (data || []).map(mapRow);
       }
       notify();
     } catch (error) {
@@ -128,8 +153,7 @@ export const useWorkOrderStore = () => {
         if (error) throw error;
 
         console.log('[addWorkOrder] insert success, real id:', data.id, 'replacing tempId:', tempId);
-        const newWO = data as WorkOrder;
-        globalWorkOrders = globalWorkOrders.map(item => item.id === tempId ? newWO : item);
+        globalWorkOrders = globalWorkOrders.map(item => item.id === tempId ? mapRow(data) : item);
         notify();
       } catch (error) {
         console.error("Supabase error adding work order:", error);
@@ -180,8 +204,7 @@ export const useWorkOrderStore = () => {
 
         if (error) throw error;
 
-        const updatedWO = data as WorkOrder;
-        globalWorkOrders = globalWorkOrders.map(wo => wo.id === id ? updatedWO : wo);
+        globalWorkOrders = globalWorkOrders.map(wo => wo.id === id ? mapRow(data) : wo);
         notify();
       } catch (error) {
         console.error("Error updating work order:", error);
@@ -221,7 +244,7 @@ export const useWorkOrderStore = () => {
   }, []);
 
   const getWorkOrdersByVendor = useCallback((vendorId: string) => {
-    return globalWorkOrders.filter(wo => (wo as any).vendorId === vendorId);
+    return globalWorkOrders.filter(wo => wo.vendorId === vendorId);
   }, []);
 
   const ensureActiveRecurringInstances = useCallback(() => {

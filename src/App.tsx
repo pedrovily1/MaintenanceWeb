@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Sidebar } from "@/sections/Sidebar";
 import { MainContent } from "@/sections/MainContent";
 import { Login } from "@/sections/Login";
+import { SetPasswordScreen } from "@/sections/SetPasswordScreen";
+import { NoSiteScreen } from "@/sections/NoSiteScreen";
 import { Reporting } from "@/sections/Reporting";
 import { Assets } from "@/sections/Assets";
 import { Categories } from "@/sections/Categories";
@@ -41,6 +43,9 @@ export const App = () => {
   const [currentView, setCurrentView] = useState<View>("workorders");
   const [isAuthed, setIsAuthed] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
+  const [isSettingPassword, setIsSettingPassword] = useState(false);
+  const [hasNoSite, setHasNoSite] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const hasBootstrapped = useRef(false);
 
@@ -58,6 +63,8 @@ export const App = () => {
   const resolveSiteAndLoadData = useCallback(async (userId: string) => {
     console.log("[App] resolveSiteAndLoadData called for user:", userId);
     setIsBootstrapping(true);
+    setCurrentUserId(userId);
+    setHasNoSite(false);
     try {
       setActiveUserId(userId);
 
@@ -78,6 +85,7 @@ export const App = () => {
       if (data?.site_id) {
         console.log("[App] Resolved site ID:", data.site_id);
         setActiveSiteId(data.site_id);
+        setHasNoSite(false);
 
         console.log("[App] Loading all store data for site:", data.site_id);
         await Promise.all([
@@ -95,6 +103,7 @@ export const App = () => {
       } else {
         console.warn("[App] No site found for user:", userId);
         setActiveSiteId(null);
+        setHasNoSite(true);
       }
     } catch (err) {
       console.error("[App] Failed to resolve site and load data:", err);
@@ -108,7 +117,7 @@ export const App = () => {
   const resolveSiteAndLoadDataRef = useRef(resolveSiteAndLoadData);
   resolveSiteAndLoadDataRef.current = resolveSiteAndLoadData;
 
-  // Stable subscription — no deps, never tears down and re-subscribes
+  // Stable auth subscription — no deps, never tears down and re-subscribes
   useEffect(() => {
     console.log("[App] Setting up auth subscription (once)");
 
@@ -121,6 +130,17 @@ export const App = () => {
             return;
           }
 
+          // Handle recovery — show set password screen (step 2 directly, already has session)
+          if (event === "PASSWORD_RECOVERY") {
+            console.log("[App] PASSWORD_RECOVERY event — showing set password screen");
+            window.history.replaceState(null, "", window.location.pathname);
+            setIsSettingPassword(true);
+            setIsAuthed(true);
+            setAuthChecked(true);
+            return;
+          }
+
+          // Normal auth flow — SIGNED_IN from login or OTP verify, INITIAL_SESSION on reload
           setIsAuthed(!!session);
           setAuthChecked(true);
 
@@ -130,17 +150,21 @@ export const App = () => {
             setActiveSiteId(null);
             setActiveUserId(null);
             setIsBootstrapping(false);
+            setHasNoSite(false);
+            setCurrentUserId(null);
             return;
           }
 
           if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
             if (!hasBootstrapped.current) {
+              console.log("[App] Bootstrapping for user:", session.user.id);
               hasBootstrapped.current = true;
               // Defer — don't block the auth callback
               setTimeout(() => {
-                console.log("[App] Deferred bootstrap for user:", session.user.id);
                 resolveSiteAndLoadDataRef.current(session.user.id);
               }, 0);
+            } else {
+              console.log("[App] Already bootstrapped — skipping");
             }
           }
         }
@@ -150,16 +174,31 @@ export const App = () => {
       console.log("[App] Tearing down auth subscription");
       subscription.subscription.unsubscribe();
     };
-  }, []); // empty deps — stable subscription
+  }, []);
 
+  // Hash-based routing
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "") as View;
+      const hash = window.location.hash;
+
+      // Ignore Supabase auth callback hashes entirely
+      if (
+          hash.includes("access_token") ||
+          hash.includes("type=recovery") ||
+          hash.includes("type=invite") ||
+          hash.includes("error=") ||
+          hash.includes("error_code=")
+      ) {
+        console.log("[App] Ignoring auth-related URL hash");
+        return;
+      }
+
+      const view = hash.replace("#", "") as View;
       const validViews: View[] = [
         "workorders", "reporting", "assets", "categories", "parts",
         "procedures", "meters", "locations", "users", "vendors", "settings",
       ];
-      setCurrentView(validViews.includes(hash) ? hash : "workorders");
+      setCurrentView(validViews.includes(view) ? view : "workorders");
     };
 
     handleHashChange();
@@ -184,14 +223,36 @@ export const App = () => {
     }
   };
 
-  console.log("[App] Render — authChecked:", authChecked, "| isAuthed:", isAuthed, "| currentView:", currentView);
+  console.log("[App] Render — authChecked:", authChecked, "| isAuthed:", isAuthed, "| isSettingPassword:", isSettingPassword, "| hasNoSite:", hasNoSite, "| currentView:", currentView);
 
   if (!authChecked) {
     return null;
   }
 
+  if (isSettingPassword) {
+    return <SetPasswordScreen onComplete={() => {
+      setIsSettingPassword(false);
+      // After password is set, bootstrap the app
+      const bootstrapAfterPasswordSet = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user && !hasBootstrapped.current) {
+          hasBootstrapped.current = true;
+          setTimeout(() => {
+            resolveSiteAndLoadDataRef.current(session.user.id);
+          }, 0);
+        }
+      };
+      void bootstrapAfterPasswordSet();
+    }} />;
+  }
+
   if (!isAuthed) {
-    return <Login />;
+    return <Login onSetPassword={() => setIsSettingPassword(true)} />;
+  }
+
+  // User is authed but has no site assigned — show request screen
+  if (hasNoSite && currentUserId) {
+    return <NoSiteScreen userId={currentUserId} />;
   }
 
   return (

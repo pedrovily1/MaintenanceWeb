@@ -11,22 +11,15 @@ const notify = () => {
   listeners.forEach(l => l());
 };
 
-/**
- * Deduct inventory for a list of WorkOrderParts.
- * Returns { ok: boolean; reason?: string } — caller must check before committing.
- */
 export const consumePartsFromInventory = (
-  woParts: WorkOrderPart[]
+    woParts: WorkOrderPart[]
 ): { ok: boolean; reason?: string } => {
-  // No-op for Phase 1
   return { ok: true };
 };
 
-/** Get a part by ID without a hook (for cross-store lookups) */
 export const getPartSync = (id: string): Part | undefined =>
-  globalParts.find(p => p.id === id);
+    globalParts.find(p => p.id === id);
 
-/** Get all parts without a hook */
 export const getPartsSync = (): Part[] => [...globalParts];
 
 export const usePartStore = () => {
@@ -73,27 +66,26 @@ export const usePartStore = () => {
     (async () => {
       try {
         const { data, error } = await supabase
-          .from('parts')
-          .insert({
-            site_id: activeSiteId,
-            name: part.name,
-            description: part.description,
-            part_type: part.partType,
-            unit: part.unit,
-            min_stock: part.minStock,
-            image_url: part.imageUrl,
-            barcode: part.barcode,
-          })
-          .select()
-          .single();
+            .from('parts')
+            .insert({
+              site_id: activeSiteId,
+              name: part.name,
+              description: part.description,
+              part_type: part.partType,
+              unit: part.unit,
+              min_stock: part.minStock,
+              image_url: part.imageUrl || null,
+              barcode: part.barcode || null,
+            })
+            .select()
+            .single();
 
         if (error) throw error;
 
-        // Merge DB record with local-only fields (inventory, compatibleAssetIds)
         globalParts = globalParts.map(p =>
-          p.id === tempId
-            ? { ...(data as Part), inventory: part.inventory, compatibleAssetIds: part.compatibleAssetIds }
-            : p
+            p.id === tempId
+                ? { ...(data as any), partType: data.part_type, minStock: data.min_stock, imageUrl: data.image_url, createdAt: data.created_at, updatedAt: data.updated_at, inventory: part.inventory || [], compatibleAssetIds: part.compatibleAssetIds || [] }
+                : p
         );
         notify();
       } catch (error) {
@@ -111,7 +103,7 @@ export const usePartStore = () => {
     if (!original) return;
 
     globalParts = globalParts.map(p =>
-      p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
+        p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
     );
     notify();
 
@@ -123,13 +115,13 @@ export const usePartStore = () => {
         if (updates.partType !== undefined) dbUpdates.part_type = updates.partType;
         if (updates.unit !== undefined) dbUpdates.unit = updates.unit;
         if (updates.minStock !== undefined) dbUpdates.min_stock = updates.minStock;
-        if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl;
-        if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode;
+        if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl || null;
+        if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode || null;
 
         const { error } = await supabase
-          .from('parts')
-          .update(dbUpdates)
-          .eq('id', id);
+            .from('parts')
+            .update(dbUpdates)
+            .eq('id', id);
 
         if (error) throw error;
       } catch (error) {
@@ -141,67 +133,136 @@ export const usePartStore = () => {
   }, []);
 
   const deletePart = useCallback(
-    (id: string): { ok: boolean; reason?: string } => {
-      const originalList = [...globalParts];
-      globalParts = globalParts.filter(p => p.id !== id);
-      notify();
+      (id: string): { ok: boolean; reason?: string } => {
+        const originalList = [...globalParts];
+        globalParts = globalParts.filter(p => p.id !== id);
+        notify();
 
-      (async () => {
-        try {
-          const { error } = await supabase
-            .from('parts')
-            .delete()
-            .eq('id', id);
+        (async () => {
+          try {
+            const { error } = await supabase
+                .from('parts')
+                .delete()
+                .eq('id', id);
 
-          if (error) throw error;
-        } catch (error) {
-          console.error('Error deleting part:', error);
-          globalParts = originalList;
-          notify();
-        }
-      })();
+            if (error) throw error;
+          } catch (error) {
+            console.error('Error deleting part:', error);
+            globalParts = originalList;
+            notify();
+          }
+        })();
 
-      return { ok: true };
-    },
-    []
+        return { ok: true };
+      },
+      []
   );
 
   const getPartById = useCallback((id: string) => globalParts.find(p => p.id === id), []);
 
   const setInventoryAtLocation = useCallback(
-    (partId: string, inv: PartInventory) => {
-      // No-op for Phase 1
-    },
-    []
+      (partId: string, inv: PartInventory) => {
+        globalParts = globalParts.map(p => {
+          if (p.id !== partId) return p;
+          const existing = p.inventory.find(i => i.locationId === inv.locationId);
+          const inventory = existing
+              ? p.inventory.map(i => i.locationId === inv.locationId ? inv : i)
+              : [...p.inventory, inv];
+          return { ...p, inventory };
+        });
+        notify();
+
+        (async () => {
+          try {
+            const { error } = await supabase
+                .from('part_inventory')
+                .upsert({
+                  part_id: partId,
+                  location_id: inv.locationId,
+                  quantity: inv.quantity,
+                  min_quantity: inv.minQuantity || 0,
+                }, { onConflict: 'part_id,location_id' });
+            if (error) throw error;
+          } catch (err) {
+            console.error('Error setting inventory:', err);
+          }
+        })();
+      },
+      []
   );
 
   const removeInventoryAtLocation = useCallback(
-    (partId: string, locationId: string): { ok: boolean; reason?: string } => {
-      // No-op for Phase 1
-      return { ok: true };
-    },
-    []
+      (partId: string, locationId: string): { ok: boolean; reason?: string } => {
+        globalParts = globalParts.map(p =>
+            p.id !== partId ? p : { ...p, inventory: p.inventory.filter(i => i.locationId !== locationId) }
+        );
+        notify();
+
+        (async () => {
+          try {
+            const { error } = await supabase
+                .from('part_inventory')
+                .delete()
+                .eq('part_id', partId)
+                .eq('location_id', locationId);
+            if (error) throw error;
+          } catch (err) {
+            console.error('Error removing inventory:', err);
+          }
+        })();
+
+        return { ok: true };
+      },
+      []
   );
 
   const restock = useCallback(
-    (partId: string, locationId: string, locationName: string, quantity: number) => {
-      // No-op for Phase 1
-    },
-    []
+      (partId: string, locationId: string, locationName: string, quantity: number) => {
+        globalParts = globalParts.map(p => {
+          if (p.id !== partId) return p;
+          const existing = p.inventory.find(i => i.locationId === locationId);
+          const inventory = existing
+              ? p.inventory.map(i => i.locationId === locationId
+                  ? { ...i, quantity: i.quantity + quantity }
+                  : i)
+              : [...p.inventory, { locationId, locationName, quantity, minQuantity: 0 }];
+          return { ...p, inventory };
+        });
+        notify();
+
+        (async () => {
+          try {
+            const part = globalParts.find(p => p.id === partId);
+            const inv = part?.inventory.find(i => i.locationId === locationId);
+            const { error } = await supabase
+                .from('part_inventory')
+                .upsert({
+                  part_id: partId,
+                  location_id: locationId,
+                  quantity: inv?.quantity ?? quantity,
+                  min_quantity: inv?.minQuantity ?? 0,
+                }, { onConflict: 'part_id,location_id' });
+            if (error) throw error;
+          } catch (err) {
+            console.error('Error restocking part:', err);
+          }
+        })();
+      },
+      []
   );
 
   const getPartsNeedingRestock = useCallback(() => {
     return globalParts.filter(p =>
-      p.inventory.some(inv => inv.quantity <= inv.minQuantity)
+        (p.inventory || []).some(inv => inv.quantity <= inv.minQuantity)
     );
   }, []);
 
   const getPartsByAsset = useCallback((assetId: string) => {
-    return globalParts.filter(p => p.compatibleAssetIds.includes(assetId));
+    return globalParts.filter(p => (p.compatibleAssetIds || []).includes(assetId));
   }, []);
 
   const getPartsByLocation = useCallback((locationId: string) => {
-    return globalParts.filter(p => p.inventory.some(i => i.locationId === locationId));
+    return globalParts.filter(p => (p.inventory || []).some(i => i.locationId === locationId));
   }, []);
 
   return {

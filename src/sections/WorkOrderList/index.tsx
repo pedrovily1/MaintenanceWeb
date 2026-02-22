@@ -17,6 +17,7 @@ import { ProcedureSelector } from "@/components/WorkOrder/ProcedureSelector";
 import { WorkOrderEditorPanel } from "./components/WorkOrderEditorPanel";
 import { Plus, Trash2, ClipboardList, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
 import { getDescendantLocationIds } from "@/store/useLocationStore";
+import {useSiteStore} from "@/store/useSiteStore.ts";
 
 export const WorkOrderList = () => {
   const [activeTab, setActiveTab] = useState<'todo' | 'done'>('todo');
@@ -257,7 +258,7 @@ export const WorkOrderList = () => {
   }, [workOrders]);
 
   const todayStr = new Date().toISOString().split('T')[0];
-
+  const { activeSiteId, activeUserId } = useSiteStore();
   return (
     <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
       <div className="relative box-border caret-transparent flex basis-[0%] grow mx-2 lg:mx-4 flex-col lg:flex-row gap-4 lg:gap-0">
@@ -492,7 +493,7 @@ export const WorkOrderList = () => {
                           </div>
                           
                           <div className="box-border caret-transparent shrink-0 mt-4 pt-4 border-t border-[var(--border)] text-[13px] text-[var(--muted)] space-y-1 italic opacity-80">
-                            <div>Created by {getUserById(selectedWorkOrder.createdByUserId)?.fullName || (selectedWorkOrder.createdByUserId ? 'Deleted User' : 'Admin')} on {new Date(selectedWorkOrder.createdAt).toLocaleString()}</div>
+                            <div>Created by {getUserById(selectedWorkOrder.createdByUserId)?.fullName || (selectedWorkOrder.createdByUserId === activeUserId ? 'Me' : (selectedWorkOrder.createdByUserId ? 'Unknown User' : 'Admin'))} on {new Date(selectedWorkOrder.createdAt).toLocaleString()}</div>
                             {selectedWorkOrder.updatedAt && <div>Last updated on {new Date(selectedWorkOrder.updatedAt).toLocaleString()}</div>}
                             {selectedWorkOrder.categoryId && (
                               <div className="flex items-center gap-2 mt-1">

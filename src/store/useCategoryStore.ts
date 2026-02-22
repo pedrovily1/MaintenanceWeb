@@ -55,7 +55,7 @@ export const useCategoryStore = () => {
     const tempCat: Category = {
       id: tempId,
       name: payload.name,
-      icon: payload.icon,
+      icon_svg: payload.icon,
       color: payload.color,
       description: payload.description,
       isActive: true,
@@ -75,7 +75,7 @@ export const useCategoryStore = () => {
           .insert({
             site_id: activeSiteId,
             name: payload.name,
-            icon: payload.icon,
+            icon_svg: payload.icon,
             color: payload.color,
             description: payload.description,
             is_active: true,
@@ -87,10 +87,21 @@ export const useCategoryStore = () => {
 
         if (error) throw error;
 
-        globalCategories = globalCategories.map(c => c.id === tempId ? data as Category : c);
-        notify();
+        const mapped: Category = {
+          id: data.id,
+          name: data.name,
+          icon: data.icon_svg,
+          color: data.color,
+          description: data.description,
+          isActive: data.is_active,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          createdByUserId: data.created_by_user_id,
+          updatedByUserId: data.updated_by_user_id,
+        };
+        globalCategories = globalCategories.map(c => c.id === tempId ? mapped : c);        notify();
       } catch (error) {
-        console.error('Error creating category:', error);
+        console.error('Error creating category:', JSON.stringify(error));
         globalCategories = globalCategories.filter(c => c.id !== tempId);
         notify();
       }
@@ -119,7 +130,7 @@ export const useCategoryStore = () => {
       try {
         const dbUpdates: Record<string, any> = { updated_at: now, updated_by_user_id: activeUserId };
         if (patch.name !== undefined) dbUpdates.name = patch.name;
-        if (patch.icon !== undefined) dbUpdates.icon = patch.icon;
+        if (patch.icon !== undefined) dbUpdates.icon_svg = patch.icon;
         if (patch.color !== undefined) dbUpdates.color = patch.color;
         if (patch.description !== undefined) dbUpdates.description = patch.description;
         if (patch.isActive !== undefined) dbUpdates.is_active = patch.isActive;

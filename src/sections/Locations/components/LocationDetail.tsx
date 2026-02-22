@@ -37,7 +37,7 @@ export const LocationDetail = ({ locationId }: LocationDetailProps) => {
       <div className="box-border caret-transparent flex basis-[375px] flex-col grow shrink-0 min-w-[200px] pt-2 px-2 border-l border-[var(--border)]">
         <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent flex grow w-full border border-[var(--border)] overflow-hidden rounded-bl rounded-br rounded-tl rounded-tr border-solid">
           <div className="flex items-center justify-center w-full h-full text-red-500 bg-[var(--panel-2)]">
-            Location not found
+            No location Selected
           </div>
         </div>
       </div>

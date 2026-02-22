@@ -99,10 +99,9 @@ export const ExportData = () => {
       .map(([key]) => key);
 
     const filteredWOs = workOrders.filter(wo => {
-      const createdAt = wo.createdAt.split('T')[0];
-      const completedAt = wo.completedAt?.split('T')[0];
-      const dueDate = wo.dueDate.split('T')[0];
-
+      const createdAt = (wo.createdAt || (wo as any).created_at || '').split('T')[0];
+      const completedAt = ((wo.completedAt || (wo as any).completed_at) ?? '').split('T')[0] || null;
+      const dueDate = (wo.dueDate || (wo as any).due_date || '').split('T')[0];
       if (options.includeStatus.planned && createdAt >= options.dateRange.start && createdAt <= options.dateRange.end) return true;
       if (options.includeStatus.due && dueDate >= options.dateRange.start && dueDate <= options.dateRange.end) return true;
       if (options.includeStatus.completed && wo.status === 'Done' && completedAt && completedAt >= options.dateRange.start && completedAt <= options.dateRange.end) return true;

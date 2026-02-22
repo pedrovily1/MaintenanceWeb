@@ -55,4 +55,4 @@ export const getTotalStock = (part: Part): number =>
 
 /** True when any location's quantity ≤ its minQuantity */
 export const needsRestock = (part: Part): boolean =>
-  part.inventory.some(inv => inv.quantity <= inv.minQuantity);
+    (part.inventory || []).some(inv => inv.quantity <= inv.minQuantity);
