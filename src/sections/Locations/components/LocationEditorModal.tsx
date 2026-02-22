@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSiteStore } from '@/store/useSiteStore';
 import type { Location } from '@/types/location';
 import { LocationTreeSelector } from '@/components/LocationTreeSelector';
 import { ImageUpload } from '@/components/ImageUpload';
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export const LocationEditorModal: React.FC<Props> = ({ initial, onClose, onSubmit }) => {
+  const { activeSiteId } = useSiteStore();
   const [name, setName] = useState(initial?.name || '');
   const [description, setDescription] = useState(initial?.description || '');
   const [address, setAddress] = useState(initial?.address || '');
@@ -86,7 +88,7 @@ export const LocationEditorModal: React.FC<Props> = ({ initial, onClose, onSubmi
 
         <div className="px-4 py-3 border-t border-[var(--border)] bg-gray-50 flex items-center justify-end gap-2 rounded-b-lg">
           <button className="px-3 py-1 rounded border border-[var(--border)] text-sm" onClick={onClose}>Cancel</button>
-          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm" onClick={handleSubmit}>Save</button>
+          <button className="px-3 py-1 rounded bg-blue-600 text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed" onClick={handleSubmit} disabled={!activeSiteId}>Save</button>
         </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { useSiteStore } from "@/store/useSiteStore";
 import { useProcedureStore } from "@/store/useProcedureStore";
 import { useVendorStore } from "@/store/useVendorStore";
+import { useMeterStore } from "@/store/useMeterStore";
 import { supabase } from "@/lib/supabase";
 import { useBootstrapSession } from "@/hooks/useBootstrapSession";
 
@@ -50,9 +51,11 @@ export const App = () => {
   const { loadUsers } = useUserStore();
   const { loadProcedures } = useProcedureStore();
   const { loadVendors } = useVendorStore();
-  const { setActiveSiteId, setActiveUserId } = useSiteStore();
+  const { loadMeters } = useMeterStore();
+  const { setActiveSiteId, setActiveUserId, setIsBootstrapping } = useSiteStore();
 
   const resolveSiteAndLoadData = useCallback(async (userId: string) => {
+    setIsBootstrapping(true);
     try {
       console.log("Resolving site for user:", userId);
       setActiveUserId(userId);
@@ -84,14 +87,17 @@ export const App = () => {
         loadUsers(data.site_id);
         loadProcedures(data.site_id);
         loadVendors(data.site_id);
+        loadMeters(data.site_id);
       } else {
         console.warn("No site found for user:", userId);
         setActiveSiteId(null);
       }
     } catch (err) {
       console.error("Failed to resolve site and load data:", err);
+    } finally {
+      setIsBootstrapping(false);
     }
-  }, [setActiveSiteId, setActiveUserId, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors]);
+  }, [setActiveSiteId, setActiveUserId, setIsBootstrapping, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors, loadMeters]);
 
   useEffect(() => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
@@ -103,6 +109,7 @@ export const App = () => {
           } else {
             setActiveSiteId(null);
             setActiveUserId(null);
+            setIsBootstrapping(false);
           }
         }
     );
@@ -112,6 +119,8 @@ export const App = () => {
       setIsAuthed(!!session);
       if (session?.user) {
         await resolveSiteAndLoadData(session.user.id);
+      } else {
+        setIsBootstrapping(false);
       }
     });
 

@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Part, PartInventory, WorkOrderPart, getTotalStock } from '@/types/part';
 import { fetchParts } from '@/services/partService';
+import { supabase } from '@/lib/supabase';
+import { useSiteStore } from './useSiteStore';
 
 let globalParts: Part[] = [];
 const listeners = new Set<() => void>();
@@ -50,17 +52,115 @@ export const usePartStore = () => {
   }, []);
 
   const addPart = useCallback((part: Omit<Part, 'id' | 'createdAt' | 'updatedAt'>) => {
-    // No-op for Phase 1
-    return {} as Part;
+    const { activeSiteId } = useSiteStore.getState();
+    if (!activeSiteId) {
+      console.error('Missing activeSiteId for addPart');
+      return {} as Part;
+    }
+
+    const tempId = crypto.randomUUID();
+    const now = new Date().toISOString();
+    const tempPart: Part = {
+      ...part,
+      id: tempId,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    globalParts = [...globalParts, tempPart];
+    notify();
+
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('parts')
+          .insert({
+            site_id: activeSiteId,
+            name: part.name,
+            description: part.description,
+            part_type: part.partType,
+            unit: part.unit,
+            min_stock: part.minStock,
+            image_url: part.imageUrl,
+            barcode: part.barcode,
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Merge DB record with local-only fields (inventory, compatibleAssetIds)
+        globalParts = globalParts.map(p =>
+          p.id === tempId
+            ? { ...(data as Part), inventory: part.inventory, compatibleAssetIds: part.compatibleAssetIds }
+            : p
+        );
+        notify();
+      } catch (error) {
+        console.error('Error adding part:', error);
+        globalParts = globalParts.filter(p => p.id !== tempId);
+        notify();
+      }
+    })();
+
+    return tempPart;
   }, []);
 
   const updatePart = useCallback((id: string, updates: Partial<Part>) => {
-    // No-op for Phase 1
+    const original = globalParts.find(p => p.id === id);
+    if (!original) return;
+
+    globalParts = globalParts.map(p =>
+      p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
+    );
+    notify();
+
+    (async () => {
+      try {
+        const dbUpdates: Record<string, any> = { updated_at: new Date().toISOString() };
+        if (updates.name !== undefined) dbUpdates.name = updates.name;
+        if (updates.description !== undefined) dbUpdates.description = updates.description;
+        if (updates.partType !== undefined) dbUpdates.part_type = updates.partType;
+        if (updates.unit !== undefined) dbUpdates.unit = updates.unit;
+        if (updates.minStock !== undefined) dbUpdates.min_stock = updates.minStock;
+        if (updates.imageUrl !== undefined) dbUpdates.image_url = updates.imageUrl;
+        if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode;
+
+        const { error } = await supabase
+          .from('parts')
+          .update(dbUpdates)
+          .eq('id', id);
+
+        if (error) throw error;
+      } catch (error) {
+        console.error('Error updating part:', error);
+        globalParts = globalParts.map(p => p.id === id ? original : p);
+        notify();
+      }
+    })();
   }, []);
 
   const deletePart = useCallback(
     (id: string): { ok: boolean; reason?: string } => {
-      // No-op for Phase 1
+      const originalList = [...globalParts];
+      globalParts = globalParts.filter(p => p.id !== id);
+      notify();
+
+      (async () => {
+        try {
+          const { error } = await supabase
+            .from('parts')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+        } catch (error) {
+          console.error('Error deleting part:', error);
+          globalParts = originalList;
+          notify();
+        }
+      })();
+
       return { ok: true };
     },
     []

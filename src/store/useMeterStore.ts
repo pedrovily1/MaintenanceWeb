@@ -222,7 +222,13 @@ export const useMeterStore = () => {
   const getMeterById = useCallback((id: string) => globalMeters.find(m => m.id === id), []);
   const getReadingsByMeter = useCallback((meterId: string) => globalReadings.filter(r => r.meterId === meterId).sort((a,b) => (b.recordedAt || b.createdAt || '').localeCompare(a.recordedAt || a.createdAt || '')), []);
 
-  return { meters, readings, addMeter, updateMeter, deleteMeter, addReading, updateReading, deleteReading, getMeterById, getReadingsByMeter };
+  const loadMeters = useCallback(async (siteId: string) => {
+    if (!siteId) return;
+    console.log('loadMeters called for site:', siteId);
+    // Meters are currently persisted locally; Supabase migration pending
+  }, []);
+
+  return { meters, readings, addMeter, updateMeter, deleteMeter, addReading, updateReading, deleteReading, getMeterById, getReadingsByMeter, loadMeters };
 };
 
 // Non-hook helpers for other stores to integrate safely
