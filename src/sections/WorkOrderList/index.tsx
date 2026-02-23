@@ -21,6 +21,7 @@ import {useSiteStore} from "@/store/useSiteStore.ts";
 
 export const WorkOrderList = () => {
   const [activeTab, setActiveTab] = useState<'todo' | 'done'>('todo');
+  const [displayLimit, setDisplayLimit] = useState(10);
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string | null>(null);
   const { workOrders, addWorkOrder, updateWorkOrder, deleteWorkOrder } = useWorkOrderStore();
   const { getUserById } = useUserStore();
@@ -92,6 +93,14 @@ export const WorkOrderList = () => {
 
     return list;
   }, [workOrders, activeTab, assignedTo, filterSearch, filterLocationId]);
+
+  useEffect(() => {
+    setDisplayLimit(10);
+  }, [assignedTo, filterSearch, filterLocationId]);
+
+  const displayedWorkOrders = useMemo(() => {
+    return filteredWorkOrders.slice(0, displayLimit);
+  }, [filteredWorkOrders, displayLimit]);
 
   const selectedWorkOrder = useMemo(() => {
     try {
@@ -260,8 +269,8 @@ export const WorkOrderList = () => {
   const todayStr = new Date().toISOString().split('T')[0];
   const { activeSiteId, activeUserId } = useSiteStore();
   return (
-    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-2 lg:mx-4 flex-col lg:flex-row gap-4 lg:gap-0">
+    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-hidden">
+      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-2 lg:mx-4 flex-col lg:flex-row gap-4 lg:gap-0 overflow-hidden">
         <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-[var(--border)] lg:mr-4 rounded-tl rounded-tr border-solid bg-[var(--panel)]">
           <TabButtons activeTab={activeTab} onTabChange={setActiveTab} />
           <SortControls />
@@ -273,7 +282,7 @@ export const WorkOrderList = () => {
                     Assigned to Me ({todoCount})
                   </span>
                 </div>
-                {filteredWorkOrders.map((wo) => {
+                {displayedWorkOrders.map((wo) => {
                   const isOverdue = wo.status !== 'Done' && wo.dueDate < todayStr;
                   return (
                     <WorkOrderCard 
@@ -287,6 +296,16 @@ export const WorkOrderList = () => {
                     />
                   );
                 })}
+                {filteredWorkOrders.length > displayLimit && (
+                  <div className="px-4 py-4 flex flex-col items-center border-t border-[var(--border)]">
+                    <button
+                      onClick={() => setDisplayLimit(prev => prev + 10)}
+                      className="w-full py-2 text-[var(--accent)] font-semibold text-sm hover:bg-[var(--panel-2)] rounded transition-colors border border-[var(--accent)] border-dashed hover:border-solid"
+                    >
+                      Load More
+                    </button>
+                  </div>
+                )}
               </>
             ) : (
               <>
@@ -295,7 +314,7 @@ export const WorkOrderList = () => {
                     Completed ({filteredWorkOrders.length})
                   </span>
                 </div>
-                {filteredWorkOrders.map((wo) => (
+                {displayedWorkOrders.map((wo) => (
                   <WorkOrderCard 
                     key={wo.id} 
                     {...wo} 
@@ -305,6 +324,16 @@ export const WorkOrderList = () => {
                     isActive={selectedWorkOrder?.id === wo.id}
                   />
                 ))}
+                {filteredWorkOrders.length > displayLimit && (
+                  <div className="px-4 py-4 flex flex-col items-center border-t border-[var(--border)]">
+                    <button
+                      onClick={() => setDisplayLimit(prev => prev + 10)}
+                      className="w-full py-2 text-[var(--accent)] font-semibold text-sm hover:bg-[var(--panel-2)] rounded transition-colors border border-[var(--accent)] border-dashed hover:border-solid"
+                    >
+                      Load More
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -317,7 +346,9 @@ export const WorkOrderList = () => {
                 onChange={(patch) => setDraft(prev => ({ ...(prev as DraftWorkOrder), ...patch }))}
                 onCancel={() => setPanelMode('view')}
                 onCreate={(data) => {
-                  const newWo = addWorkOrder(data);
+                  const newWo = addWorkOrder(data, (tempId, realId) => {
+                    setSelectedWorkOrderId(prev => prev === tempId ? realId : prev);
+                  });
                   setSelectedWorkOrderId(newWo.id);
                   // Attach pending procedure if any
                   if (pendingAttachProcedureId) {

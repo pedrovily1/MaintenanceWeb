@@ -86,7 +86,7 @@ export const useWorkOrderStore = () => {
     }
   }, []);
 
-  const addWorkOrder = useCallback((wo: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'>) => {
+  const addWorkOrder = useCallback((wo: Omit<WorkOrder, 'id' | 'createdAt' | 'updatedAt' | 'workOrderNumber' | 'createdByUserId'>, onIdAssigned?: (tempId: string, realId: string) => void) => {
     const { activeSiteId, activeUserId } = useSiteStore.getState();
     console.log('[addWorkOrder] getState result:', { activeSiteId, activeUserId });
     if (!activeSiteId || !activeUserId) {
@@ -169,6 +169,7 @@ export const useWorkOrderStore = () => {
 
         console.log('[addWorkOrder] insert success, real id:', data.id, 'replacing tempId:', tempId);
         globalWorkOrders = globalWorkOrders.map(item => item.id === tempId ? mapRow(data) : item);
+        if (onIdAssigned) onIdAssigned(tempId, data.id);
         notify();
       } catch (error) {
         console.error("Supabase error adding work order:", error);
