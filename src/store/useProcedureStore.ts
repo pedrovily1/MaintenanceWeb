@@ -34,8 +34,7 @@ function useProcedureStore() {
   }, []);
 
   const computeFieldCount = (p: Procedure) => {
-    const inputKinds: ProcedureItemKind[] = ['TextInput','NumberInput','MultipleChoice','YesNoNA','Inspection','Date','Photo','File','Signature','MeterReading'];
-    return p.sections.reduce((acc, s) => acc + s.items.filter(i => inputKinds.includes(i.kind)).length, 0);
+    const inputKinds: ProcedureItemKind[] = ['TextInput','NumberInput','MultipleChoice','YesNoNA','Inspection','Date','Photo','File','Signature','MeterReading','Checklist'];    return p.sections.reduce((acc, s) => acc + s.items.filter(i => inputKinds.includes(i.kind)).length, 0);
   };
 
   const loadProcedures = useCallback(async (siteId: string) => {
