@@ -667,8 +667,8 @@ export const WorkOrderList = () => {
 
                             {/* Legacy Sections */}
                             {(selectedWorkOrder.sections || []).length > 0 && (
-                               <div className="border border-amber-100 rounded-lg overflow-hidden bg-white shadow-sm">
-                                  <div className="bg-amber-50 px-4 py-2 border-b border-amber-100 flex items-center gap-2 text-amber-800">
+                               <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                                  <div className="bg-gray-50 px-4 py-2 border-b border-gray-100 flex items-center gap-2 text-gray-500">
                                     <AlertTriangle size={16} />
                                     <span className="text-xs font-semibold uppercase tracking-wider">Legacy Form Data</span>
                                   </div>

@@ -155,7 +155,7 @@ export const CalendarView = () => {
                 setSelectedId(wo.id);
               }
             }}
-            className={`w-full text-left mb-1 px-1.5 py-0.5 rounded text-[11px] border ${o.priority === 'High' ? 'bg-red-50 border-red-200 text-red-600' : o.priority === 'Medium' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-sky-50 border-sky-200 text-sky-700'}`}
+            className={`w-full text-left mb-1 px-1.5 py-0.5 rounded text-[11px] border ${o.priority === 'High' ? 'bg-red-50 border-red-200 text-red-600' : o.priority === 'Medium' ? 'bg-gray-50 border-gray-200 text-gray-700' : 'bg-sky-50 border-sky-200 text-sky-700'}`}
             title={o.title}
           >
             <span className="font-semibold mr-1">{o.title}</span>

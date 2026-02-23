@@ -32,11 +32,11 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({ section, onUpd
 
   return (
     <div className={`border rounded-lg mb-4 overflow-hidden transition-all ${
-      hasIncompleteRequired ? 'border-amber-200' : 'border-[var(--border)]'
+      hasIncompleteRequired ? 'border-gray-200' : 'border-[var(--border)]'
     }`}>
       <div 
         className={`px-4 py-3 flex items-center justify-between cursor-pointer select-none ${
-          hasIncompleteRequired ? 'bg-amber-50' : 'bg-gray-50'
+          hasIncompleteRequired ? 'bg-gray-50' : 'bg-gray-50'
         }`}
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
@@ -45,7 +45,7 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({ section, onUpd
             isCompleted ? (
               <CheckCircle2 size={18} className="text-teal-500" />
             ) : (
-              <AlertCircle size={18} className="text-amber-500" />
+              <AlertCircle size={18} className="text-gray-400" />
             )
           )}
           <h3 className="font-semibold text-sm text-gray-800 uppercase tracking-tight">

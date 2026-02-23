@@ -88,7 +88,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
                 {meter.lastReadingAt ? ` • ${new Date(meter.lastReadingAt).toLocaleString()}` : ''}
               </div>
             ) : (
-              <div className="text-xs text-amber-600">No meter selected</div>
+              <div className="text-xs text-gray-400">No meter selected</div>
             )}
             <div className="flex items-center space-x-2">
               <input
@@ -275,7 +275,11 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
       }
 
       case 'inspection': {
-        const options = ['Pass','Flag','Fail'];
+        const options = [
+          { label: 'Pass', color: 'bg-green-600', border: 'border-green-600', text: 'text-green-600' },
+          { label: 'Flag', color: 'bg-yellow-500', border: 'border-yellow-500', text: 'text-yellow-500' },
+          { label: 'Fail', color: 'bg-red-600', border: 'border-red-600', text: 'text-red-600' }
+        ];
         return (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -284,13 +288,17 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
             <div className="grid grid-cols-3 gap-2">
               {options.map(opt => (
                 <button
-                  key={opt}
+                  key={opt.label}
                   type="button"
                   disabled={disabled}
-                  onClick={() => onUpdate({ value: opt })}
-                  className={`border px-3 py-2 rounded text-sm ${field.value === opt ? 'bg-accent text-white border-accent' : 'border-[var(--border)] text-gray-700'}`}
+                  onClick={() => onUpdate({ value: opt.label })}
+                  className={`border-2 px-3 py-2 rounded text-sm font-medium transition-colors ${
+                    field.value === opt.label 
+                      ? `${opt.color} text-white ${opt.border}` 
+                      : `${opt.border} ${opt.text} bg-transparent hover:bg-gray-50`
+                  }`}
                 >
-                  {opt}
+                  {opt.label}
                 </button>
               ))}
             </div>
