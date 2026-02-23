@@ -52,7 +52,7 @@ export const useWorkOrderStore = () => {
       console.log("Loading work orders for site:", siteId);
       const { data, error } = await supabase
           .from("work_orders")
-          .select("*")
+          .select("*, work_order_procedure_instances(*)")
           .eq("site_id", siteId)
           .order("created_at", { ascending: false });
 
@@ -61,7 +61,22 @@ export const useWorkOrderStore = () => {
         globalWorkOrders = [];
       } else {
         console.log('[loadWorkOrders] fetched:', data?.length, 'rows', data);
-        globalWorkOrders = (data || []).map(mapRow);
+        globalWorkOrders = (data || []).map(row => {
+          const wo = mapRow(row);
+          if (row.work_order_procedure_instances) {
+            wo.procedureInstances = row.work_order_procedure_instances.map((pi: any) => ({
+              id: pi.id,
+              procedureId: pi.procedure_id,
+              procedureNameSnapshot: pi.procedure_name_snapshot,
+              procedureVersionSnapshot: pi.procedure_version_snapshot,
+              procedureSchemaSnapshot: pi.procedure_schema_snapshot,
+              responses: pi.responses,
+              createdAt: pi.created_at,
+              updatedAt: pi.updated_at,
+            }));
+          }
+          return wo;
+        });
       }
       notify();
     } catch (error) {
@@ -195,6 +210,36 @@ export const useWorkOrderStore = () => {
         if (updates.assignedToUserId !== undefined) dbUpdates.assigned_to_user_id = updates.assignedToUserId || null;
         if (updates.isRepeating !== undefined) dbUpdates.is_repeating = updates.isRepeating;
 
+        // Persist procedure instances if they were updated
+        if (updates.procedureInstances !== undefined) {
+          // 1. Delete existing instances for this work order
+          await supabase
+            .from('work_order_procedure_instances')
+            .delete()
+            .eq('work_order_id', id);
+
+          // 2. Insert new instances
+          if (updates.procedureInstances.length > 0) {
+            const inserts = updates.procedureInstances.map(pi => ({
+              id: pi.id,
+              work_order_id: id,
+              procedure_id: pi.procedureId,
+              procedure_name_snapshot: pi.procedureNameSnapshot,
+              procedure_version_snapshot: pi.procedureVersionSnapshot,
+              procedure_schema_snapshot: pi.procedureSchemaSnapshot,
+              responses: pi.responses,
+              created_at: pi.createdAt,
+              updated_at: pi.updatedAt,
+            }));
+
+            const { error: insertError } = await supabase
+              .from('work_order_procedure_instances')
+              .insert(inserts);
+            
+            if (insertError) throw insertError;
+          }
+        }
+
         const { data, error } = await supabase
             .from('work_orders')
             .update(dbUpdates)
@@ -204,7 +249,13 @@ export const useWorkOrderStore = () => {
 
         if (error) throw error;
 
-        globalWorkOrders = globalWorkOrders.map(wo => wo.id === id ? mapRow(data) : wo);
+        // When merging back, we MUST preserve the procedureInstances we just saved,
+        // because mapRow(data) will set them to [] (since they are in a different table)
+        globalWorkOrders = globalWorkOrders.map(wo => 
+          wo.id === id 
+            ? { ...mapRow(data), procedureInstances: updates.procedureInstances ?? originalWO.procedureInstances } 
+            : wo
+        );
         notify();
       } catch (error) {
         console.error("Error updating work order:", error);
