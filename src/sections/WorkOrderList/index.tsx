@@ -274,7 +274,7 @@ export const WorkOrderList = () => {
         <div className="omp-panel shadow-none box-border caret-transparent flex flex-col shrink-0 w-full lg:max-w-[500px] lg:min-w-[300px] lg:w-2/5 border border-[var(--border)] lg:mr-4 rounded-tl rounded-tr border-solid bg-[var(--panel)]">
           <TabButtons activeTab={activeTab} onTabChange={setActiveTab} />
           <SortControls />
-          <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr">
+          <div className="relative box-border caret-transparent basis-[0%] grow overflow-x-hidden overflow-y-auto pb-8 rounded-bl rounded-br rounded-tl rounded-tr no-scrollbar">
             {activeTab === 'todo' ? (
               <>
                 <div className="text-[var(--accent)] text-[12.6px] font-medium box-border caret-transparent shrink-0 leading-[15.12px] px-4 py-2 opacity-[0.85]">
@@ -367,7 +367,7 @@ export const WorkOrderList = () => {
                  Select a work order to view details
                </div>
             ) : (
-                  <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full">
+                  <div className="box-border caret-transparent flex basis-[0%] flex-col grow h-full overflow-x-hidden overflow-y-auto w-full no-scrollbar">
                 <div className="relative box-border caret-transparent flex flex-col grow w-full">
                   <div className="box-border caret-transparent shrink-0">
                     <header className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent gap-x-2 flex flex-col shrink-0 gap-y-2 py-4">
