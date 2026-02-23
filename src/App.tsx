@@ -58,7 +58,7 @@ export const App = () => {
   const { loadProcedures } = useProcedureStore();
   const { loadVendors } = useVendorStore();
   const { loadMeters } = useMeterStore();
-  const { setActiveSiteId, setActiveUserId, setIsBootstrapping } = useSiteStore();
+  const { setActiveSiteId, setActiveUserId, setIsBootstrapping, setUserSites } = useSiteStore();
 
   const resolveSiteAndLoadData = useCallback(async (userId: string) => {
     console.log("[App] resolveSiteAndLoadData called for user:", userId);
@@ -70,10 +70,13 @@ export const App = () => {
 
       const { data, error } = await supabase
           .from("user_sites")
-          .select("site_id")
-          .eq("user_id", userId)
-          .limit(1)
-          .maybeSingle();
+          .select(`
+            site_id,
+            sites (
+              name
+            )
+          `)
+          .eq("user_id", userId);
 
       console.log("[App] user_sites query result:", { data, error });
 
@@ -82,27 +85,31 @@ export const App = () => {
         return;
       }
 
-      if (data?.site_id) {
-        console.log("[App] Resolved site ID:", data.site_id);
-        setActiveSiteId(data.site_id);
+      if (data && data.length > 0) {
+        setUserSites(data as any);
+        const primarySite = data[0];
+        const siteName = (primarySite.sites as any)?.name || "Unknown Site";
+        console.log("[App] Resolved primary site:", primarySite.site_id, siteName);
+        setActiveSiteId(primarySite.site_id, siteName);
         setHasNoSite(false);
 
-        console.log("[App] Loading all store data for site:", data.site_id);
+        console.log("[App] Loading all store data for site:", primarySite.site_id);
         await Promise.all([
-          loadWorkOrders(data.site_id),
-          loadLocations(data.site_id),
-          loadAssets(data.site_id),
-          loadParts(data.site_id),
-          loadCategories(data.site_id),
-          loadUsers(data.site_id),
-          loadProcedures(data.site_id),
-          loadVendors(data.site_id),
-          loadMeters(data.site_id),
+          loadWorkOrders(primarySite.site_id),
+          loadLocations(primarySite.site_id),
+          loadAssets(primarySite.site_id),
+          loadParts(primarySite.site_id),
+          loadCategories(primarySite.site_id),
+          loadUsers(primarySite.site_id),
+          loadProcedures(primarySite.site_id),
+          loadVendors(primarySite.site_id),
+          loadMeters(primarySite.site_id),
         ]);
         console.log("[App] All store data loaded successfully");
       } else {
         console.warn("[App] No site found for user:", userId);
         setActiveSiteId(null);
+        setUserSites([]);
         setHasNoSite(true);
       }
     } catch (err) {
@@ -111,7 +118,7 @@ export const App = () => {
       setIsBootstrapping(false);
       console.log("[App] Bootstrap finished, isBootstrapping set to false");
     }
-  }, [setActiveSiteId, setActiveUserId, setIsBootstrapping, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors, loadMeters]);
+  }, [setActiveSiteId, setActiveUserId, setIsBootstrapping, setUserSites, loadWorkOrders, loadLocations, loadAssets, loadParts, loadCategories, loadUsers, loadProcedures, loadVendors, loadMeters]);
 
   // Keep a stable ref to the latest resolveSiteAndLoadData
   const resolveSiteAndLoadDataRef = useRef(resolveSiteAndLoadData);

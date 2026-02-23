@@ -1,7 +1,10 @@
 import { SidebarLogo } from "@/sections/Sidebar/components/SidebarLogo";
 import { LocationSelector } from "@/sections/Sidebar/components/LocationSelector";
+import { useSiteStore } from "@/store/useSiteStore";
 
 export const SidebarHeader = () => {
+  const { activeSiteName } = useSiteStore();
+  
   return (
     <div className="box-border caret-transparent grid shrink-0 gap-y-2 mb-3">
       {/* Logo - Hidden on mobile/tablet */}
@@ -12,7 +15,7 @@ export const SidebarHeader = () => {
       {/* Logo Icon Only - Visible on mobile/tablet */}
       <div className="hidden lg:hidden flex items-center justify-center mb-2">
         <img
-          alt="CWS - Slovakia"
+          alt={activeSiteName || "CWS - Slovakia"}
           src="/public/logo.svg"
           className="box-border caret-transparent shrink-0 h-8 w-8 rounded"
         />
@@ -32,7 +35,7 @@ export const SidebarHeader = () => {
       </div>
       
       {/* Location Selector - Hidden on mobile/tablet */}
-      <div className="hidden lg:flex items-center box-border caret-transparent basis-[0%] grow max-w-full -mb-2 py-2">
+      <div className="hidden lg:flex items-center box-border caret-transparent basis-[0%] grow max-w-full py-2">
         <LocationSelector />
       </div>
     </div>
