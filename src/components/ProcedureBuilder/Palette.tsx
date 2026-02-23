@@ -21,6 +21,7 @@ export const Palette: React.FC<PaletteProps> = ({ onAddItem, onAddSection }) => 
     { label: 'File Upload', kind: 'File' },
     { label: 'Signature', kind: 'Signature' },
     { label: 'Meter Reading', kind: 'MeterReading' },
+    { label: 'Checklist', kind: 'Checklist' },
   ];
 
   return (

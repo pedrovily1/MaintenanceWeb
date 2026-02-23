@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProcedureItem, ProcedureItemKind, MultipleChoiceItem, NumberInputItem, TextInputItem, MeterReadingItem } from '@/types/procedure';
+import { ProcedureItem, ProcedureItemKind, MultipleChoiceItem, NumberInputItem, TextInputItem, MeterReadingItem, ChecklistItem } from '@/types/procedure';
 import { useMeterStore } from '@/store/useMeterStore';
 
 interface ItemEditorProps {
@@ -100,6 +100,32 @@ export const ItemEditor: React.FC<ItemEditorProps> = ({ item, onChange, onRemove
               <label className="text-xs text-gray-600 flex items-center gap-1">
                 <input type="checkbox" checked={!!it.otherOption} onChange={(e) => onChange({ otherOption: e.target.checked })} /> Include "Other"
               </label>
+            </div>
+          </div>
+        );
+      }
+      case 'Checklist': {
+        const it = item as ChecklistItem;
+        const opts = it.options || [];
+        return (
+          <div className="mt-2 space-y-2">
+            {opts.map((o, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">{idx + 1}.</span>
+                <input
+                  className="border border-[var(--border)] rounded px-2 py-1 text-sm grow"
+                  value={o}
+                  onChange={(e) => {
+                    const next = [...opts];
+                    next[idx] = e.target.value;
+                    onChange({ options: next });
+                  }}
+                />
+                <button type="button" className="text-xs text-red-500" onClick={() => onChange({ options: opts.filter((_, i) => i !== idx) })}>Remove</button>
+              </div>
+            ))}
+            <div className="flex items-center gap-2">
+              <button type="button" className="text-xs text-blue-500" onClick={() => onChange({ options: [...opts, `Check ${opts.length + 1}`] })}>+ Check Item</button>
             </div>
           </div>
         );

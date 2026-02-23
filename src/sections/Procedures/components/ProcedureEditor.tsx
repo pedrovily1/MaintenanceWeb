@@ -75,6 +75,7 @@ export const ProcedureEditor = ({ procedureId, onDelete }: ProcedureEditorProps)
           required: false,
           orderIndex: s.items.length,
           ...(kind === 'MultipleChoice' ? { options: ['Option 1', 'Option 2'] } : {}),
+          ...(kind === 'Checklist' ? { options: ['Check 1', 'Check 2'] } : {}),
           ...(kind === 'TextInput' ? { placeholder: 'Enter text' } : {}),
         };
         return { ...s, items: [...s.items, newItem as any] };

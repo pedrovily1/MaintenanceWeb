@@ -93,7 +93,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
         ))}
         <div className="pt-2">
           <div className="flex flex-wrap gap-2">
-            {(['Heading','TextBlock','TextInput','NumberInput','MultipleChoice','YesNoNA','Inspection','Date','Photo','File','Signature','MeterReading'] as ProcedureItemKind[]).map(kind => (
+            {(['Heading','TextBlock','TextInput','NumberInput','MultipleChoice','YesNoNA','Inspection','Date','Photo','File','Signature','MeterReading', 'Checklist'] as ProcedureItemKind[]).map(kind => (
               <button
                 key={kind}
                 type="button"

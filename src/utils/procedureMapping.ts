@@ -107,6 +107,14 @@ const mapItemToField = (item: ProcedureItem): WorkOrderField | null => {
         allowedMeterIds: (item as any).allowedMeterIds,
         value: (item as any).meterId ? { meterId: (item as any).meterId } : undefined,
       };
+    case 'Checklist':
+      return {
+        id: item.id,
+        label: item.label || 'Checklist',
+        type: 'checklist',
+        required: item.required,
+        options: (item as any).options || [],
+      };
     case 'Heading':
     case 'TextBlock':
     default:

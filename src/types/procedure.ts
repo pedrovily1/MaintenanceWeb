@@ -50,7 +50,8 @@ export type ProcedureItemKind =
   | 'Photo'
   | 'File'
   | 'Signature'
-  | 'MeterReading';
+  | 'MeterReading'
+  | 'Checklist';
 
 export interface HeadingItem extends ProcedureItemBase {
   kind: 'Heading';
@@ -116,6 +117,11 @@ export interface MeterReadingItem extends ProcedureItemBase {
   unit?: string; // derived from meter typically
 }
 
+export interface ChecklistItem extends ProcedureItemBase {
+  kind: 'Checklist';
+  options: string[];
+}
+
 export type ProcedureItem =
   | HeadingItem
   | TextBlockItem
@@ -128,7 +134,8 @@ export type ProcedureItem =
   | PhotoItem
   | FileItem
   | SignatureItem
-  | MeterReadingItem;
+  | MeterReadingItem
+  | ChecklistItem;
 
 // Instance values structure to be used when attached to a work order
 export type ProcedureFieldValue = any;

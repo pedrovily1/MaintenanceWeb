@@ -27,7 +27,8 @@ export type FieldType =
   | 'timestamp'
   | 'date'
   | 'yesno_na'
-  | 'inspection';
+  | 'inspection'
+  | 'checklist';
 
 export interface FieldValue {
   value?: any;

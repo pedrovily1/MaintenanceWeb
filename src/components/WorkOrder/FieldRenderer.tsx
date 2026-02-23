@@ -298,6 +298,38 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, onUpdate, d
         );
       }
 
+      case 'checklist':
+        return (
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {field.label} {field.required && '*'}
+            </label>
+            <div className="space-y-2">
+              {(field.options || []).map((opt) => {
+                const checked = Array.isArray(field.value) && field.value.includes(opt);
+                return (
+                  <label key={opt} className="flex items-center space-x-2 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(e) => {
+                        const current = Array.isArray(field.value) ? field.value : [];
+                        const next = e.target.checked 
+                          ? [...current, opt]
+                          : current.filter(v => v !== opt);
+                        onUpdate({ value: next });
+                      }}
+                      disabled={disabled}
+                      className="h-4 w-4 text-blue-600 rounded border-[var(--border)] focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">{opt}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        );
+
       case 'file':
         return (
           <div className="space-y-2">
