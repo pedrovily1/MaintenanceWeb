@@ -1,105 +1,170 @@
 import { useState, useMemo, useEffect } from "react";
-import { LocationList } from "./components/LocationList";
-import { LocationDetail } from "./components/LocationDetail";
+import { MapPin, Building2, Plus } from "lucide-react";
+import { T, inner, card } from "@/lib/tokens";
 import { useLocationStore } from "@/store/useLocationStore";
 import { useAssetStore } from "@/store/useAssetStore";
+import { LocationList } from "./components/LocationList";
+import { LocationDetail } from "./components/LocationDetail";
 import { LocationEditorModal } from "./components/LocationEditorModal";
 
-export const Locations = () => {
-  const [selectedLocationId, setSelectedLocationId] = useState<string | null>("2687779");
-  const [search, setSearch] = useState('');
-  const [showCreate, setShowCreate] = useState(false);
-  const [createParentId, setCreateParentId] = useState<string | null>(null);
-  const { locations, addLocation } = useLocationStore();
-  const { assets } = useAssetStore();
+/* ── KPI stat card ──────────────────────────────────────────── */
+const KpiCard = ({
+  value, label, color, icon,
+}: { value: number; label: string; color: string; icon: string }) => (
+  <div style={inner({ padding: "13px 16px" })}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+      <div>
+        <div style={{
+          fontSize: 28, fontWeight: 800, color,
+          letterSpacing: "-0.04em", lineHeight: 1,
+          fontVariantNumeric: "tabular-nums",
+        }}>
+          {value}
+        </div>
+        <div style={{ fontSize: 11, color: T.dim, marginTop: 4 }}>{label}</div>
+      </div>
+      <span style={{ fontSize: 16, opacity: 0.45 }}>{icon}</span>
+    </div>
+  </div>
+);
 
-  // Listen for sub-location creation requests from LocationDetail
+/* ═══════════════════════ Main component ════════════════════════ */
+
+export const Locations = () => {
+  const [search, setSearch]             = useState("");
+  const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
+  const [showCreate, setShowCreate]     = useState(false);
+  const [createParentId, setCreateParentId] = useState<string | null>(null);
+
+  const { locations, addLocation } = useLocationStore();
+  const { assets }                 = useAssetStore();
+
+  /* ── listen for sub-location creation requests ── */
   useEffect(() => {
     const handler = (e: any) => {
       const parentId = e.detail?.parentLocationId;
-      if (parentId) {
-        setCreateParentId(parentId);
-        setShowCreate(true);
-      }
+      if (parentId) { setCreateParentId(parentId); setShowCreate(true); }
     };
-    window.addEventListener('create-sub-location', handler as EventListener);
-    return () => window.removeEventListener('create-sub-location', handler as EventListener);
+    window.addEventListener("create-sub-location", handler as EventListener);
+    return () => window.removeEventListener("create-sub-location", handler as EventListener);
   }, []);
 
-  // Build enriched location list for the list view
+  /* ── auto-select first location ── */
+  useEffect(() => {
+    if (!selectedLocationId && locations.length > 0) {
+      const root = locations.find(l => !l.parentLocationId);
+      setSelectedLocationId(root?.id ?? locations[0].id);
+    }
+  }, [locations]);
+
+  /* ── enriched + filtered list ── */
   const enrichedLocations = useMemo(() => {
-    return locations.map(loc => {
-      const subLocationsCount = locations.filter(l => l.parentLocationId === loc.id).length;
-      const locAssets = assets.filter(a => a.locationId === loc.id);
-      return {
-        id: loc.id,
-        name: loc.name,
-        description: loc.description || '',
-        address: loc.address || '',
-        parentLocationId: loc.parentLocationId || null,
-        subLocationsCount,
-        assetsCount: locAssets.length,
-        assets: locAssets.map(a => ({
-          id: a.id,
-          name: a.name,
-          imageUrl: '',
-        })),
-      };
-    });
+    return locations.map(loc => ({
+      id:               loc.id,
+      name:             loc.name,
+      description:      loc.description || "",
+      address:          loc.address || "",
+      parentLocationId: loc.parentLocationId || null,
+      subLocationsCount: locations.filter(l => l.parentLocationId === loc.id).length,
+      assetsCount:      assets.filter(a => a.locationId === loc.id).length,
+      assets:           assets.filter(a => a.locationId === loc.id)
+                              .map(a => ({ id: a.id, name: a.name, imageUrl: "" })),
+    }));
   }, [locations, assets]);
 
-  // Filter by search
   const filteredLocations = useMemo(() => {
     if (!search.trim()) return enrichedLocations;
     const term = search.toLowerCase();
-    return enrichedLocations.filter(l => l.name.toLowerCase().includes(term) || (l.address || '').toLowerCase().includes(term));
+    return enrichedLocations.filter(l =>
+      l.name.toLowerCase().includes(term) ||
+      (l.address || "").toLowerCase().includes(term)
+    );
   }, [enrichedLocations, search]);
 
+  /* ── KPI stats ── */
+  const rootCount    = locations.filter(l => !l.parentLocationId).length;
+  const subCount     = locations.filter(l => !!l.parentLocationId).length;
+  const withAssets   = enrichedLocations.filter(l => l.assetsCount > 0).length;
+
+  /* ═══════════════════════ RENDER ════════════════════════════ */
   return (
-    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      {/* Header */}
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4">
-        <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
-          <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
-            <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
+
+      {/* ── Page header ── */}
+      <div style={{ padding: "20px 24px 0", flexShrink: 0 }}>
+        <div style={{
+          display: "flex", justifyContent: "space-between",
+          alignItems: "flex-start", marginBottom: 16,
+        }}>
+          <div>
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: T.text, letterSpacing: "-0.03em", margin: 0 }}>
               Locations
-            </h2>
+            </h1>
+            <p style={{ fontSize: 12.5, color: T.dim, fontWeight: 300, marginTop: 4, marginBottom: 0 }}>
+              Manage facility locations and site hierarchy
+            </p>
           </div>
-          <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow justify-end gap-y-4">
-            <div className="box-border caret-transparent flex basis-[0%] grow max-w-[400px]">
-              <form className="box-border caret-transparent basis-[0%] grow" onSubmit={e => e.preventDefault()}>
-                <input
-                  type="search"
-                  placeholder="Search Locations"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  className="bg-[var(--panel-2)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] pl-3 pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
-                />
-              </form>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowCreate(true)}
-              className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-md border-solid hover:bg-accent-hover hover:border-accent-hover"
-            >
-              <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                New Location
+          <button
+            onClick={() => { setCreateParentId(null); setShowCreate(true); }}
+            style={{
+              background: "#1a2d4a", color: "#7aacf0",
+              border: "1px solid rgba(59,130,246,0.28)",
+              borderRadius: 12, padding: "10px 18px",
+              fontSize: 13, fontWeight: 600, cursor: "pointer",
+              fontFamily: "inherit", display: "flex", alignItems: "center", gap: 6,
+            }}
+          >
+            <Plus size={14} />
+            New Location
+          </button>
+        </div>
+
+        {/* KPI row */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
+          <KpiCard value={locations.length} label="Total Locations" color={T.violet} icon="⌂" />
+          <KpiCard value={rootCount}        label="Root Locations"  color={T.blue}   icon="▣" />
+          <KpiCard value={subCount}         label="Sub-Locations"   color={T.muted}  icon="└" />
+          <KpiCard value={withAssets}       label="With Assets"     color={T.green}  icon="◎" />
+        </div>
+
+        {/* Search bar */}
+        <div style={{
+          ...card({ borderRadius: 14, overflow: "visible" }),
+          padding: "10px 14px", display: "flex", alignItems: "center", gap: 10,
+          marginBottom: 0,
+        }}>
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8,
+            ...inner({ padding: "7px 13px", borderRadius: 10 }),
+            flex: 1, maxWidth: 360,
+          }}>
+            <span style={{ color: T.dim, fontSize: 14 }}>⌕</span>
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search locations…"
+              style={{
+                background: "none", border: "none", outline: "none",
+                color: T.text, fontSize: 12.5, width: "100%", fontFamily: "inherit",
+              }}
+            />
+            {search && (
+              <span
+                onClick={() => setSearch("")}
+                style={{ color: T.dim, cursor: "pointer", fontSize: 13, lineHeight: 1 }}
+              >
+                ✕
               </span>
-            </button>
+            )}
           </div>
+          <span style={{ fontSize: 12, color: T.dim, fontWeight: 300 }}>
+            {filteredLocations.length} of {locations.length} locations
+          </span>
         </div>
       </div>
 
-      {/* Filter Bar */}
-      <div className="box-border caret-transparent shrink-0 px-4 py-3">
-        <div className="items-center box-border caret-transparent flex shrink-0">
-          <div className="box-border caret-transparent flex basis-[0%] grow gap-x-2">
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4">
+      {/* ── List + Detail ── */}
+      <div style={{ flex: 1, display: "flex", overflow: "hidden", padding: "12px 24px 20px", gap: 12 }}>
         <LocationList
           locations={filteredLocations}
           selectedLocationId={selectedLocationId}
@@ -108,12 +173,12 @@ export const Locations = () => {
         <LocationDetail locationId={selectedLocationId} />
       </div>
 
-      {/* Create Modal */}
+      {/* ── Create modal ── */}
       {showCreate && (
         <LocationEditorModal
           initial={createParentId ? { parentLocationId: createParentId } : undefined}
           onClose={() => { setShowCreate(false); setCreateParentId(null); }}
-          onSubmit={(data) => {
+          onSubmit={data => {
             const created = addLocation(data);
             setShowCreate(false);
             setCreateParentId(null);

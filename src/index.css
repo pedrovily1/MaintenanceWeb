@@ -67,17 +67,17 @@
     --radius: 0.5rem;
 
     /* OPS-CONSOLE dark theme — must come AFTER shadcn tokens to win cascade */
-    --bg: #0B0F14;
-    --panel: #111826;
-    --panel-2: #0E1522;
-    --text: #E6EAF2;
-    --muted: #9AA4B2;
-    --border: rgba(255,255,255,0.08);
-    --accent: #2F6BFF;
-    --accent-2: #00D4FF;
-    --status-active: #2FE58C;
-    --status-offline: #FF4D6D;
-    --status-warning: #FFB020;
+    --bg: #02070f;
+    --panel: #070e1a;
+    --panel-2: #0c1522;
+    --text: #f0f4f8;
+    --muted: #8896a6;
+    --border: rgba(255,255,255,0.06);
+    --accent: #3b82f6;
+    --accent-2: #a78bfa;
+    --status-active: #34d399;
+    --status-offline: #f87171;
+    --status-warning: #fbbf24;
   }
 
   .dark {
@@ -221,4 +221,10 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+}
+
+/* Detail panel slide-in animation */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
 }

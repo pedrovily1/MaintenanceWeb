@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Sidebar } from "@/sections/Sidebar";
+import { Topbar } from "@/sections/Header/Topbar";
 import { MainContent } from "@/sections/MainContent";
 import { Login } from "@/sections/Login";
 import { SetPasswordScreen } from "@/sections/SetPasswordScreen";
 import { NoSiteScreen } from "@/sections/NoSiteScreen";
+import { Dashboard } from "@/sections/Dashboard";
 import { Reporting } from "@/sections/Reporting";
 import { Assets } from "@/sections/Assets";
 import { Categories } from "@/sections/Categories";
@@ -14,6 +16,8 @@ import { Locations } from "@/sections/Locations";
 import { Users } from "@/sections/Users";
 import { Vendors } from "@/sections/Vendors";
 import { Settings } from "@/sections/Settings";
+import { MobileShell } from "@/components/Shell/MobileShell";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 import { useLocationStore } from "@/store/useLocationStore";
 import { useAssetStore } from "@/store/useAssetStore";
@@ -27,6 +31,7 @@ import { useMeterStore } from "@/store/useMeterStore";
 import { supabase } from "@/lib/supabase";
 
 type View =
+    | "dashboard"
     | "workorders"
     | "reporting"
     | "assets"
@@ -37,10 +42,12 @@ type View =
     | "locations"
     | "users"
     | "vendors"
-    | "settings";
+    | "settings"
+    | "calendar";
 
 export const App = () => {
-  const [currentView, setCurrentView] = useState<View>("workorders");
+  const isMobile = useIsMobile();
+  const [currentView, setCurrentView] = useState<View>("dashboard");
   const [isAuthed, setIsAuthed] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [isSettingPassword, setIsSettingPassword] = useState(false);
@@ -202,10 +209,10 @@ export const App = () => {
 
       const view = hash.replace("#", "") as View;
       const validViews: View[] = [
-        "workorders", "reporting", "assets", "categories", "parts",
-        "procedures", "meters", "locations", "users", "vendors", "settings",
+        "dashboard", "workorders", "reporting", "assets", "categories", "parts",
+        "procedures", "meters", "locations", "users", "vendors", "settings", "calendar",
       ];
-      setCurrentView(validViews.includes(view) ? view : "workorders");
+      setCurrentView(validViews.includes(view) ? view : "dashboard");
     };
 
     handleHashChange();
@@ -215,6 +222,7 @@ export const App = () => {
 
   const renderView = () => {
     switch (currentView) {
+      case "dashboard": return <Dashboard />;
       case "reporting": return <Reporting />;
       case "assets": return <Assets />;
       case "categories": return <Categories />;
@@ -225,6 +233,7 @@ export const App = () => {
       case "users": return <Users />;
       case "vendors": return <Vendors />;
       case "settings": return <Settings />;
+      case "calendar":
       case "workorders":
       default: return <MainContent />;
     }
@@ -262,12 +271,21 @@ export const App = () => {
     return <NoSiteScreen userId={currentUserId} />;
   }
 
+  // Mobile layout — full-screen mobile shell
+  if (isMobile) {
+    return <MobileShell initialView={currentView} />;
+  }
+
+  // Desktop layout
   return (
       <div className="flex h-screen w-full overflow-hidden bg-[var(--bg)] text-[var(--text)]">
         <Sidebar currentView={currentView} />
-        <main className="flex min-w-0 flex-1 overflow-hidden bg-[var(--panel-2)] bg-radial-gradient">
-          {renderView()}
-        </main>
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-[var(--panel-2)] bg-radial-gradient">
+          <Topbar />
+          <main className="flex min-w-0 flex-1 overflow-hidden">
+            {renderView()}
+          </main>
+        </div>
       </div>
   );
 };

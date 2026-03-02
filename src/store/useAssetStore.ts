@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Asset } from '../types/asset';
-import { fetchAssets } from '@/services/assetService';
+import { fetchAssets, mapRow } from '@/services/assetService';
 import { supabase } from '@/lib/supabase';
 import { useSiteStore } from './useSiteStore';
 
@@ -81,7 +81,7 @@ export const useAssetStore = () => {
 
         if (error) throw error;
 
-        globalAssets = globalAssets.map(a => a.id === tempId ? data as Asset : a);
+        globalAssets = globalAssets.map(a => a.id === tempId ? mapRow(data) : a);
         notify();
       } catch (error) {
         console.error('Error adding asset:', error);

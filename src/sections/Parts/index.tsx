@@ -1,285 +1,489 @@
-import { useState, useMemo, useEffect } from 'react';
-import { PartList } from './components/PartList';
-import { PartDetail } from './components/PartDetail';
-import { PartEditorPanel } from './components/PartEditorPanel';
-import { usePartStore } from '@/store/usePartStore';
-import { useLocationStore } from '@/store/useLocationStore';
-import { needsRestock } from '@/types/part';
-import type { PartType } from '@/types/part';
+import { useEffect, useMemo, useState } from "react";
+import { T, card, inner } from "@/lib/tokens";
+import { Badge } from "@/components/Common/Badge";
+import { usePartStore } from "@/store/usePartStore";
+import { PartEditorPanel } from "./components/PartEditorPanel";
+import { getTotalStock, needsRestock } from "@/types/part";
+import type { Part } from "@/types/part";
 
-const PART_TYPES: PartType[] = ['Spare Part', 'Consumable', 'Tool', 'Safety Equipment', 'Other'];
+/* ── helpers ──────────────────────────────────────────────── */
+function partIcon(p: Part): string {
+  switch (p.partType) {
+    case "Spare Part": return "⚙️";
+    case "Consumable": return "💧";
+    case "Tool": return "🔧";
+    case "Safety Equipment": return "🦺";
+    default: return "📦";
+  }
+}
 
-export const Parts = () => {
-  const { parts, addPart } = usePartStore();
-  const { locations } = useLocationStore();
+function stockStatus(p: Part): "Out of Stock" | "Low Stock" | "In Stock" {
+  const total = getTotalStock(p);
+  if (total === 0) return "Out of Stock";
+  if (needsRestock(p)) return "Low Stock";
+  return "In Stock";
+}
 
-  const [selectedPartId, setSelectedPartId] = useState<string | null>(null);
-  const [showNewEditor, setShowNewEditor] = useState(false);
-  const [search, setSearch] = useState('');
-  const [filterRestock, setFilterRestock] = useState(false);
-  const [filterPartType, setFilterPartType] = useState<PartType | ''>('');
-  const [filterLocationId, setFilterLocationId] = useState('');
-  const [showTypeMenu, setShowTypeMenu] = useState(false);
-  const [showLocationMenu, setShowLocationMenu] = useState(false);
+function stockColor(p: Part): string {
+  const s = stockStatus(p);
+  return s === "Out of Stock" ? T.red : s === "Low Stock" ? T.amber : T.green;
+}
 
-  // Default-select first part on mount / when parts load
-  useEffect(() => {
-    if (!selectedPartId && parts.length > 0) {
-      setSelectedPartId(parts[0].id);
-    }
-  }, [parts, selectedPartId]);
+function fmtDate(iso?: string) {
+  if (!iso) return "—";
+  try { return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
+  catch { return "—"; }
+}
 
-  // Listen for part-deleted event to deselect
-  useEffect(() => {
-    const handler = (e: any) => {
-      if (e.detail?.id === selectedPartId) setSelectedPartId(null);
-    };
-    window.addEventListener('part-deleted', handler);
-    return () => window.removeEventListener('part-deleted', handler);
-  }, [selectedPartId]);
-
-  // Deep-link: select a part from another view (e.g., AssetDetail)
-  useEffect(() => {
-    const handler = (e: any) => {
-      const id = e.detail?.id;
-      if (id) setSelectedPartId(id);
-    };
-    window.addEventListener('select-part', handler);
-    return () => window.removeEventListener('select-part', handler);
-  }, []);
-
-  const filteredParts = useMemo(() => {
-    let list = [...parts];
-
-    if (filterRestock) {
-      list = list.filter(p => needsRestock(p));
-    }
-
-    if (filterPartType) {
-      list = list.filter(p => p.partType === filterPartType);
-    }
-
-    if (filterLocationId) {
-      list = list.filter(p => p.inventory.some(i => i.locationId === filterLocationId));
-    }
-
-    if (search.trim()) {
-      const term = search.trim().toLowerCase();
-      list = list.filter(p => p.name.toLowerCase().includes(term));
-    }
-
-    return list.sort((a, b) => a.name.localeCompare(b.name));
-  }, [parts, filterRestock, filterPartType, filterLocationId, search]);
-
-  const restockCount = useMemo(() => parts.filter(p => needsRestock(p)).length, [parts]);
+/* ── Inventory Detail Panel ───────────────────────────────── */
+function InventoryDetailPanel({ part, onClose, onEdit }: { part: Part; onClose: () => void; onEdit: () => void }) {
+  const total = getTotalStock(part);
+  const sc = stockColor(part);
+  const ss = stockStatus(part);
+  const icon = partIcon(part);
+  const maxStock = Math.max(part.minStock * 3, total, 1);
+  const stockPct = Math.min(100, Math.round((total / maxStock) * 100));
 
   return (
-    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      {/* Header */}
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4">
-        <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
-          <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
-            <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
-              Parts
-            </h2>
-          </div>
-          <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow justify-end gap-y-4">
-            <div className="box-border caret-transparent flex basis-[0%] grow max-w-[400px]">
-              <form className="box-border caret-transparent basis-[0%] grow" onSubmit={e => e.preventDefault()}>
-                <input
-                  type="search"
-                  placeholder="Search Parts"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  className="bg-gray-50 bg-[url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2711%27%20height=%2712%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%20stroke=%27%23868686%27%20stroke-width=%271.25%27%20transform=%27translate%281%201.5)] bg-no-repeat box-border caret-transparent shrink-0 leading-5 min-h-10 -outline-offset-2 w-full border border-[var(--border)] bg-[position:10px_50%] pl-[30px] pr-2 py-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid"
-                />
-              </form>
+    <div
+      style={{
+        width: 340, background: T.surface, borderLeft: `1px solid ${T.border}`,
+        display: "flex", flexDirection: "column", flexShrink: 0,
+        animation: "slideIn 0.22s cubic-bezier(.34,1.2,.64,1)",
+      }}
+    >
+      {/* header */}
+      <div style={{ padding: "18px 20px 14px", borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 44, height: 44, background: sc + "14", border: `1px solid ${sc}28`, borderRadius: 13, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
+              {icon}
             </div>
-            <div className="relative box-border caret-transparent flex shrink-0">
-              <button
-                type="button"
-                onClick={() => setShowNewEditor(true)}
-                className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-md border-solid hover:bg-accent-hover hover:border-accent-hover"
-              >
-                <img
-                  src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-22.svg"
-                  alt="Icon"
-                  className="box-border caret-transparent shrink-0 h-5 text-nowrap w-5"
-                />
-                <span className="box-border caret-transparent flex shrink-0 text-nowrap">
-                  New Part
-                </span>
-              </button>
+            <div>
+              <div style={{ fontSize: 10, color: T.dim, fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 3 }}>
+                {part.barcode ?? part.id.slice(0, 8).toUpperCase()}
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: T.text, letterSpacing: "-0.02em", lineHeight: 1.3 }}>{part.name}</div>
             </div>
           </div>
+          <button
+            onClick={onClose}
+            style={{ background: T.raised, border: `1px solid ${T.border}`, borderRadius: 8, width: 30, height: 30, cursor: "pointer", color: T.muted, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "inherit", flexShrink: 0 }}
+          >
+            ✕
+          </button>
+        </div>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <Badge label={ss} color={sc} />
+          <Badge label={part.partType} color={T.violet} />
+          {part.unit && <Badge label={part.unit} color={T.muted} />}
         </div>
       </div>
 
-      {/* Filter Bar */}
-      <div className="box-border caret-transparent shrink-0 mb-4 mx-4">
-        <div className="items-center box-border caret-transparent flex shrink-0">
-          <div className="box-border caret-transparent flex basis-[0%] grow">
-            <div className="items-center box-border caret-transparent gap-x-2 flex shrink-0 gap-y-2">
+      {/* body */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
+        {/* stock card */}
+        <div style={inner({ padding: "14px" })}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+            <div>
+              <div style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>Total Stock</div>
+              <div style={{ fontSize: 36, fontWeight: 800, color: sc, letterSpacing: "-0.04em", lineHeight: 1 }}>{total}</div>
+              <div style={{ fontSize: 11, color: T.dim, marginTop: 3 }}>{part.unit ?? "unit"} available</div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>Min Stock</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: T.text, letterSpacing: "-0.02em" }}>{part.minStock}</div>
+              <div style={{ fontSize: 11, color: T.dim, marginTop: 3 }}>threshold</div>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>Stock Level</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: sc }}>{total} {part.unit ?? "unit"} · min {part.minStock}</span>
+          </div>
+          <div style={{ height: 7, background: T.bg, borderRadius: 99, overflow: "hidden" }}>
+            <div style={{ width: `${stockPct}%`, height: "100%", background: sc, borderRadius: 99, transition: "width 0.5s ease", boxShadow: `0 0 8px ${sc}55` }} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+            <span style={{ fontSize: 10, color: T.dim }}>Min: {part.minStock}</span>
+            <span style={{ fontSize: 10, color: T.dim }}>Target: {part.minStock * 3}</span>
+          </div>
+        </div>
 
-              {/* Needs Restock toggle */}
-              <div className="items-center box-border caret-transparent flex shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setFilterRestock(v => !v)}
-                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
-                    filterRestock
-                      ? 'bg-amber-50 border-amber-400 text-amber-700'
-                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
-                  }`}
-                >
-                  <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-24.svg"
-                      alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
-                    />
+        {/* info grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          {[
+            { label: "Part Type", value: part.partType },
+            { label: "Unit", value: part.unit ?? "—" },
+            { label: "Barcode", value: part.barcode ?? "—" },
+            { label: "Last Updated", value: fmtDate(part.updatedAt) },
+          ].map(({ label, value }) => (
+            <div key={label} style={inner({ padding: "10px 12px" })}>
+              <div style={{ fontSize: 9.5, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>{label}</div>
+              <div style={{ fontSize: 12, fontWeight: 500, color: T.text }}>{value}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* description */}
+        {part.description && (
+          <div style={inner({ padding: "12px 14px" })}>
+            <div style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 6 }}>Description</div>
+            <p style={{ fontSize: 12, color: T.muted, lineHeight: 1.7, fontWeight: 300, margin: 0 }}>{part.description}</p>
+          </div>
+        )}
+
+        {/* per-location inventory */}
+        {part.inventory.length > 0 && (
+          <div style={inner({ padding: "12px 14px" })}>
+            <div style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 10 }}>Inventory by Location</div>
+            {part.inventory.map((inv, i) => {
+              const locColor = inv.quantity === 0 ? T.red : inv.quantity <= inv.minQuantity ? T.amber : T.green;
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: i < part.inventory.length - 1 ? 10 : 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: locColor, flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, color: T.muted }}>{inv.locationName || "Unknown"}</span>
                   </div>
-                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
-                    Needs Restock
-                    {restockCount > 0 && (
-                      <span className="ml-1 bg-amber-100 text-amber-700 text-[9px] font-bold px-1 py-0.5 rounded">
-                        {restockCount}
-                      </span>
-                    )}
+                  <div style={{ display: "flex", align: "center", gap: 8 }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: locColor }}>{inv.quantity}</span>
+                    <span style={{ fontSize: 11, color: T.dim }}>/ min {inv.minQuantity}</span>
                   </div>
-                </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* reorder alert */}
+        {needsRestock(part) && (
+          <div style={{ ...inner({ padding: "12px 14px" }), borderColor: sc + "44", background: sc + "08" }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: sc, marginBottom: 4 }}>
+              {total === 0 ? "⚠ Out of Stock — Immediate Reorder Required" : "⚠ Below Minimum — Reorder Recommended"}
+            </div>
+            <div style={{ fontSize: 11, color: T.dim, fontWeight: 300 }}>
+              Minimum threshold: {part.minStock} {part.unit ?? "unit"}
+            </div>
+          </div>
+        )}
+
+        {/* actions */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 4 }}>
+          <button
+            onClick={onEdit}
+            style={{ background: "#1a2d4a", color: "#7aacf0", border: "1px solid rgba(59,130,246,0.28)", borderRadius: 12, padding: "10px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+          >
+            ✎ Edit
+          </button>
+          <button
+            style={{ background: "rgba(52,211,153,0.10)", color: "#34d399", border: "1px solid rgba(52,211,153,0.25)", borderRadius: 12, padding: "10px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+          >
+            ↑ Adjust Stock
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Parts (Inventory) View ─────────────────────────── */
+const COLS = [
+  { key: "name", label: "Part / Description", w: "200px" },
+  { key: "partType", label: "Type", w: "130px" },
+  { key: "unit", label: "Unit", w: "70px" },
+  { key: "stock", label: "Stock", w: "110px" },
+  { key: "minStock", label: "Min", w: "70px" },
+  { key: "status", label: "Status", w: "110px" },
+] as const;
+
+type StockFilter = "All" | "Out of Stock" | "Low Stock" | "In Stock";
+type TypeFilter = "All" | string;
+
+export const Parts = () => {
+  const { parts, addPart, updatePart } = usePartStore();
+  const [search, setSearch] = useState("");
+  const [stockFilter, setStockFilter] = useState<StockFilter>("All");
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("All");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [editingPart, setEditingPart] = useState<Part | null>(null);
+  const [sortCol, setSortCol] = useState<string>("name");
+  const [sortDir, setSortDir] = useState<1 | -1>(1);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      if (e.detail?.id === selectedId) setSelectedId(null);
+    };
+    window.addEventListener("part-deleted", handler);
+    return () => window.removeEventListener("part-deleted", handler);
+  }, [selectedId]);
+
+  const partTypes = useMemo(() => {
+    const types = Array.from(new Set((parts ?? []).map((p) => p.partType))).sort();
+    return ["All", ...types];
+  }, [parts]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return (parts ?? [])
+      .filter((p) => {
+        if (stockFilter !== "All" && stockStatus(p) !== stockFilter) return false;
+        if (typeFilter !== "All" && p.partType !== typeFilter) return false;
+        if (q) {
+          return [p.name, p.description, p.barcode, p.partType].some(
+            (f) => (f ?? "").toLowerCase().includes(q)
+          );
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        const mul = sortDir;
+        if (sortCol === "name") return mul * a.name.localeCompare(b.name);
+        if (sortCol === "partType") return mul * a.partType.localeCompare(b.partType);
+        if (sortCol === "stock") return mul * (getTotalStock(a) - getTotalStock(b));
+        if (sortCol === "minStock") return mul * (a.minStock - b.minStock);
+        if (sortCol === "unit") return mul * ((a.unit ?? "").localeCompare(b.unit ?? ""));
+        if (sortCol === "status") return mul * stockStatus(a).localeCompare(stockStatus(b));
+        return 0;
+      });
+  }, [parts, search, stockFilter, typeFilter, sortCol, sortDir]);
+
+  const stats = useMemo(() => {
+    const all = parts ?? [];
+    const outOfStock = all.filter((p) => getTotalStock(p) === 0).length;
+    const low = all.filter((p) => getTotalStock(p) > 0 && needsRestock(p)).length;
+    return { total: all.length, outOfStock, low };
+  }, [parts]);
+
+  const selectedPart = selectedId ? (parts ?? []).find((p) => p.id === selectedId) ?? null : null;
+
+  const toggleSort = (col: string) => {
+    if (sortCol === col) setSortDir((d) => (d === 1 ? -1 : 1));
+    else { setSortCol(col); setSortDir(1); }
+  };
+
+  const stockOpts: StockFilter[] = ["All", "Out of Stock", "Low Stock", "In Stock"];
+
+  return (
+    <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        {/* ── page header */}
+        <div style={{ padding: "18px 22px 14px", flexShrink: 0, borderBottom: `1px solid ${T.border}` }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+            <div>
+              <h2 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 2, color: T.text, margin: 0 }}>Inventory</h2>
+              <div style={{ fontSize: 12, color: T.dim, fontWeight: 300, marginTop: 4 }}>
+                {stats.total} parts tracked
               </div>
+            </div>
+            <button
+              onClick={() => setShowCreate(true)}
+              style={{ background: "#1a2d4a", color: "#7aacf0", border: "1px solid rgba(59,130,246,0.28)", borderRadius: 12, padding: "9px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+            >
+              + Add Part
+            </button>
+          </div>
 
-              {/* Part Types dropdown */}
-              <div className="relative items-center box-border caret-transparent flex shrink-0">
-                <button
-                  type="button"
-                  onClick={() => { setShowTypeMenu(v => !v); setShowLocationMenu(false); }}
-                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
-                    filterPartType
-                      ? 'bg-blue-50 border-blue-400 text-blue-700'
-                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
-                  }`}
-                >
-                  <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
-                      alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
-                    />
-                  </div>
-                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
-                    {filterPartType || 'Part Types'}
-                  </div>
-                </button>
-                {showTypeMenu && (
-                  <div className="absolute top-9 left-0 z-20 bg-white border border-[var(--border)] rounded shadow-lg min-w-[160px]">
-                    <button
-                      type="button"
-                      className="block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50"
-                      onClick={() => { setFilterPartType(''); setShowTypeMenu(false); }}
-                    >
-                      All Types
-                    </button>
-                    {PART_TYPES.map(t => (
-                      <button
-                        key={t}
-                        type="button"
-                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterPartType === t ? 'font-semibold text-blue-600' : ''}`}
-                        onClick={() => { setFilterPartType(t); setShowTypeMenu(false); }}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                )}
+          {/* KPI strip */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 14 }}>
+            {[
+              { label: "Total Parts", value: stats.total, color: T.blue, icon: "▦" },
+              { label: "Out of Stock", value: stats.outOfStock, color: T.red, icon: "⚠" },
+              { label: "Low Stock", value: stats.low, color: T.amber, icon: "▲" },
+              { label: "Needs Reorder", value: stats.outOfStock + stats.low, color: T.violet, icon: "↺" },
+            ].map(({ label, value, color, icon }) => (
+              <div key={label} style={inner({ padding: "12px 14px" })}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}>
+                  <span style={{ fontSize: 10, color: T.dim, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>
+                  <span style={{ fontSize: 13, color: color + "aa" }}>{icon}</span>
+                </div>
+                <div style={{ fontSize: 22, fontWeight: 800, color, letterSpacing: "-0.03em" }}>{value}</div>
               </div>
+            ))}
+          </div>
 
-              {/* Location dropdown */}
-              <div className="relative items-center box-border caret-transparent flex shrink-0">
+          {/* filters row */}
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, ...inner({ padding: "7px 12px", borderRadius: 10 }), minWidth: 220 }}>
+              <span style={{ color: T.dim, fontSize: 13 }}>⌕</span>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search parts, barcode…"
+                style={{ background: "none", border: "none", outline: "none", color: T.text, fontSize: 13, width: "100%", fontFamily: "inherit" }}
+              />
+              {search && <button onClick={() => setSearch("")} style={{ background: "none", border: "none", color: T.dim, cursor: "pointer", fontSize: 12, fontFamily: "inherit" }}>✕</button>}
+            </div>
+            <div style={{ width: 1, height: 20, background: T.border }} />
+            {stockOpts.map((s) => {
+              const col = s === "Out of Stock" ? T.red : s === "Low Stock" ? T.amber : s === "In Stock" ? T.green : T.muted;
+              return (
                 <button
-                  type="button"
-                  onClick={() => { setShowLocationMenu(v => !v); setShowTypeMenu(false); }}
-                  className={`items-center caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border overflow-hidden px-2 rounded border-solid transition-colors ${
-                    filterLocationId
-                      ? 'bg-blue-50 border-blue-400 text-blue-700'
-                      : 'bg-white border-[var(--border)] hover:border-neutral-300'
-                  }`}
-                >
-                  <div className="items-center box-border caret-transparent flex shrink-0 justify-center px-1">
-                    <img
-                      src="https://c.animaapp.com/mkof8zon8iICvl/assets/icon-25.svg"
-                      alt="Icon"
-                      className="text-blue-500 text-[8px] box-border caret-transparent shrink-0 h-4 leading-[11.4288px] w-4"
-                    />
-                  </div>
-                  <div className="box-border caret-transparent text-ellipsis text-nowrap overflow-hidden px-1">
-                    {filterLocationId ? (locations.find(l => l.id === filterLocationId)?.name ?? 'Location') : 'Location'}
-                  </div>
-                </button>
-                {showLocationMenu && (
-                  <div className="absolute top-9 left-0 z-20 bg-white border border-[var(--border)] rounded shadow-lg min-w-[180px] max-h-48 overflow-y-auto">
-                    <button
-                      type="button"
-                      className="block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50"
-                      onClick={() => { setFilterLocationId(''); setShowLocationMenu(false); }}
-                    >
-                      All Locations
-                    </button>
-                    {locations.map(loc => (
-                      <button
-                        key={loc.id}
-                        type="button"
-                        className={`block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 ${filterLocationId === loc.id ? 'font-semibold text-blue-600' : ''}`}
-                        onClick={() => { setFilterLocationId(loc.id); setShowLocationMenu(false); }}
-                      >
-                        {loc.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Clear Filters */}
-              {(filterRestock || filterPartType || filterLocationId || search) && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFilterRestock(false);
-                    setFilterPartType('');
-                    setFilterLocationId('');
-                    setSearch('');
+                  key={s}
+                  onClick={() => setStockFilter(s)}
+                  style={{
+                    background: stockFilter === s ? "#1a2d4a" : "transparent",
+                    color: stockFilter === s ? "#7aacf0" : T.dim,
+                    border: `1px solid ${stockFilter === s ? "rgba(59,130,246,0.28)" : T.border}`,
+                    borderRadius: 8, padding: "5px 11px", fontSize: 11.5,
+                    fontWeight: stockFilter === s ? 600 : 400, cursor: "pointer",
+                    fontFamily: "inherit", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap" as const,
                   }}
-                  className="text-xs text-blue-500 hover:text-blue-400 px-1"
                 >
-                  Clear filters
+                  {s !== "All" && <div style={{ width: 6, height: 6, borderRadius: "50%", background: col }} />}
+                  {s}
                 </button>
-              )}
-            </div>
+              );
+            })}
+            {partTypes.length > 1 && (
+              <>
+                <div style={{ width: 1, height: 20, background: T.border }} />
+                <div style={{ display: "flex", gap: 4, overflowX: "auto" as const, maxWidth: 380 }}>
+                  {partTypes.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setTypeFilter(t)}
+                      style={{
+                        background: typeFilter === t ? "rgba(167,139,250,0.15)" : "transparent",
+                        color: typeFilter === t ? "#a78bfa" : T.dim,
+                        border: `1px solid ${typeFilter === t ? "rgba(167,139,250,0.3)" : T.border}`,
+                        borderRadius: 8, padding: "5px 11px", fontSize: 11.5,
+                        fontWeight: typeFilter === t ? 600 : 400, cursor: "pointer",
+                        fontFamily: "inherit", whiteSpace: "nowrap" as const,
+                      }}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
+        </div>
+
+        {/* ── table */}
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ background: T.raised, position: "sticky", top: 0, zIndex: 1 }}>
+                {COLS.map((c) => (
+                  <th
+                    key={c.key}
+                    onClick={() => toggleSort(c.key)}
+                    style={{
+                      padding: "10px 14px", textAlign: "left", fontSize: 10.5, fontWeight: 600,
+                      color: T.dim, textTransform: "uppercase", letterSpacing: "0.07em",
+                      cursor: "pointer", whiteSpace: "nowrap", borderBottom: `1px solid ${T.border}`,
+                      userSelect: "none", width: c.w,
+                    }}
+                  >
+                    {c.label}
+                    {sortCol === c.key && <span style={{ color: T.blue, fontSize: 10, marginLeft: 4 }}>{sortDir === 1 ? "↑" : "↓"}</span>}
+                  </th>
+                ))}
+                <th style={{ padding: "10px 14px", borderBottom: `1px solid ${T.border}`, width: "120px" }} />
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((part) => {
+                const sc = stockColor(part);
+                const ss = stockStatus(part);
+                const icon = partIcon(part);
+                const total = getTotalStock(part);
+                const sel = selectedId === part.id;
+                const maxStock = Math.max(part.minStock * 3, total, 1);
+                const pct = Math.min(100, Math.round((total / maxStock) * 100));
+                return (
+                  <tr
+                    key={part.id}
+                    onClick={() => setSelectedId(sel ? null : part.id)}
+                    style={{
+                      borderBottom: `1px solid ${T.border}`, cursor: "pointer",
+                      background: sel ? T.blueGlow : "transparent",
+                      borderLeft: `3px solid ${sel ? T.blue : "transparent"}`,
+                      transition: "background 0.15s",
+                    }}
+                    onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = T.raised; }}
+                    onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}
+                  >
+                    <td style={{ padding: "12px 14px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 34, height: 34, background: sc + "14", border: `1px solid ${sc}28`, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0 }}>{icon}</div>
+                        <div>
+                          <div style={{ fontWeight: 600, color: T.text, marginBottom: 1 }}>{part.name}</div>
+                          {part.description && <div style={{ fontSize: 10.5, color: T.dim, fontWeight: 300 }}>{part.description.slice(0, 40)}{part.description.length > 40 ? "…" : ""}</div>}
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ padding: "12px 14px" }}><Badge label={part.partType} color={T.violet} /></td>
+                    <td style={{ padding: "12px 14px", color: T.muted, fontSize: 12 }}>{part.unit ?? "—"}</td>
+                    <td style={{ padding: "12px 14px" }}>
+                      <div style={{ fontWeight: 700, color: sc, fontSize: 15, letterSpacing: "-0.02em", marginBottom: 4 }}>
+                        {total}<span style={{ fontSize: 10, color: T.dim, fontWeight: 400, marginLeft: 3 }}>{part.unit ?? ""}</span>
+                      </div>
+                      <div style={{ width: 60, height: 4, background: T.bg, borderRadius: 99, overflow: "hidden" }}>
+                        <div style={{ width: `${pct}%`, height: "100%", background: sc, borderRadius: 99 }} />
+                      </div>
+                    </td>
+                    <td style={{ padding: "12px 14px", color: T.muted, fontSize: 13, fontVariantNumeric: "tabular-nums" }}>{part.minStock}</td>
+                    <td style={{ padding: "12px 14px" }}><Badge label={ss} color={sc} /></td>
+                    <td style={{ padding: "12px 14px" }}>
+                      <div style={{ display: "flex", gap: 5 }}>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setSelectedId(sel ? null : part.id); }}
+                          style={{ background: "#1a2d4a", color: "#7aacf0", border: "1px solid rgba(59,130,246,0.22)", borderRadius: 7, padding: "4px 10px", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+                        >
+                          View
+                        </button>
+                        {needsRestock(part) && (
+                          <button
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ background: "rgba(251,191,36,0.12)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 7, padding: "4px 10px", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+                          >
+                            Reorder
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {filtered.length === 0 && (
+            <div style={{ padding: "60px 0", textAlign: "center", color: T.dim }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>📦</div>
+              <div style={{ fontSize: 14, fontWeight: 500 }}>No parts match your filters</div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative box-border caret-transparent flex basis-[0%] grow mx-4" onClick={() => { setShowTypeMenu(false); setShowLocationMenu(false); }}>
-        <PartList
-          parts={filteredParts}
-          selectedPartId={selectedPartId}
-          onSelectPart={setSelectedPartId}
+      {/* ── detail panel */}
+      {selectedPart && (
+        <InventoryDetailPanel
+          part={selectedPart}
+          onClose={() => setSelectedId(null)}
+          onEdit={() => { setEditingPart(selectedPart); setSelectedId(null); }}
         />
-        <PartDetail partId={selectedPartId} />
-      </div>
+      )}
 
-      {/* New Part Editor */}
+      {/* ── create panel */}
       <PartEditorPanel
-        open={showNewEditor}
-        onClose={() => setShowNewEditor(false)}
-        onSubmit={(data) => {
-          const newPart = addPart(data);
-          setSelectedPartId(newPart.id);
-          setShowNewEditor(false);
-        }}
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        onSubmit={(data) => { addPart(data); setShowCreate(false); }}
       />
+
+      {/* ── edit panel */}
+      {editingPart && (
+        <PartEditorPanel
+          open={!!editingPart}
+          initial={editingPart}
+          onClose={() => setEditingPart(null)}
+          onSubmit={(data) => { updatePart(editingPart.id, data); setEditingPart(null); }}
+        />
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { FileText, ChevronDown, ChevronRight, Check, Loader2, AlertCircle } from 'lucide-react';
 import { generateWorkOrderPDF, downloadPDF, ExportOptions } from '@/services/export/pdfExport';
 import { ExportPreviewModal } from '@/components/Export/ExportPreviewModal';
+import { T, card } from '@/lib/tokens';
 
 export const ExportData = () => {
   const { workOrders } = useWorkOrderStore();
@@ -105,7 +106,6 @@ export const ExportData = () => {
       if (options.includeStatus.planned && createdAt >= options.dateRange.start && createdAt <= options.dateRange.end) return true;
       if (options.includeStatus.due && dueDate >= options.dateRange.start && dueDate <= options.dateRange.end) return true;
       if (options.includeStatus.completed && wo.status === 'Done' && completedAt && completedAt >= options.dateRange.start && completedAt <= options.dateRange.end) return true;
-
       return false;
     });
 
@@ -145,129 +145,136 @@ export const ExportData = () => {
     return false;
   }).length;
 
+  const labelStyle: React.CSSProperties = { fontSize: 13, fontWeight: 500, color: T.text };
+  const checkRowStyle: React.CSSProperties = {
+    display: "flex", alignItems: "center", gap: 12, padding: "10px 12px",
+    border: `1px solid ${T.border}`, borderRadius: 6, cursor: "pointer",
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
+    <div style={{ maxWidth: 896, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16, paddingBottom: 48 }}>
+
       {rowCount > 50 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
-          <AlertCircle className="text-amber-600 shrink-0" size={20} />
+        <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 8, padding: "12px 16px", display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <AlertCircle color={T.amber} size={20} style={{ flexShrink: 0, marginTop: 1 }} />
           <div>
-            <p className="text-sm font-medium text-amber-800">Large export: {rowCount} work orders selected</p>
-            <p className="text-xs text-amber-700">Exporting many items may take a moment to generate.</p>
+            <p style={{ fontSize: 13, fontWeight: 600, color: T.amber, margin: "0 0 2px" }}>Large export: {rowCount} work orders selected</p>
+            <p style={{ fontSize: 12, color: T.muted, margin: 0 }}>Exporting many items may take a moment to generate.</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-          <AlertCircle className="text-red-600 shrink-0" size={20} />
-          <p className="text-sm font-medium text-red-800">{error}</p>
+        <div style={{ background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "12px 16px", display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <AlertCircle color={T.red} size={20} style={{ flexShrink: 0, marginTop: 1 }} />
+          <p style={{ fontSize: 13, fontWeight: 600, color: T.red, margin: 0 }}>{error}</p>
         </div>
       )}
 
-      <div className="bg-white border border-[var(--border)] rounded-lg shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-[var(--border)] bg-gray-50 flex items-center gap-3">
-          <div className="bg-blue-100 p-2 rounded">
-            <FileText className="text-blue-600" size={24} />
+      <div style={card({ borderRadius: 12, overflow: "hidden" })}>
+
+        {/* Card header */}
+        <div style={{ padding: "20px 24px", borderBottom: `1px solid ${T.border}`, background: T.raised, display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ background: T.blueGlow, padding: 8, borderRadius: 6, display: "flex" }}>
+            <FileText color={T.blue} size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Export Work Order List</h3>
-            <p className="text-sm text-gray-500">Generate a detailed report of your work orders.</p>
+            <h3 style={{ fontSize: 16, fontWeight: 600, color: T.text, margin: "0 0 2px" }}>Export Work Order List</h3>
+            <p style={{ fontSize: 13, color: T.muted, margin: 0 }}>Generate a detailed report of your work orders.</p>
           </div>
         </div>
 
-        <div className="p-6 space-y-8">
+        {/* Card body */}
+        <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 28 }}>
+
           {/* Date Range */}
-          <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">From</label>
-              <div className="relative">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            {[
+              { label: "From", key: "start" as const },
+              { label: "To", key: "end" as const },
+            ].map(field => (
+              <div key={field.key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <label style={labelStyle}>{field.label}</label>
                 <input
                   type="date"
-                  value={dateRange.start}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-                  className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  value={dateRange[field.key]}
+                  onChange={(e) => setDateRange(prev => ({ ...prev, [field.key]: e.target.value }))}
+                  style={{ width: "100%", padding: "8px 12px", fontSize: 13, borderRadius: 6 }}
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">To</label>
-              <div className="relative">
-                <input
-                  type="date"
-                  value={dateRange.end}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-                  className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-                />
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Format Selection */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Export Format</label>
-            <div className="flex gap-4">
-              <button
-                onClick={() => setFormat('CSV')}
-                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'CSV' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-[var(--border)] hover:bg-gray-50'}`}
-              >
-                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'CSV' ? 'border-blue-500 bg-blue-500' : 'border-[var(--border)]'}`}>
-                  {format === 'CSV' && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
-                </div>
-                <span className="font-medium">CSV (Excel)</span>
-              </button>
-              <button
-                onClick={() => setFormat('PDF')}
-                className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg transition-all ${format === 'PDF' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-[var(--border)] hover:bg-gray-50'}`}
-              >
-                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${format === 'PDF' ? 'border-blue-500 bg-blue-500' : 'border-[var(--border)]'}`}>
-                  {format === 'PDF' && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
-                </div>
-                <span className="font-medium">PDF Document</span>
-              </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <label style={labelStyle}>Export Format</label>
+            <div style={{ display: "flex", gap: 12 }}>
+              {(['CSV', 'PDF'] as const).map(f => (
+                <button
+                  key={f}
+                  onClick={() => setFormat(f)}
+                  style={{
+                    flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                    padding: 12, borderRadius: 8, cursor: "pointer", transition: "all 0.15s",
+                    border: format === f ? `1px solid ${T.blue}` : `1px solid ${T.border}`,
+                    background: format === f ? T.blueGlow : "transparent",
+                    color: format === f ? T.blue : T.text,
+                  }}
+                >
+                  <div style={{
+                    width: 16, height: 16, borderRadius: "50%", border: `2px solid ${format === f ? T.blue : T.border}`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: format === f ? T.blue : "transparent",
+                  }}>
+                    {format === f && <div style={{ width: 6, height: 6, background: "#fff", borderRadius: "50%" }} />}
+                  </div>
+                  <span style={{ fontWeight: 500, fontSize: 13 }}>{f === 'CSV' ? 'CSV (Excel)' : 'PDF Document'}</span>
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Include Options */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Work Orders to include in this date range</label>
-            <div className="space-y-2">
-              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <label style={labelStyle}>Work Orders to include in this date range</label>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <label style={checkRowStyle}>
                 <input
                   type="checkbox"
                   checked={includeStatus.planned}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, planned: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
+                  style={{ width: 16, height: 16 }}
                 />
-                <span className="text-sm text-gray-700">Planned / Created</span>
+                <span style={{ fontSize: 13, color: T.text }}>Planned / Created</span>
               </label>
-              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
+              <label style={checkRowStyle}>
                 <input
                   type="checkbox"
                   checked={includeStatus.due}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, due: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
+                  style={{ width: 16, height: 16 }}
                 />
-                <span className="text-sm text-gray-700">Due</span>
+                <span style={{ fontSize: 13, color: T.text }}>Due</span>
               </label>
-              <label className="flex items-center gap-3 p-3 border border-[var(--border)] rounded hover:bg-gray-50 cursor-pointer group">
+              <label style={checkRowStyle}>
                 <input
                   type="checkbox"
                   checked={includeStatus.completed}
                   onChange={(e) => setIncludeStatus(prev => ({ ...prev, completed: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
+                  style={{ width: 16, height: 16 }}
                 />
-                <span className="text-sm text-gray-700">Completed</span>
+                <span style={{ fontSize: 13, color: T.text }}>Completed</span>
               </label>
             </div>
           </div>
 
           {/* Procedure Format */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Procedure Format</label>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <label style={labelStyle}>Procedure Format</label>
             <select
               value={procedureFormat}
               onChange={(e) => setProcedureFormat(e.target.value as any)}
-              className="w-full border border-[var(--border)] rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              style={{ padding: "8px 12px", fontSize: 13, borderRadius: 6 }}
             >
               <option value="Summary">Summary</option>
               <option value="Full">Full</option>
@@ -275,53 +282,62 @@ export const ExportData = () => {
           </div>
 
           {/* Additional Options */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Additional Options</label>
-            <div className="space-y-2">
-              <label className="flex items-center gap-3 cursor-pointer">
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <label style={labelStyle}>Additional Options</label>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={additionalOptions.maintenancePlan}
                   onChange={(e) => setAdditionalOptions(prev => ({ ...prev, maintenancePlan: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
+                  style={{ width: 16, height: 16 }}
                 />
-                <span className="text-sm text-gray-700">Include Maintenance Plan</span>
+                <span style={{ fontSize: 13, color: T.text }}>Include Maintenance Plan</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer">
+              <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={additionalOptions.onePerPage}
                   onChange={(e) => setAdditionalOptions(prev => ({ ...prev, onePerPage: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 rounded border-[var(--border)]"
+                  style={{ width: 16, height: 16 }}
                 />
-                <span className="text-sm text-gray-700">1 Work Order per page</span>
+                <span style={{ fontSize: 13, color: T.text }}>1 Work Order per page</span>
               </label>
             </div>
           </div>
 
           {/* Column Selector */}
-          <div className="border border-[var(--border)] rounded-lg overflow-hidden">
+          <div style={{ border: `1px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
             <button
               onClick={() => setShowColumns(!showColumns)}
-              className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+              style={{
+                width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "12px 16px", background: T.raised, border: "none", cursor: "pointer",
+                color: T.text,
+              }}
             >
-              <span className="font-medium text-sm">Columns to Include</span>
-              {showColumns ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+              <span style={{ fontWeight: 500, fontSize: 13 }}>Columns to Include</span>
+              {showColumns ? <ChevronDown size={18} color={T.muted} /> : <ChevronRight size={18} color={T.muted} />}
             </button>
             {showColumns && (
-              <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-3 bg-white border-t border-[var(--border)]">
+              <div style={{
+                padding: 16, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12,
+                background: T.surface, borderTop: `1px solid ${T.border}`,
+              }}>
                 {Object.entries(selectedColumns).map(([key, enabled]) => (
-                  <label key={key} className="flex items-center gap-2 cursor-pointer group">
-                    <div className={`w-4 h-4 border rounded flex items-center justify-center transition-colors ${enabled ? 'bg-blue-500 border-blue-500' : 'border-[var(--border)] group-hover:border-blue-400'}`}>
-                      {enabled && <Check size={12} className="text-white" />}
+                  <label key={key} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                    <div
+                      onClick={() => handleToggleColumn(key)}
+                      style={{
+                        width: 16, height: 16, border: `1px solid ${enabled ? T.blue : T.border}`,
+                        borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center",
+                        background: enabled ? T.blue : "transparent", flexShrink: 0, cursor: "pointer",
+                      }}
+                    >
+                      {enabled && <Check size={10} color="#fff" />}
                     </div>
-                    <input
-                      type="checkbox"
-                      className="hidden"
-                      checked={enabled}
-                      onChange={() => handleToggleColumn(key)}
-                    />
-                    <span className="text-sm text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                    <input type="checkbox" className="hidden" checked={enabled} onChange={() => handleToggleColumn(key)} />
+                    <span style={{ fontSize: 13, color: T.muted, textTransform: "capitalize" }}>{key.replace(/([A-Z])/g, ' $1')}</span>
                   </label>
                 ))}
               </div>
@@ -330,34 +346,47 @@ export const ExportData = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 border-t border-[var(--border)] bg-gray-50 flex justify-end gap-3">
+        <div style={{
+          padding: "16px 24px", borderTop: `1px solid ${T.border}`, background: T.raised,
+          display: "flex", alignItems: "center", gap: 12,
+        }}>
           <button
             type="button"
-            className="px-6 py-2 border border-[var(--border)] rounded-lg text-sm font-medium hover:bg-gray-100"
+            style={{ padding: "8px 20px", border: `1px solid ${T.border}`, borderRadius: 6, fontSize: 13, fontWeight: 500, color: T.text, background: "transparent", cursor: "pointer" }}
             onClick={() => alert('Scheduling exports coming soon!')}
           >
             Schedule
           </button>
           {isGenerating && progressText && (
-            <div className="text-xs text-gray-500 mr-2 truncate max-w-[40%]" title={progressText}>
+            <span style={{ fontSize: 12, color: T.muted, overflow: "hidden", textOverflow: "ellipsis", maxWidth: "40%" }} title={progressText}>
               {progressText}
-            </div>
+            </span>
           )}
-          <div className="flex-1" />
+          <div style={{ flex: 1 }} />
           <button
             onClick={handlePreview}
             disabled={isGenerating || format === 'CSV'}
-            className="flex items-center gap-2 px-6 py-2 border border-[var(--border)] rounded-lg text-sm font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "8px 20px", border: `1px solid ${T.border}`, borderRadius: 6,
+              fontSize: 13, fontWeight: 500, color: T.text, background: "transparent", cursor: "pointer",
+              opacity: isGenerating || format === 'CSV' ? 0.5 : 1,
+            }}
           >
-            {isGenerating && format === 'PDF' && <Loader2 size={16} className="animate-spin" />}
+            {isGenerating && format === 'PDF' && <Loader2 size={15} className="animate-spin" />}
             Preview
           </button>
           <button
             onClick={handleExport}
             disabled={isGenerating || rowCount === 0}
-            className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "8px 20px", border: `1px solid ${T.blue}`, borderRadius: 6,
+              fontSize: 13, fontWeight: 600, color: "#fff", background: T.blue, cursor: "pointer",
+              opacity: isGenerating || rowCount === 0 ? 0.5 : 1,
+            }}
           >
-            {isGenerating && <Loader2 size={16} className="animate-spin" />}
+            {isGenerating && <Loader2 size={15} className="animate-spin" />}
             Export
           </button>
         </div>

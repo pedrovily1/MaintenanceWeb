@@ -1,12 +1,79 @@
 import { useMemo, useState } from "react";
 import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 import { ExportData } from "./components/ExportData";
+import { T, card } from "@/lib/tokens";
+
+type Tab = "work-orders" | "asset-health" | "details" | "activity" | "export" | "dashboards";
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: "work-orders", label: "Work Orders" },
+  { key: "asset-health", label: "Asset Health" },
+  { key: "details", label: "Reporting Details" },
+  { key: "activity", label: "Recent Activity" },
+  { key: "export", label: "Export Data" },
+  { key: "dashboards", label: "Custom Dashboards" },
+];
+
+const tabStyle = (active: boolean) => ({
+  flex: 1,
+  padding: "12px 8px",
+  background: "transparent",
+  border: "none",
+  borderBottom: active ? `2px solid ${T.blue}` : "2px solid transparent",
+  color: active ? T.blue : T.muted,
+  fontWeight: 500,
+  fontSize: 13,
+  cursor: "pointer",
+  whiteSpace: "nowrap",
+  transition: "all 0.15s",
+} as const);
+
+const filterPill: React.CSSProperties = {
+  padding: "4px 12px",
+  border: `1px solid ${T.border}`,
+  borderRadius: 6,
+  color: T.text,
+  background: "transparent",
+  cursor: "pointer",
+  fontSize: 12,
+};
+
+const outlineBtn: React.CSSProperties = {
+  padding: "6px 16px",
+  border: `1px solid ${T.blue}`,
+  borderRadius: 6,
+  color: T.blue,
+  background: "transparent",
+  cursor: "pointer",
+  fontSize: 13,
+  fontWeight: 600,
+};
+
+const accentBtn: React.CSSProperties = {
+  padding: "8px 20px",
+  border: `1px solid ${T.blue}`,
+  borderRadius: 6,
+  color: "#fff",
+  background: T.blue,
+  cursor: "pointer",
+  fontSize: 13,
+  fontWeight: 600,
+};
+
+const ghostBtn: React.CSSProperties = {
+  fontSize: 12,
+  color: T.blue,
+  background: "transparent",
+  border: "none",
+  cursor: "pointer",
+  flexShrink: 0,
+};
 
 export const Reporting = () => {
   const { workOrders } = useWorkOrderStore();
-  const [activeTab, setActiveTab] = useState<'work-orders' | 'asset-health' | 'details' | 'activity' | 'export' | 'dashboards'>('work-orders');
+  const [activeTab, setActiveTab] = useState<Tab>("work-orders");
   const [dateRange, setDateRange] = useState<{ start: Date; end: Date }>({
-    start: new Date(new Date().setMonth(new Date().getMonth() - 1)), // Last month
+    start: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     end: new Date(),
   });
 
@@ -14,10 +81,7 @@ export const Reporting = () => {
     return workOrders.filter((wo) => {
       const createdAt = new Date(wo.createdAt);
       const completedAt = wo.completedAt ? new Date(wo.completedAt) : null;
-
-      const isInRange = (date: Date) =>
-        date >= dateRange.start && date <= dateRange.end;
-
+      const isInRange = (date: Date) => date >= dateRange.start && date <= dateRange.end;
       return isInRange(createdAt) || (completedAt && isInRange(completedAt));
     });
   }, [workOrders, dateRange]);
@@ -55,7 +119,7 @@ export const Reporting = () => {
       OnHold: filteredData.filter((wo) => wo.status === "On Hold").length,
       InProgress: filteredData.filter((wo) => wo.status === "In Progress").length,
       Done: filteredData.filter((wo) => wo.status === "Done").length,
-      SkippedCanceled: 0, // Placeholder as not in status type
+      SkippedCanceled: 0,
     };
 
     const priorityDist = {
@@ -65,12 +129,10 @@ export const Reporting = () => {
       High: filteredData.filter((wo) => wo.priority === "High").length,
     };
 
-    // Time and Cost
     const totalTime = filteredData.reduce((acc, wo) => acc + (wo.totalTimeHours || 0), 0);
     const totalCost = filteredData.reduce((acc, wo) => acc + (wo.totalCost || 0), 0);
 
-    // Time to complete
-    const completedWOs = filteredData.filter(wo => wo.status === 'Done' && wo.completedAt);
+    const completedWOs = filteredData.filter(wo => wo.status === "Done" && wo.completedAt);
     const totalHoursToComplete = completedWOs.reduce((acc, wo) => {
       const start = new Date(wo.createdAt).getTime();
       const end = new Date(wo.completedAt!).getTime();
@@ -78,35 +140,29 @@ export const Reporting = () => {
     }, 0);
     const avgHoursToComplete = completedWOs.length > 0 ? totalHoursToComplete / completedWOs.length : 0;
 
-    // MTTR (non-repeating only)
     const nonRepeatingCompleted = completedWOs.filter(wo => !wo.isRepeating);
-    const mttr = nonRepeatingCompleted.length > 0 
+    const mttr = nonRepeatingCompleted.length > 0
       ? nonRepeatingCompleted.reduce((acc, wo) => {
           const start = new Date(wo.createdAt).getTime();
           const end = new Date(wo.completedAt!).getTime();
           return acc + (end - start) / (1000 * 60 * 60);
-        }, 0) / nonRepeatingCompleted.length 
+        }, 0) / nonRepeatingCompleted.length
       : 0;
 
-    // Overdue
     const now = new Date();
-    const overdue = filteredData.filter(wo => wo.status !== 'Done' && new Date(wo.dueDate) < now).length;
+    const overdue = filteredData.filter(wo => wo.status !== "Done" && new Date(wo.dueDate) < now).length;
     const onTime = filteredData.length - overdue;
 
-    // Inspection pass / flag / fail counts
     const inspectionStats = filteredData.reduce((acc, wo) => {
-      if (wo.workType === 'Inspection') {
-        const hasFailures = wo.sections.some(s => s.fields.some(f => f.type === 'checkbox' && f.value === false)); // Assuming false means fail in some context, or just count them
-        // In this project, we don't have a clear "pass/fail" field, so we'll look for specific field labels if they exist
-        const passFields = wo.sections.flatMap(s => s.fields).filter(f => f.label.toLowerCase().includes('pass')).length;
-        const failFields = wo.sections.flatMap(s => s.fields).filter(f => f.label.toLowerCase().includes('fail')).length;
+      if (wo.workType === "Inspection") {
+        const passFields = wo.sections.flatMap(s => s.fields).filter(f => f.label.toLowerCase().includes("pass")).length;
+        const failFields = wo.sections.flatMap(s => s.fields).filter(f => f.label.toLowerCase().includes("fail")).length;
         acc.pass += passFields;
         acc.fail += failFields;
       }
       return acc;
     }, { pass: 0, fail: 0, flag: 0 });
 
-    // Grouped counts
     const byAsset = filteredData.reduce((acc, wo) => {
       acc[wo.asset] = (acc[wo.asset] || 0) + 1;
       return acc;
@@ -118,515 +174,339 @@ export const Reporting = () => {
     }, {} as Record<string, number>);
 
     return {
-      created,
-      completed,
-      completionRate,
-      byType,
-      preventiveRatio,
-      repeating,
-      nonRepeating,
-      repeatingRatio,
-      statusDist,
-      priorityDist,
-      totalTime,
-      totalCost,
-      totalHoursToComplete,
-      avgHoursToComplete,
-      mttr,
-      overdue,
-      onTime,
-      inspectionStats,
-      byAsset,
-      byUser
+      created, completed, completionRate, byType, preventiveRatio,
+      repeating, nonRepeating, repeatingRatio, statusDist, priorityDist,
+      totalTime, totalCost, totalHoursToComplete, avgHoursToComplete, mttr,
+      overdue, onTime, inspectionStats, byAsset, byUser,
     };
   }, [filteredData, dateRange]);
 
   return (
-    <div className="relative bg-[var(--panel-2)] box-border caret-transparent flex basis-[0%] flex-col grow overflow-auto">
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] box-border caret-transparent shrink-0 px-4 py-4 mb-4">
-        <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow gap-y-4">
-          <div className="items-center box-border caret-transparent gap-x-4 flex shrink-0 gap-y-4">
-            <h2 className="text-[31.9998px] font-bold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[39.9997px]">
-              Reporting
-            </h2>
-            <div className="box-border caret-transparent shrink-0">
-              <button
-                type="button"
-                className="items-start bg-transparent caret-transparent gap-x-1 flex shrink-0 justify-between gap-y-1 text-center p-2 rounded-bl rounded-br rounded-tl rounded-tr"
-              >
-                <span className="box-border caret-transparent flex text-nowrap">
-                  {dateRange.start.toLocaleDateString()} - {dateRange.end.toLocaleDateString()}
-                </span>
-              </button>
-            </div>
-            <button
-              type="button"
-              className="text-blue-500 font-medium items-center bg-transparent caret-transparent flex shrink-0 justify-center text-center px-2 py-1 rounded-bl rounded-br rounded-tl rounded-tr hover:bg-gray-100"
-              onClick={() => {
-                const start = window.prompt("Enter Start Date (YYYY-MM-DD):", dateRange.start.toISOString().split('T')[0]);
-                const end = window.prompt("Enter End Date (YYYY-MM-DD):", dateRange.end.toISOString().split('T')[0]);
-                if (start && end) {
-                  setDateRange({ start: new Date(start), end: new Date(end) });
-                }
-              }}
-            >
-              Date Presets
-            </button>
-          </div>
-          <div className="items-center box-border caret-transparent gap-x-4 flex basis-[0%] grow justify-end gap-y-4">
-            <div className="text-sm text-gray-500 mr-4">
-              Total Time: {metrics.totalTime.toFixed(1)}h | Total Cost: ${metrics.totalCost.toFixed(2)}
-            </div>
-            <button
-              type="button"
-              className="relative text-accent font-bold items-center bg-transparent caret-transparent gap-x-1 flex shrink-0 h-8 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-3 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent hover:text-white transition-colors"
-            >
-              Export
-            </button>
-            <button
-              type="button"
-              className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent-hover hover:border-accent-hover"
-            >
-              Build report
-            </button>
-          </div>
-        </div>
+    <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden", background: T.bg }}>
+
+      {/* Header */}
+      <div style={{
+        padding: "16px 24px",
+        borderBottom: `1px solid ${T.border}`,
+        background: T.surface,
+        flexShrink: 0,
+        display: "flex",
+        alignItems: "center",
+        gap: 16,
+      }}>
+        <h2 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, color: T.text, margin: 0 }}>Reporting</h2>
+        <span style={{ color: T.muted, fontSize: 13 }}>
+          {dateRange.start.toLocaleDateString()} – {dateRange.end.toLocaleDateString()}
+        </span>
+        <button
+          style={{ fontSize: 13, color: T.blue, background: "transparent", border: "none", cursor: "pointer", padding: "4px 8px" }}
+          onClick={() => {
+            const start = window.prompt("Enter Start Date (YYYY-MM-DD):", dateRange.start.toISOString().split("T")[0]);
+            const end = window.prompt("Enter End Date (YYYY-MM-DD):", dateRange.end.toISOString().split("T")[0]);
+            if (start && end) setDateRange({ start: new Date(start), end: new Date(end) });
+          }}
+        >
+          Date Presets
+        </button>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: 13, color: T.muted }}>
+          Total Time: {metrics.totalTime.toFixed(1)}h &nbsp;|&nbsp; Total Cost: ${metrics.totalCost.toFixed(2)}
+        </span>
+        <button style={outlineBtn}>Export</button>
+        <button style={accentBtn}>Build report</button>
       </div>
 
-      <div className="bg-[var(--panel-2)] border-b border-[var(--border)] box-border caret-transparent flex shrink-0 flex-wrap px-4">
-        <button
-          type="button"
-          onClick={() => setActiveTab('work-orders')}
-          className={`${activeTab === 'work-orders' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Work Orders
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('asset-health')}
-          className={`${activeTab === 'asset-health' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Asset Health
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('details')}
-          className={`${activeTab === 'details' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Reporting Details
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('activity')}
-          className={`${activeTab === 'activity' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Recent Activity
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('export')}
-          className={`${activeTab === 'export' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Export Data
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('dashboards')}
-          className={`${activeTab === 'dashboards' ? 'text-accent border-b-accent' : 'text-[var(--muted)] border-b-transparent'} bg-transparent caret-transparent block basis-[0%] grow text-center -mb-px px-2 py-2.5 border-t-0 border-x-0 border-b-2 hover:bg-[var(--panel)] transition-all font-medium`}
-        >
-          Custom Dashboards
-        </button>
+      {/* Tab Bar */}
+      <div style={{
+        display: "flex",
+        borderBottom: `1px solid ${T.border}`,
+        background: T.surface,
+        flexShrink: 0,
+        overflowX: "auto",
+      }}>
+        {TABS.map(t => (
+          <button key={t.key} onClick={() => setActiveTab(t.key)} style={tabStyle(activeTab === t.key)}>
+            {t.label}
+          </button>
+        ))}
       </div>
 
-      {activeTab === 'work-orders' && (
-        <>
-          <div className="box-border caret-transparent shrink-0 px-4 py-3">
-            <div className="items-center box-border caret-transparent flex shrink-0">
-              <div className="box-border caret-transparent flex basis-[0%] grow gap-x-2">
-                <button
-                  type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-                >
-                  Assigned To
-                </button>
-                <button
-                  type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-                >
-                  Due Date
-                </button>
-                <button
-                  type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-                >
-                  Location
-                </button>
-                <button
-                  type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-                >
-                  Priority
-                </button>
-                <button
-                  type="button"
-                  className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300"
-                >
-                  Add Filter
-                </button>
-              </div>
-              <button
-                type="button"
-                className="items-center bg-transparent caret-transparent flex h-8 justify-center tracking-[-0.2px] leading-[20.0004px] text-center border border-[var(--border)] px-2 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:border-neutral-300 ml-2"
-              >
-                My Filters
-              </button>
-            </div>
-          </div>
+      {/* Tab Content */}
+      <div style={{ flex: 1, overflow: "auto" }}>
 
-          <div className="box-border caret-transparent flex basis-[0%] grow overflow-auto px-4 pb-8">
-            <div className="box-border caret-transparent w-full">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-[20.0004px] font-semibold box-border caret-transparent shrink-0 tracking-[-0.2px] leading-[28.0006px]">
-                  Work Orders
-                </h2>
-                <div className="flex gap-4 text-sm text-gray-500">
-                  <div>Overdue: <span className="text-red-500 font-bold">{metrics.overdue}</span></div>
-                  <div>On-Time: <span className="text-green-500 font-bold">{metrics.onTime}</span></div>
-                  <div>MTTR: <span className="font-bold">{metrics.mttr.toFixed(1)}h</span></div>
-                </div>
-              </div>
+        {activeTab === "work-orders" && (
+          <div style={{ padding: "16px 24px 48px" }}>
 
-          <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <button
-                type="button"
-                className="text-[var(--accent)] font-medium text-lg hover:text-[var(--accent-2)] transition-colors"
-              >
-                Created vs. Completed
-              </button>
-              <button
-                type="button"
-                className="text-[var(--accent)] font-medium text-sm hover:text-[var(--accent-2)] transition-colors"
-              >
-                Add to Dashboard
-              </button>
+            {/* Filter pills */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap", alignItems: "center" }}>
+              {["Assigned To", "Due Date", "Location", "Priority", "Add Filter"].map(f => (
+                <button key={f} style={filterPill}>{f}</button>
+              ))}
+              <div style={{ flex: 1 }} />
+              <button style={filterPill}>My Filters</button>
             </div>
-            <div className="flex items-start gap-8 mb-6">
-              <div className="flex gap-4">
-                <div className="text-center">
-                  <div className="text-5xl font-bold mb-2 text-[var(--text)]">{metrics.created}</div>
-                  <div className="text-[var(--accent)] border border-[var(--accent)] px-3 py-1 rounded text-sm">
-                    Created
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-5xl font-bold mb-2 text-[var(--status-active)]">{metrics.completed}</div>
-                  <div className="text-[var(--status-active)] border border-[var(--status-active)] px-3 py-1 rounded text-sm">
-                    Completed
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1 text-center">
-                <div className="text-5xl font-bold text-[var(--text)]">
-                  {metrics.completionRate.toFixed(1)}<span className="text-2xl">%</span>
-                </div>
-                <div className="text-[var(--muted)] mt-2">Percent Completed</div>
-                <div className="text-[var(--muted)] text-xs mt-1">
-                  {metrics.completed > metrics.created ? "*More Work Orders were completed than created during this time period" : ""}
-                </div>
-              </div>
-            </div>
-            <div className="h-64 bg-[var(--panel-2)] border border-[var(--border)] rounded flex flex-col items-center justify-center text-[var(--muted)]">
-              <div className="text-sm mb-2">Completion Trend (Sample Data)</div>
-              <div className="flex items-end gap-2 h-32">
-                 {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
-                   <div key={i} className="w-8 bg-blue-200" style={{ height: `${h}%` }}></div>
-                 ))}
-              </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <div className="flex items-center justify-between mb-4">
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-lg hover:text-blue-400"
-                >
-                  Work Orders by Type
-                </button>
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
-                >
-                  Add to Dashboard
-                </button>
-              </div>
-              <div className="flex items-start gap-8 mb-6">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold">{metrics.byType.Preventive}</div>
-                    <div className="text-teal-500 border border-teal-500 px-2 py-1 rounded text-xs">
-                      Preventive
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold">{metrics.byType.Reactive}</div>
-                    <div className="text-blue-500 border border-blue-500 px-2 py-1 rounded text-xs">
-                      Reactive
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold text-gray-400">{metrics.byType.Inspection}</div>
-                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                      Inspection
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold text-gray-400">{metrics.byType.Other}</div>
-                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                      Other
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-1 text-center">
-                  <div className="text-4xl font-bold">
-                    {metrics.preventiveRatio.toFixed(1)}<span className="text-xl">%</span>
-                  </div>
-                  <div className="text-gray-600 mt-2 text-sm">Total Preventive Ratio</div>
-                </div>
-              </div>
-              <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-gray-400">
-                <div className="flex gap-1 items-end h-32">
-                  <div className="w-12 bg-teal-400" style={{ height: `${metrics.preventiveRatio}%` }}></div>
-                  <div className="w-12 bg-blue-400" style={{ height: `${100 - metrics.preventiveRatio}%` }}></div>
-                </div>
+            {/* Section header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 600, margin: 0, color: T.text }}>Work Orders</h3>
+              <div style={{ display: "flex", gap: 16, fontSize: 13 }}>
+                <span style={{ color: T.muted }}>Overdue: <span style={{ color: T.red, fontWeight: 700 }}>{metrics.overdue}</span></span>
+                <span style={{ color: T.muted }}>On-Time: <span style={{ color: T.green, fontWeight: 700 }}>{metrics.onTime}</span></span>
+                <span style={{ color: T.muted }}>MTTR: <span style={{ color: T.text, fontWeight: 700 }}>{metrics.mttr.toFixed(1)}h</span></span>
               </div>
             </div>
 
-            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <div className="flex items-center justify-between mb-4">
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-lg hover:text-blue-400"
-                >
-                  Non-Repeating vs. Repeating
-                </button>
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
-                >
-                  Add to Dashboard
-                </button>
+            {/* Created vs Completed */}
+            <div style={card({ borderRadius: 12, padding: 24, marginBottom: 16, overflow: "visible" })}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                <span style={{ fontSize: 16, fontWeight: 600, color: T.blue }}>Created vs. Completed</span>
+                <button style={ghostBtn}>Add to Dashboard</button>
               </div>
-              <div className="flex items-start gap-8 mb-6">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold">{metrics.nonRepeating}</div>
-                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                      Non-Repeating
-                    </div>
+              <div style={{ display: "flex", gap: 32, alignItems: "flex-start", marginBottom: 24 }}>
+                <div style={{ display: "flex", gap: 16 }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 48, fontWeight: 700, color: T.text, lineHeight: 1 }}>{metrics.created}</div>
+                    <div style={{ marginTop: 8, padding: "4px 12px", border: `1px solid ${T.blue}`, color: T.blue, borderRadius: 4, fontSize: 12 }}>Created</div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold">{metrics.repeating}</div>
-                    <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                      Repeating
-                    </div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 48, fontWeight: 700, color: T.green, lineHeight: 1 }}>{metrics.completed}</div>
+                    <div style={{ marginTop: 8, padding: "4px 12px", border: `1px solid ${T.green}`, color: T.green, borderRadius: 4, fontSize: 12 }}>Completed</div>
                   </div>
                 </div>
-                <div className="flex-1 text-center">
-                  <div className="text-4xl font-bold">
-                    {metrics.repeatingRatio.toFixed(1)}<span className="text-xl">%</span>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <div style={{ fontSize: 48, fontWeight: 700, color: T.text }}>
+                    {metrics.completionRate.toFixed(1)}<span style={{ fontSize: 24 }}>%</span>
                   </div>
-                  <div className="text-gray-600 mt-2 text-sm">Repeating Ratio</div>
-                </div>
-              </div>
-              <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-gray-400">
-                {filteredData.length > 0 ? (
-                  <div className="flex gap-1 items-end h-32">
-                    <div className="w-12 bg-gray-300" style={{ height: `${100 - metrics.repeatingRatio}%` }}></div>
-                    <div className="w-12 bg-blue-300" style={{ height: `${metrics.repeatingRatio}%` }}></div>
-                  </div>
-                ) : "No data"}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-medium text-lg">Status</h4>
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
-                >
-                  Add to Dashboard
-                </button>
-              </div>
-              <div className="flex gap-2 flex-wrap mb-4">
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  Open: {metrics.statusDist.Open}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  On Hold: {metrics.statusDist.OnHold}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  In Progress: {metrics.statusDist.InProgress}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  Done: {metrics.statusDist.Done}
-                </div>
-                <div className="text-gray-400 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  Skipped/Canceled: {metrics.statusDist.SkippedCanceled}
-                </div>
-              </div>
-              <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-gray-400">
-                {filteredData.length > 0 ? "Status distribution chart" : "No data"}
-              </div>
-            </div>
-
-            <div className="omp-panel shadow-none box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-medium text-lg">Priority</h4>
-                <button
-                  type="button"
-                  className="text-blue-500 font-medium text-sm hover:text-blue-400"
-                >
-                  Add to Dashboard
-                </button>
-              </div>
-              <div className="flex gap-2 flex-wrap mb-4">
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  None: {metrics.priorityDist.None}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  Low: {metrics.priorityDist.Low}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  Medium: {metrics.priorityDist.Medium}
-                </div>
-                <div className="text-gray-600 border border-[var(--border)] px-2 py-1 rounded text-xs">
-                  High: {metrics.priorityDist.High}
-                </div>
-              </div>
-              <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-gray-400">
-                {filteredData.length > 0 ? "Priority distribution chart" : "No data"}
-              </div>
-            </div>
-          </div>
-
-          {/* New Table: Repeating Work Orders */}
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
-            <h4 className="font-medium text-lg mb-4">Repeating Work Orders</h4>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b">
-                    <th className="pb-2 font-semibold">ID</th>
-                    <th className="pb-2 font-semibold">Title</th>
-                    <th className="pb-2 font-semibold">Status</th>
-                    <th className="pb-2 font-semibold">Priority</th>
-                    <th className="pb-2 font-semibold">Due Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredData.filter(wo => wo.isRepeating).length > 0 ? (
-                    filteredData.filter(wo => wo.isRepeating).map(wo => (
-                      <tr key={wo.id} className="border-b last:border-0">
-                        <td className="py-2">{wo.workOrderNumber}</td>
-                        <td className="py-2">{wo.title}</td>
-                        <td className="py-2">
-                           <span className={`px-2 py-1 rounded text-xs ${
-                             wo.status === 'Done' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-                           }`}>
-                             {wo.status}
-                           </span>
-                        </td>
-                        <td className="py-2">{wo.priority}</td>
-                        <td className="py-2">{new Date(wo.dueDate).toLocaleDateString()}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="py-4 text-center text-gray-400">No repeating work orders in this period</td>
-                    </tr>
+                  <div style={{ color: T.muted, marginTop: 8, fontSize: 14 }}>Percent Completed</div>
+                  {metrics.completed > metrics.created && (
+                    <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>*More Work Orders were completed than created during this period</div>
                   )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <h4 className="font-medium text-lg mb-4">By Asset</h4>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                 {Object.entries(metrics.byAsset).length > 0 ? Object.entries(metrics.byAsset).map(([name, count]) => (
-                   <div key={name} className="flex justify-between items-center text-sm p-2 border-b last:border-0">
-                      <span className="truncate">{name}</span>
-                      <span className="font-bold bg-gray-100 px-2 rounded">{count}</span>
-                   </div>
-                 )) : <div className="text-gray-400 text-center py-4 italic">No data</div>}
+                </div>
+              </div>
+              <div style={{ height: 80, background: T.raised, border: `1px solid ${T.border}`, borderRadius: 8, display: "flex", alignItems: "flex-end", gap: 8, padding: "12px 16px" }}>
+                {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
+                  <div key={i} style={{ flex: 1, background: T.blueGlow, borderTop: `2px solid ${T.blue}`, height: `${h}%`, borderRadius: "2px 2px 0 0" }} />
+                ))}
               </div>
             </div>
-            <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6">
-              <h4 className="font-medium text-lg mb-4">By User</h4>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                 {Object.entries(metrics.byUser).length > 0 ? Object.entries(metrics.byUser).map(([name, count]) => (
-                   <div key={name} className="flex justify-between items-center text-sm p-2 border-b last:border-0">
-                      <span className="truncate">{name}</span>
-                      <span className="font-bold bg-gray-100 px-2 rounded">{count}</span>
-                   </div>
-                 )) : <div className="text-gray-400 text-center py-4 italic">No data</div>}
+
+            {/* By Type + Repeating */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+
+              <div style={card({ borderRadius: 12, padding: 24, overflow: "visible" })}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: T.blue }}>Work Orders by Type</span>
+                  <button style={ghostBtn}>Add to Dashboard</button>
+                </div>
+                <div style={{ display: "flex", gap: 24, alignItems: "flex-start", marginBottom: 16 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {[
+                      { label: "Preventive", count: metrics.byType.Preventive, color: T.green },
+                      { label: "Reactive", count: metrics.byType.Reactive, color: T.blue },
+                      { label: "Inspection", count: metrics.byType.Inspection, color: T.muted },
+                      { label: "Other", count: metrics.byType.Other, color: T.dim },
+                    ].map(row => (
+                      <div key={row.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 20, fontWeight: 700, color: T.text }}>{row.count}</span>
+                        <span style={{ fontSize: 11, padding: "2px 8px", border: `1px solid ${row.color}`, color: row.color, borderRadius: 4 }}>{row.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ flex: 1, textAlign: "center" }}>
+                    <div style={{ fontSize: 36, fontWeight: 700, color: T.text }}>{metrics.preventiveRatio.toFixed(1)}<span style={{ fontSize: 18 }}>%</span></div>
+                    <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>Total Preventive Ratio</div>
+                  </div>
+                </div>
+                <div style={{ height: 56, display: "flex", gap: 8, alignItems: "flex-end" }}>
+                  <div style={{ flex: 1, background: T.green, opacity: 0.6, borderRadius: 4, height: `${Math.max(4, metrics.preventiveRatio)}%` }} />
+                  <div style={{ flex: 1, background: T.blue, opacity: 0.6, borderRadius: 4, height: `${Math.max(4, 100 - metrics.preventiveRatio)}%` }} />
+                </div>
+              </div>
+
+              <div style={card({ borderRadius: 12, padding: 24, overflow: "visible" })}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: T.blue }}>Non-Repeating vs. Repeating</span>
+                  <button style={ghostBtn}>Add to Dashboard</button>
+                </div>
+                <div style={{ display: "flex", gap: 24, alignItems: "flex-start", marginBottom: 16 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {[
+                      { label: "Non-Repeating", count: metrics.nonRepeating },
+                      { label: "Repeating", count: metrics.repeating },
+                    ].map(row => (
+                      <div key={row.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 20, fontWeight: 700, color: T.text }}>{row.count}</span>
+                        <span style={{ fontSize: 11, padding: "2px 8px", border: `1px solid ${T.border}`, color: T.muted, borderRadius: 4 }}>{row.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ flex: 1, textAlign: "center" }}>
+                    <div style={{ fontSize: 36, fontWeight: 700, color: T.text }}>{metrics.repeatingRatio.toFixed(1)}<span style={{ fontSize: 18 }}>%</span></div>
+                    <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>Repeating Ratio</div>
+                  </div>
+                </div>
+                {filteredData.length > 0 ? (
+                  <div style={{ height: 56, display: "flex", gap: 8, alignItems: "flex-end" }}>
+                    <div style={{ flex: 1, background: T.dim, borderRadius: 4, height: `${Math.max(4, 100 - metrics.repeatingRatio)}%` }} />
+                    <div style={{ flex: 1, background: T.blue, opacity: 0.6, borderRadius: 4, height: `${Math.max(4, metrics.repeatingRatio)}%` }} />
+                  </div>
+                ) : (
+                  <div style={{ color: T.muted, textAlign: "center", fontSize: 13, padding: 16 }}>No data</div>
+                )}
               </div>
             </div>
-          </div>
 
-          <div className="bg-white shadow-[rgba(242,242,242,0.6)_0px_0px_12px_2px] box-border caret-transparent border border-[var(--border)] rounded-bl rounded-br rounded-tl rounded-tr border-solid p-6 mb-8">
-            <h4 className="font-medium text-lg mb-4">Inspections Summary</h4>
-            <div className="grid grid-cols-3 gap-4">
-               <div className="text-center p-4 border rounded bg-green-50">
-                  <div className="text-2xl font-bold text-green-700">{metrics.inspectionStats.pass}</div>
-                  <div className="text-xs text-green-600 uppercase font-semibold">Passes</div>
-               </div>
-               <div className="text-center p-4 border rounded bg-red-50">
-                  <div className="text-2xl font-bold text-red-700">{metrics.inspectionStats.fail}</div>
-                  <div className="text-xs text-red-600 uppercase font-semibold">Failures</div>
-               </div>
-               <div className="text-center p-4 border rounded bg-yellow-50">
-                  <div className="text-2xl font-bold text-yellow-700">{metrics.inspectionStats.flag}</div>
-                  <div className="text-xs text-yellow-600 uppercase font-semibold">Flags</div>
-               </div>
+            {/* Status + Priority */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+              <div style={card({ borderRadius: 12, padding: 24, overflow: "visible" })}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: T.text }}>Status</span>
+                  <button style={ghostBtn}>Add to Dashboard</button>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                  {[
+                    `Open: ${metrics.statusDist.Open}`,
+                    `On Hold: ${metrics.statusDist.OnHold}`,
+                    `In Progress: ${metrics.statusDist.InProgress}`,
+                    `Done: ${metrics.statusDist.Done}`,
+                    `Skipped/Canceled: ${metrics.statusDist.SkippedCanceled}`,
+                  ].map(s => (
+                    <span key={s} style={{ fontSize: 11, padding: "3px 8px", border: `1px solid ${T.border}`, color: T.muted, borderRadius: 4 }}>{s}</span>
+                  ))}
+                </div>
+                <div style={{ height: 80, background: T.raised, border: `1px solid ${T.border}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontSize: 13 }}>
+                  {filteredData.length > 0 ? "Status distribution" : "No data"}
+                </div>
+              </div>
+
+              <div style={card({ borderRadius: 12, padding: 24, overflow: "visible" })}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: T.text }}>Priority</span>
+                  <button style={ghostBtn}>Add to Dashboard</button>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                  {[
+                    `None: ${metrics.priorityDist.None}`,
+                    `Low: ${metrics.priorityDist.Low}`,
+                    `Medium: ${metrics.priorityDist.Medium}`,
+                    `High: ${metrics.priorityDist.High}`,
+                  ].map(s => (
+                    <span key={s} style={{ fontSize: 11, padding: "3px 8px", border: `1px solid ${T.border}`, color: T.muted, borderRadius: 4 }}>{s}</span>
+                  ))}
+                </div>
+                <div style={{ height: 80, background: T.raised, border: `1px solid ${T.border}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontSize: 13 }}>
+                  {filteredData.length > 0 ? "Priority distribution" : "No data"}
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="bg-sky-50 border border-blue-200 rounded-lg p-6 text-center">
-            <p className="text-lg font-semibold mb-2">Looking for something else?</p>
-            <p className="text-gray-600 mb-4">
-              We would love to hear from you, share all your needs and suggestions for Reporting Dashboard.
-            </p>
-            <button
-              type="button"
-              className="relative text-white font-bold items-center bg-accent caret-transparent gap-x-1 inline-flex shrink-0 h-10 justify-center tracking-[-0.2px] leading-[14px] gap-y-1 text-center text-nowrap border border-accent px-4 rounded-bl rounded-br rounded-tl rounded-tr border-solid hover:bg-accent-hover hover:border-accent-hover transition-colors"
-            >
-              Send Suggestions
-            </button>
+            {/* Repeating WO table */}
+            <div style={card({ borderRadius: 12, padding: 24, marginBottom: 16, overflow: "visible" })}>
+              <h4 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px", color: T.text }}>Repeating Work Orders</h4>
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: `1px solid ${T.border}` }}>
+                      {["ID", "Title", "Status", "Priority", "Due Date"].map(h => (
+                        <th key={h} style={{ padding: "8px 12px", textAlign: "left", color: T.muted, fontWeight: 600, fontSize: 12 }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredData.filter(wo => wo.isRepeating).length > 0 ? (
+                      filteredData.filter(wo => wo.isRepeating).map(wo => (
+                        <tr key={wo.id} style={{ borderBottom: `1px solid ${T.border}` }}>
+                          <td style={{ padding: "10px 12px", color: T.muted }}>{wo.workOrderNumber}</td>
+                          <td style={{ padding: "10px 12px", color: T.text }}>{wo.title}</td>
+                          <td style={{ padding: "10px 12px" }}>
+                            <span style={{
+                              padding: "2px 8px", borderRadius: 4, fontSize: 11,
+                              background: wo.status === "Done" ? "rgba(52,211,153,0.15)" : "rgba(59,130,246,0.15)",
+                              color: wo.status === "Done" ? T.green : T.blue,
+                            }}>
+                              {wo.status}
+                            </span>
+                          </td>
+                          <td style={{ padding: "10px 12px", color: T.muted }}>{wo.priority}</td>
+                          <td style={{ padding: "10px 12px", color: T.muted }}>{new Date(wo.dueDate).toLocaleDateString()}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={5} style={{ padding: 24, textAlign: "center", color: T.muted, fontStyle: "italic" }}>
+                          No repeating work orders in this period
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* By Asset + By User */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+              {(["By Asset", "By User"] as const).map(title => {
+                const data = title === "By Asset" ? metrics.byAsset : metrics.byUser;
+                return (
+                  <div key={title} style={card({ borderRadius: 12, padding: 24, overflow: "visible" })}>
+                    <h4 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px", color: T.text }}>{title}</h4>
+                    <div style={{ maxHeight: 192, overflowY: "auto" }}>
+                      {Object.entries(data).length > 0 ? Object.entries(data).map(([name, count]) => (
+                        <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: `1px solid ${T.border}`, fontSize: 13 }}>
+                          <span style={{ color: T.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name || "—"}</span>
+                          <span style={{ fontWeight: 700, color: T.blue, minWidth: 24, textAlign: "right" }}>{count}</span>
+                        </div>
+                      )) : (
+                        <div style={{ color: T.muted, textAlign: "center", fontStyle: "italic", padding: 16 }}>No data</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Inspections Summary */}
+            <div style={card({ borderRadius: 12, padding: 24, marginBottom: 16, overflow: "visible" })}>
+              <h4 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px", color: T.text }}>Inspections Summary</h4>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+                {[
+                  { label: "Passes", count: metrics.inspectionStats.pass, color: T.green, bg: "rgba(52,211,153,0.1)" },
+                  { label: "Failures", count: metrics.inspectionStats.fail, color: T.red, bg: "rgba(248,113,113,0.1)" },
+                  { label: "Flags", count: metrics.inspectionStats.flag, color: T.amber, bg: "rgba(251,191,36,0.1)" },
+                ].map(s => (
+                  <div key={s.label} style={{ textAlign: "center", padding: 16, background: s.bg, border: `1px solid ${T.border}`, borderRadius: 8 }}>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: s.color }}>{s.count}</div>
+                    <div style={{ fontSize: 11, color: s.color, fontWeight: 600, textTransform: "uppercase", marginTop: 4 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Suggestions CTA */}
+            <div style={{ background: T.blueGlow, border: `1px solid rgba(59,130,246,0.2)`, borderRadius: 12, padding: 24, textAlign: "center" }}>
+              <p style={{ fontSize: 16, fontWeight: 600, color: T.text, margin: "0 0 8px" }}>Looking for something else?</p>
+              <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>
+                We would love to hear from you, share all your needs and suggestions for the Reporting Dashboard.
+              </p>
+              <button style={accentBtn}>Send Suggestions</button>
+            </div>
+
           </div>
-        </div>
+        )}
+
+        {activeTab === "export" && (
+          <div style={{ padding: 16 }}>
+            <ExportData />
+          </div>
+        )}
+
+        {activeTab !== "work-orders" && activeTab !== "export" && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontStyle: "italic", padding: 80 }}>
+            Coming Soon...
+          </div>
+        )}
+
       </div>
-      </>
-      )}
-
-      {activeTab === 'export' && (
-        <div className="flex-1 overflow-auto p-4">
-          <ExportData />
-        </div>
-      )}
-
-      {activeTab !== 'work-orders' && activeTab !== 'export' && (
-        <div className="flex-1 flex items-center justify-center text-gray-400 italic">
-          Coming Soon...
-        </div>
-      )}
     </div>
   );
 };
